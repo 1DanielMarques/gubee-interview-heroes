@@ -16,6 +16,7 @@ public class HeroService {
 
     @Transactional
     public UUID create(CreateHeroRequest createHeroRequest) {
+
         return heroRepository.create(new Hero(createHeroRequest, null));
     }
 }
