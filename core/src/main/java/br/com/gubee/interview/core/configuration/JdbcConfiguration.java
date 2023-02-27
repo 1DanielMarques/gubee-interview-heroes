@@ -1,5 +1,6 @@
 package br.com.gubee.interview.core.configuration;
 
+import br.com.gubee.interview.core.features.hero.Assembler;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -60,4 +61,6 @@ public class JdbcConfiguration {
     private int getMaxPoolSize() {
         return (Runtime.getRuntime().availableProcessors() * 2) + 1;
     }
+
+
 }

@@ -2,7 +2,9 @@ package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.request.CreateHeroRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Assembler {
 
     public PowerStats fromRequestToPowerStats(CreateHeroRequest request) {
