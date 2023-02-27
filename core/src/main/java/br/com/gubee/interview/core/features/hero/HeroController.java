@@ -4,10 +4,7 @@ import br.com.gubee.interview.model.request.CreateHeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.UUID;
@@ -29,4 +26,11 @@ public class HeroController {
         final UUID id = heroService.create(createHeroRequest);
         return created(URI.create(format("/api/v1/heroes/%s", id))).build();
     }
+
+    @GetMapping
+    public String test(){
+        return "OK";
+    }
+
+
 }
