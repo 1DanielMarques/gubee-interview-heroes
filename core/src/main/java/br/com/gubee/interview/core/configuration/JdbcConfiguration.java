@@ -1,10 +1,14 @@
 package br.com.gubee.interview.core.configuration;
 
-import br.com.gubee.interview.core.features.hero.Assembler;
+
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -13,6 +17,8 @@ import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
+@RequiredArgsConstructor
+@Profile("config")
 public class JdbcConfiguration {
 
     @Value("${jdbc.url}")
@@ -26,6 +32,7 @@ public class JdbcConfiguration {
 
     @Value("${jdbc.schema}")
     private String schema;
+
 
     @Bean
     public DataSource dataSource() {
@@ -51,6 +58,12 @@ public class JdbcConfiguration {
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
         return new NamedParameterJdbcTemplate(dataSource());
     }
+
+    @Bean
+    public ServletWebServerFactory servletWebServerFactory() {
+        return new TomcatServletWebServerFactory();
+    }
+
 
     /**
      * Identifies how many connections can be opened based on Postgres recommended formula.
