@@ -3,7 +3,6 @@ package br.com.gubee.interview.core.features.hero;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -54,6 +53,11 @@ public class HeroController {
     @GetMapping("/name/{name}")
     public ResponseEntity<HeroRequest> findByName(@PathVariable(value = "name") String name){
             return ResponseEntity.ok().body(heroService.findByName(name));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id,@Validated @RequestBody HeroRequest heroRequest){
+        return ResponseEntity.status(heroService.updateById(id,heroRequest)).build();
     }
 
 
