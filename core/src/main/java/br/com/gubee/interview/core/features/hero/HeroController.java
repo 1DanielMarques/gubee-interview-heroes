@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 import static java.lang.String.format;
@@ -29,6 +30,18 @@ public class HeroController {
         return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
     }
 
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/clean")
+    public ResponseEntity<Void> createWithEmptyDB(@Validated
+                                       @RequestBody CreateHeroRequest createHeroRequest) {
+        final UUID heroId = heroService.cleaningDBAndCreating(createHeroRequest);
+        return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Hero>> getHeroes() {
+        List<Hero> heroList = heroService.findAll();
+        return ResponseEntity.ok().body(heroList);
+    }
 
 
 
