@@ -3,6 +3,7 @@ package br.com.gubee.interview.core.features.hero;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsService;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.request.CreateHeroRequest;
+import br.com.gubee.interview.model.request.FindHeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class HeroService {
     public List<Hero> findAll() {
         return heroRepository.findAll();
     }
-    public Hero findById(UUID id){
+    public FindHeroRequest findById(UUID id){
         return heroRepository.findById(id);
     }
 }

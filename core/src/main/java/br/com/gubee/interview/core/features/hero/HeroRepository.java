@@ -1,6 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.model.Hero;
+import br.com.gubee.interview.model.request.FindHeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -22,7 +23,12 @@ public class HeroRepository {
             " (name, race, power_stats_id)" +
             " VALUES (:name, :race, :powerStatsId) RETURNING id";
 
-    private static final String FIND_HERO_ID_QUERY = "SELECT * FROM hero WHERE id = :id";
+    private static final String FIND_HERO_ID_QUERY = "SELECT " +
+            "  hero.name, hero.race, " +
+            "  power_stats.strength, power_stats.agility, power_stats.dexterity, " +
+            "  power_stats.intelligence " +
+            "   FROM interview_service.hero INNER JOIN interview_service.power_stats ON hero.power_stats_id = power_stats.id " +
+            "   WHERE hero.id = :id";
 
     private static final String FIND_HERO_QUERY = "SELECT * FROM hero";
 
@@ -60,8 +66,8 @@ public class HeroRepository {
         return heroList;
     }
 
-    public Hero findById(UUID id) {
+    public FindHeroRequest findById(UUID id) {
         SqlParameterSource param = new MapSqlParameterSource("id", id);
-       return namedParameterJdbcTemplate.queryForObject(FIND_HERO_ID_QUERY, param, BeanPropertyRowMapper.newInstance(Hero.class));
+        return namedParameterJdbcTemplate.queryForObject(FIND_HERO_ID_QUERY, param, BeanPropertyRowMapper.newInstance(FindHeroRequest.class));
     }
 }
