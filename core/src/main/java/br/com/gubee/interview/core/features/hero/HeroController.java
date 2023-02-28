@@ -23,6 +23,21 @@ public class HeroController {
 
     private final HeroService heroService;
 
+    //remove this method later
+    @GetMapping
+    public ResponseEntity<List<Hero>> getHeroes() {
+        List<Hero> heroList = heroService.findAll();
+        return ResponseEntity.ok().body(heroList);
+    }
+
+    //remove this method later
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/clean")
+    public ResponseEntity<Void> createWithEmptyDB(@Validated
+                                                  @RequestBody CreateHeroRequest createHeroRequest) {
+        final UUID heroId = heroService.cleaningDBAndCreating(createHeroRequest);
+        return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
+    }
+
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@Validated
                                        @RequestBody CreateHeroRequest createHeroRequest) {
@@ -30,20 +45,10 @@ public class HeroController {
         return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
     }
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/clean")
-    public ResponseEntity<Void> createWithEmptyDB(@Validated
-                                       @RequestBody CreateHeroRequest createHeroRequest) {
-        final UUID heroId = heroService.cleaningDBAndCreating(createHeroRequest);
-        return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
+    @GetMapping("/{id}")
+    public ResponseEntity<Hero> findById(@PathVariable(value = "id") UUID id) {
+        return ResponseEntity.ok().body(heroService.findById(id));
     }
-
-    @GetMapping
-    public ResponseEntity<List<Hero>> getHeroes() {
-        List<Hero> heroList = heroService.findAll();
-        return ResponseEntity.ok().body(heroList);
-    }
-
-
 
 
 }

@@ -4,7 +4,6 @@ import br.com.gubee.interview.core.features.powerstats.PowerStatsService;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.request.CreateHeroRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +18,7 @@ public class HeroService {
     private final PowerStatsService powerStatsService;
     private final Assembler assembler;
 
+
     @Transactional
     public UUID create(CreateHeroRequest createHeroRequest) {
         final UUID powerStatsId = powerStatsService.create(assembler.fromRequestToPowerStats(createHeroRequest));
@@ -31,7 +31,10 @@ public class HeroService {
         return heroRepository.cleaningDBAndCreating(new Hero(createHeroRequest, powerStatsId));
     }
 
-    public List<Hero> findAll(){
+    public List<Hero> findAll() {
         return heroRepository.findAll();
+    }
+    public Hero findById(UUID id){
+        return heroRepository.findById(id);
     }
 }

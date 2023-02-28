@@ -22,6 +22,8 @@ public class HeroRepository {
             " (name, race, power_stats_id)" +
             " VALUES (:name, :race, :powerStatsId) RETURNING id";
 
+    private static final String FIND_HERO_ID_QUERY = "SELECT * FROM hero WHERE id = :id";
+
     private static final String FIND_HERO_QUERY = "SELECT * FROM hero";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -56,5 +58,10 @@ public class HeroRepository {
         List<Hero> heroList = namedParameterJdbcTemplate.query(FIND_HERO_QUERY, new
                 BeanPropertyRowMapper<>(Hero.class));
         return heroList;
+    }
+
+    public Hero findById(UUID id) {
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
+       return namedParameterJdbcTemplate.queryForObject(FIND_HERO_ID_QUERY, param, BeanPropertyRowMapper.newInstance(Hero.class));
     }
 }
