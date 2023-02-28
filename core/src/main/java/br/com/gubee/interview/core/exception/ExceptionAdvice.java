@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.StringUtils;
@@ -53,8 +55,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<Object> handleConstraintViolationException(MethodArgumentNotValidException e) {
         final List<String> errors = e.getBindingResult().getAllErrors().stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .collect(Collectors.toList());
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
         return status(BAD_REQUEST).body(errors);
     }
 
@@ -92,4 +94,16 @@ public class ExceptionAdvice {
         log.error(e.getMessage(), e);
         return status(BAD_GATEWAY).body("message.integration.connection.refused");
     }
+
+    @ExceptionHandler(HeroByIdNotFound.class)
+    ResponseEntity<HttpStatus> heroByIdNotFound(HeroByIdNotFound e) {
+        return ResponseEntity.status(NOT_FOUND).build();
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    ResponseEntity<HttpStatus> heroByNameNotFound(EmptyResultDataAccessException e) {
+        return ResponseEntity.ok().build();
+    }
+
+
 }

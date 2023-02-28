@@ -1,9 +1,11 @@
 package br.com.gubee.interview.core.features.hero;
 
+import br.com.gubee.interview.core.exception.HeroByIdNotFound;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsService;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,10 +36,17 @@ public class HeroService {
     public List<Hero> findAll() {
         return heroRepository.findAll();
     }
-    public HeroRequest findById(UUID id){
-        return heroRepository.findById(id);
+
+    public HeroRequest findById(UUID id) {
+        try {
+            return heroRepository.findById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new HeroByIdNotFound(id);
+        }
+
     }
-    public HeroRequest findByName(String name){
+
+    public HeroRequest findByName(String name) {
         return heroRepository.findByName(name);
     }
 }

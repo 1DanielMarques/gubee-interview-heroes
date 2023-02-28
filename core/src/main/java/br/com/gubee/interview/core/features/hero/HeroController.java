@@ -3,6 +3,8 @@ package br.com.gubee.interview.core.features.hero;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,9 @@ public class HeroController {
 
     private final HeroService heroService;
 
-    //remove this method later
+
     @GetMapping
-    public ResponseEntity<List<Hero>> getHeroes() {
+    public ResponseEntity<List<Hero>> findAll() {
         List<Hero> heroList = heroService.findAll();
         return ResponseEntity.ok().body(heroList);
     }
@@ -46,12 +48,12 @@ public class HeroController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<HeroRequest> findById(@PathVariable(value = "id") UUID id) {
-        return ResponseEntity.ok().body(heroService.findById(id));
+            return ResponseEntity.ok().body(heroService.findById(id));
     }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<HeroRequest> findByName(@PathVariable(value = "name") String name){
-        return ResponseEntity.ok().body(heroService.findByName(name));
+            return ResponseEntity.ok().body(heroService.findByName(name));
     }
 
 
