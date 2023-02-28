@@ -1,9 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
-import br.com.gubee.interview.core.features.powerstats.PowerStatsService;
 import br.com.gubee.interview.model.Hero;
-import br.com.gubee.interview.model.request.CreateHeroRequest;
-import br.com.gubee.interview.model.request.FindHeroRequest;
+import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,21 +32,26 @@ public class HeroController {
     //remove this method later
     @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/clean")
     public ResponseEntity<Void> createWithEmptyDB(@Validated
-                                                  @RequestBody CreateHeroRequest createHeroRequest) {
-        final UUID heroId = heroService.cleaningDBAndCreating(createHeroRequest);
+                                                  @RequestBody HeroRequest heroRequest) {
+        final UUID heroId = heroService.cleaningDBAndCreating(heroRequest);
         return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@Validated
-                                       @RequestBody CreateHeroRequest createHeroRequest) {
-        final UUID heroId = heroService.create(createHeroRequest);
+                                       @RequestBody HeroRequest heroRequest) {
+        final UUID heroId = heroService.create(heroRequest);
         return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FindHeroRequest> findById(@PathVariable(value = "id") UUID id) {
+    @GetMapping("/id/{id}")
+    public ResponseEntity<HeroRequest> findById(@PathVariable(value = "id") UUID id) {
         return ResponseEntity.ok().body(heroService.findById(id));
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<HeroRequest> findByName(@PathVariable(value = "name") String name){
+        return ResponseEntity.ok().body(heroService.findByName(name));
     }
 
 

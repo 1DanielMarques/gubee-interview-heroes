@@ -1,7 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.model.Hero;
-import br.com.gubee.interview.model.request.FindHeroRequest;
+import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -27,9 +27,17 @@ public class HeroRepository {
             "  hero.name, hero.race, " +
             "  power_stats.strength, power_stats.agility, power_stats.dexterity, " +
             "  power_stats.intelligence " +
-            "   FROM interview_service.hero INNER JOIN interview_service.power_stats ON hero.power_stats_id = power_stats.id " +
+            "   FROM hero INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
             "   WHERE hero.id = :id";
 
+    private static final String FIND_HERO_NAME_QUERY = "SELECT " +
+            "  hero.name, hero.race, " +
+            "  power_stats.strength, power_stats.agility, power_stats.dexterity, " +
+            "  power_stats.intelligence " +
+            "   FROM hero INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
+            "   WHERE hero.name = :name";
+
+    // EXCLUIR
     private static final String FIND_HERO_QUERY = "SELECT * FROM hero";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -66,8 +74,13 @@ public class HeroRepository {
         return heroList;
     }
 
-    public FindHeroRequest findById(UUID id) {
+    public HeroRequest findById(UUID id) {
         SqlParameterSource param = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(FIND_HERO_ID_QUERY, param, BeanPropertyRowMapper.newInstance(FindHeroRequest.class));
+        return namedParameterJdbcTemplate.queryForObject(FIND_HERO_ID_QUERY, param, BeanPropertyRowMapper.newInstance(HeroRequest.class));
+    }
+
+    public HeroRequest findByName(String name) {
+        SqlParameterSource param = new MapSqlParameterSource("name", name);
+        return namedParameterJdbcTemplate.queryForObject(FIND_HERO_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroRequest.class));
     }
 }

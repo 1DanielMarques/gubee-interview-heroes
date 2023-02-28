@@ -2,8 +2,7 @@ package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.core.features.powerstats.PowerStatsService;
 import br.com.gubee.interview.model.Hero;
-import br.com.gubee.interview.model.request.CreateHeroRequest;
-import br.com.gubee.interview.model.request.FindHeroRequest;
+import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,21 +20,24 @@ public class HeroService {
 
 
     @Transactional
-    public UUID create(CreateHeroRequest createHeroRequest) {
-        final UUID powerStatsId = powerStatsService.create(assembler.fromRequestToPowerStats(createHeroRequest));
-        return heroRepository.create(new Hero(createHeroRequest, powerStatsId));
+    public UUID create(HeroRequest heroRequest) {
+        final UUID powerStatsId = powerStatsService.create(assembler.fromRequestToPowerStats(heroRequest));
+        return heroRepository.create(new Hero(heroRequest, powerStatsId));
     }
 
     @Transactional
-    public UUID cleaningDBAndCreating(CreateHeroRequest createHeroRequest) {
-        final UUID powerStatsId = powerStatsService.create(assembler.fromRequestToPowerStats(createHeroRequest));
-        return heroRepository.cleaningDBAndCreating(new Hero(createHeroRequest, powerStatsId));
+    public UUID cleaningDBAndCreating(HeroRequest heroRequest) {
+        final UUID powerStatsId = powerStatsService.create(assembler.fromRequestToPowerStats(heroRequest));
+        return heroRepository.cleaningDBAndCreating(new Hero(heroRequest, powerStatsId));
     }
 
     public List<Hero> findAll() {
         return heroRepository.findAll();
     }
-    public FindHeroRequest findById(UUID id){
+    public HeroRequest findById(UUID id){
         return heroRepository.findById(id);
+    }
+    public HeroRequest findByName(String name){
+        return heroRepository.findByName(name);
     }
 }

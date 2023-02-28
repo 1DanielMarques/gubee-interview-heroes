@@ -1,7 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.model.enums.Race;
-import br.com.gubee.interview.model.request.CreateHeroRequest;
+import br.com.gubee.interview.model.request.HeroRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,8 +53,8 @@ class HeroControllerTest {
         verify(heroService, times(1)).create(any());
     }
 
-    private CreateHeroRequest createHeroRequest() {
-        return CreateHeroRequest.builder()
+    private HeroRequest createHeroRequest() {
+        return HeroRequest.builder()
             .name("Batman")
             .agility(5)
             .dexterity(8)

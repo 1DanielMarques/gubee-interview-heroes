@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE)
-public class CreateHeroRequest {
+public class HeroRequest {
 
     @NotBlank(message = "message.name.mandatory")
     @Length(min = 1, max = 255, message = "message.name.length")
