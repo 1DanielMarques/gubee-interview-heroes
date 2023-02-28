@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("config")
 public class JdbcConfiguration {
 
     @Value("${jdbc.url}")

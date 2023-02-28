@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Profile("it")
 public class HeroService {
 
     private final HeroRepository heroRepository;
