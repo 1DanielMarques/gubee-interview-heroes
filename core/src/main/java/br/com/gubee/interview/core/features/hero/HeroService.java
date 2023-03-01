@@ -3,6 +3,7 @@ package br.com.gubee.interview.core.features.hero;
 import br.com.gubee.interview.core.exception.HeroByIdNotFound;
 import br.com.gubee.interview.core.exception.HeroByNameNotFound;
 import br.com.gubee.interview.core.features.usecase.interfaces.*;
+import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.request.ComparedHeroes;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +24,12 @@ public class HeroService {
     private final UpdateHero updateHero;
     private final DeleteHero deleteHero;
     private final CompareHeroes compareHeroes;
+    private final CreatePowerStats createPowerStats;
 
 
     @Transactional
     public UUID create(HeroRequest heroRequest) {
-        return createHero.create(heroRequest);
+        return createHero.create(heroRequest, createPowerStats.create(new PowerStats(heroRequest)));
     }
 
 
@@ -49,8 +51,9 @@ public class HeroService {
         } catch (EmptyResultDataAccessException e) {
             throw new HeroByNameNotFound(name);
         }
-    }
 
+    }
+    @Transactional
     public HttpStatus updateById(UUID id, HeroRequest heroRequest) {
         try {
             updateHero.updateById(id, heroRequest);
@@ -60,6 +63,7 @@ public class HeroService {
         }
     }
 
+    @Transactional
     public void deleteById(UUID id) {
         try {
             deleteHero.deleteById(id);
