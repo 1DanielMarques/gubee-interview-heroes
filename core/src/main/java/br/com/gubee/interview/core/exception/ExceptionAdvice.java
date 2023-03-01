@@ -100,8 +100,9 @@ public class ExceptionAdvice {
         return ResponseEntity.status(NOT_FOUND).build();
     }
 
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    ResponseEntity<HttpStatus> heroByNameNotFound(EmptyResultDataAccessException e) {
+
+    @ExceptionHandler({EmptyResultDataAccessException.class, HeroByNameNotFound.class})
+    ResponseEntity<HttpStatus> heroByNameNotFound(Exception e) {
         return ResponseEntity.ok().build();
     }
 

@@ -1,6 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFound;
+import br.com.gubee.interview.core.exception.HeroByNameNotFound;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsService;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.request.HeroRequest;
@@ -47,11 +48,20 @@ public class HeroService {
     }
 
     public HeroRequest findByName(String name) {
-        return heroRepository.findByName(name);
+        try {
+            return heroRepository.findByName(name);
+        } catch (EmptyResultDataAccessException e) {
+            throw new HeroByNameNotFound(name);
+        }
     }
 
     public HttpStatus updateById(UUID id, HeroRequest heroRequest) {
-        return heroRepository.updateById(id, heroRequest);
+        try {
+            heroRepository.updateById(id, heroRequest);
+            return HttpStatus.valueOf(200);
+        } catch (EmptyResultDataAccessException e) {
+            throw new HeroByIdNotFound(id);
+        }
     }
 
 }

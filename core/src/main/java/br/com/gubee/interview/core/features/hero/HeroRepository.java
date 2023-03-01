@@ -96,22 +96,24 @@ public class HeroRepository {
         return namedParameterJdbcTemplate.queryForObject(FIND_HERO_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroRequest.class));
     }
 
-    public HttpStatus updateById(UUID id, HeroRequest heroRequest) {
-        final String GET_POWER_STATS_ID_QUERY = " SELECT " +
-                " power_stats_id " +
-                " FROM hero " +
-                " WHERE hero.id = :hero_id ";
-        SqlParameterSource param = new MapSqlParameterSource("hero_id", id);
-        UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
-        final Map<String, Object> params = Map.of("name", heroRequest.getName(),
-                "race", heroRequest.getRace().name(),
-                "hero_id", id,
-                "strength", heroRequest.getStrength(),
-                "agility", heroRequest.getAgility(),
-                "dexterity", heroRequest.getDexterity(),
-                "intelligence", heroRequest.getIntelligence(),
-                "power_stats_id", power_stats_id);
-        namedParameterJdbcTemplate.update(UPDATE_HERO_QUERY, params);
-        return HttpStatus.valueOf(200);
+
+    public void updateById(UUID id, HeroRequest heroRequest) {
+
+            final String GET_POWER_STATS_ID_QUERY = " SELECT " +
+                    " power_stats_id " +
+                    " FROM hero " +
+                    " WHERE hero.id = :hero_id ";
+            SqlParameterSource param = new MapSqlParameterSource("hero_id", id);
+            UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
+            final Map<String, Object> params = Map.of("name", heroRequest.getName(),
+                    "race", heroRequest.getRace().name(),
+                    "hero_id", id,
+                    "strength", heroRequest.getStrength(),
+                    "agility", heroRequest.getAgility(),
+                    "dexterity", heroRequest.getDexterity(),
+                    "intelligence", heroRequest.getIntelligence(),
+                    "power_stats_id", power_stats_id);
+            namedParameterJdbcTemplate.update(UPDATE_HERO_QUERY, params);
+
     }
 }
