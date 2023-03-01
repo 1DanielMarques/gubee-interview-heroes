@@ -23,12 +23,11 @@ public class HeroService {
 
     private final HeroRepository heroRepository;
     private final PowerStatsService powerStatsService;
-    private final Assembler assembler;
 
 
     @Transactional
     public UUID create(HeroRequest heroRequest) {
-        final UUID powerStatsId = powerStatsService.create(assembler.fromRequestToPowerStats(heroRequest));
+        final UUID powerStatsId = powerStatsService.create(new PowerStats(heroRequest));
         return heroRepository.create(new Hero(heroRequest, powerStatsId));
     }
 

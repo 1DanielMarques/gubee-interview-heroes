@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -46,13 +48,15 @@ public class HeroRepository {
     private static final String UPDATE_HERO_QUERY = " UPDATE " +
             " interview_service.hero " +
             " SET name = :name, " +
-            " race = :race " +
+            " race = :race, " +
+            " updated_at = :hero_updatedAt " +
             " WHERE hero.id = :hero_id; " +
             " UPDATE interview_service.power_stats " +
             " SET strength = :strength, " +
             " agility = :agility, " +
             " dexterity = :dexterity, " +
-            " intelligence = :intelligence " +
+            " intelligence = :intelligence, " +
+            " updated_at = :power_stats_updatedAt" +
             " WHERE power_stats.id = :power_stats_id ";
     private static final String DELETE_HERO_BY_ID_QUERY = " DELETE " +
             " FROM hero WHERE hero.id = :hero_id; " +
@@ -107,14 +111,16 @@ public class HeroRepository {
     public void updateById(UUID id, HeroRequest heroRequest) {
         SqlParameterSource param = new MapSqlParameterSource("hero_id", id);
         UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
-        final Map<String, Object> params = Map.of("name", heroRequest.getName(),
+        final Map<String, Object> params = Map.of("hero_id", id,
+                "name", heroRequest.getName(),
                 "race", heroRequest.getRace().name(),
-                "hero_id", id,
                 "strength", heroRequest.getStrength(),
                 "agility", heroRequest.getAgility(),
                 "dexterity", heroRequest.getDexterity(),
                 "intelligence", heroRequest.getIntelligence(),
-                "power_stats_id", power_stats_id);
+                "power_stats_id", power_stats_id,
+                "hero_updatedAt", Timestamp.from(Instant.now()),
+                "power_stats_updatedAt", Timestamp.from(Instant.now()));
         namedParameterJdbcTemplate.update(UPDATE_HERO_QUERY, params);
     }
 
