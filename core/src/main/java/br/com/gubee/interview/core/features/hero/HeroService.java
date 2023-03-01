@@ -2,9 +2,7 @@ package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFound;
 import br.com.gubee.interview.core.exception.HeroByNameNotFound;
-import br.com.gubee.interview.core.features.powerstats.PowerStatsService;
-import br.com.gubee.interview.model.Hero;
-import br.com.gubee.interview.model.PowerStats;
+import br.com.gubee.interview.core.features.usecase.interfaces.*;
 import br.com.gubee.interview.model.request.ComparedHeroes;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,31 +12,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class HeroService {
 
-    private final HeroRepository heroRepository;
-    private final PowerStatsService powerStatsService;
+    private final CreateHero createHero;
+    private final FindHero findHero;
+    private final UpdateHero updateHero;
+    private final DeleteHero deleteHero;
+    private final CompareHeroes compareHeroes;
 
 
     @Transactional
     public UUID create(HeroRequest heroRequest) {
-        final UUID powerStatsId = powerStatsService.create(new PowerStats(heroRequest));
-        return heroRepository.create(new Hero(heroRequest, powerStatsId));
+        return createHero.create(heroRequest);
     }
 
 
     public List<HeroRequest> findAll() {
-        return heroRepository.findAll();
+        return findHero.findAll();
     }
 
     public HeroRequest findById(UUID id) {
         try {
-            return heroRepository.findById(id);
+            return findHero.findById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new HeroByIdNotFound(id);
         }
@@ -46,7 +45,7 @@ public class HeroService {
 
     public HeroRequest findByName(String name) {
         try {
-            return heroRepository.findByName(name);
+            return findHero.findByName(name);
         } catch (EmptyResultDataAccessException e) {
             throw new HeroByNameNotFound(name);
         }
@@ -54,7 +53,7 @@ public class HeroService {
 
     public HttpStatus updateById(UUID id, HeroRequest heroRequest) {
         try {
-            heroRepository.updateById(id, heroRequest);
+            updateHero.updateById(id, heroRequest);
             return HttpStatus.valueOf(200);
         } catch (EmptyResultDataAccessException e) {
             throw new HeroByIdNotFound(id);
@@ -63,38 +62,15 @@ public class HeroService {
 
     public void deleteById(UUID id) {
         try {
-            heroRepository.deleteById(id);
+            deleteHero.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new HeroByIdNotFound(id);
         }
     }
 
     public ComparedHeroes compareHeroes(String name_1, String name_2) {
-        ComparedHeroes comparedHeroes = new ComparedHeroes();
-
-        UUID id_1 = heroRepository.getHeroIdByName(name_1);
-        comparedHeroes.setId_1(id_1);
-        UUID id_2 = heroRepository.getHeroIdByName(name_2);
-        comparedHeroes.setId_2(id_2);
-
-        Map<UUID, PowerStats> heroesPowerStats = heroRepository.compareHeroes(id_1, id_2);
-        PowerStats hero_1 = heroesPowerStats.get(id_1);
-        PowerStats hero_2 = heroesPowerStats.get(id_2);
-
-        compareHeroesAttributes(comparedHeroes, hero_1, hero_2);
-        return comparedHeroes;
+        return compareHeroes.compareHeroes(name_1, name_2);
     }
 
-    private void compareHeroesAttributes(ComparedHeroes comparedHeroes, PowerStats hero_1, PowerStats hero_2) {
-        comparedHeroes.setStrength_1((hero_1.getStrength() >= hero_2.getStrength()) ? hero_1.getStrength() : hero_1.getStrength() * -1);
-        comparedHeroes.setAgility_1((hero_1.getAgility() >= hero_2.getAgility()) ? hero_1.getAgility() : hero_1.getAgility() * -1);
-        comparedHeroes.setDexterity_1((hero_1.getDexterity() >= hero_2.getDexterity()) ? hero_1.getDexterity() : hero_1.getDexterity() * -1);
-        comparedHeroes.setIntelligence_1((hero_1.getIntelligence() >= hero_2.getIntelligence()) ? hero_1.getIntelligence() : hero_1.getIntelligence() * -1);
-
-        comparedHeroes.setStrength_2((hero_2.getStrength() >= hero_1.getStrength()) ? hero_2.getStrength() : hero_2.getStrength() * -1);
-        comparedHeroes.setAgility_2((hero_2.getAgility() >= hero_1.getAgility()) ? hero_2.getAgility() : hero_2.getAgility() * -1);
-        comparedHeroes.setDexterity_2((hero_2.getDexterity() >= hero_1.getDexterity()) ? hero_2.getDexterity() : hero_2.getDexterity() * -1);
-        comparedHeroes.setIntelligence_2((hero_2.getIntelligence() >= hero_1.getIntelligence()) ? hero_2.getIntelligence() : hero_2.getIntelligence() * -1);
-    }
 
 }

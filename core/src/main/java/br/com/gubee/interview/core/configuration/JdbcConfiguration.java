@@ -58,11 +58,6 @@ public class JdbcConfiguration {
         return new NamedParameterJdbcTemplate(dataSource());
     }
 
-    @Bean
-    public ServletWebServerFactory servletWebServerFactory() {
-        return new TomcatServletWebServerFactory();
-    }
-
 
     /**
      * Identifies how many connections can be opened based on Postgres recommended formula.
