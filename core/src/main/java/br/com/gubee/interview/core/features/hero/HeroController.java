@@ -1,6 +1,5 @@
 package br.com.gubee.interview.core.features.hero;
 
-import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.request.ComparedHeroes;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,19 +23,10 @@ public class HeroController {
 
     private final HeroService heroService;
 
-
     @GetMapping
-    public ResponseEntity<List<Hero>> findAll() {
-        List<Hero> heroList = heroService.findAll();
+    public ResponseEntity<List<HeroRequest>> findAll() {
+        List<HeroRequest> heroList = heroService.findAll();
         return ResponseEntity.ok().body(heroList);
-    }
-
-    //remove this method later
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, value = "/clean")
-    public ResponseEntity<Void> createWithEmptyDB(@Validated
-                                                  @RequestBody HeroRequest heroRequest) {
-        final UUID heroId = heroService.cleaningDBAndCreating(heroRequest);
-        return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
