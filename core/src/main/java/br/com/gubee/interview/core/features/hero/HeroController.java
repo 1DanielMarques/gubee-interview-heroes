@@ -46,7 +46,7 @@ public class HeroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id,  @RequestBody HeroRequest heroRequest) {
+    public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id, @RequestBody HeroRequest heroRequest) {
         return ResponseEntity.status(heroService.updateById(id, heroRequest)).build();
     }
 

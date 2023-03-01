@@ -4,7 +4,6 @@ import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.interfaces.UpdateHero;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 import java.util.UUID;
 

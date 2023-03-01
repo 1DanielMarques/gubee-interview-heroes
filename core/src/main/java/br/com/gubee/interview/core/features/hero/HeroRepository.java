@@ -117,10 +117,10 @@ public class HeroRepository {
         UPDATE_HERO_QUERY += " WHERE hero.id = :hero_id; ";
         UPDATE_HERO_QUERY += " UPDATE interview_service.power_stats SET ";
         UPDATE_HERO_QUERY += " updated_at = :power_stats_updatedAt  ";
-        UPDATE_HERO_QUERY = (heroRequest.getStrength() != null) ? UPDATE_HERO_QUERY + ", strength = :strength " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY = (heroRequest.getAgility() != null) ? UPDATE_HERO_QUERY + ", agility = :agility " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY = (heroRequest.getDexterity() != null) ? UPDATE_HERO_QUERY + ", dexterity = :dexterity " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY = (heroRequest.getIntelligence() != null) ? UPDATE_HERO_QUERY + ", intelligence = :intelligence " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (heroRequest.getStrength() != null && heroRequest.getStrength() >= 0 && heroRequest.getStrength() <= 10) ? UPDATE_HERO_QUERY + ", strength = :strength " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (heroRequest.getAgility() != null && heroRequest.getAgility() >= 0 && heroRequest.getAgility() <= 10) ? UPDATE_HERO_QUERY + ", agility = :agility " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (heroRequest.getDexterity() != null && heroRequest.getDexterity() >= 0 && heroRequest.getDexterity() <= 10) ? UPDATE_HERO_QUERY + ", dexterity = :dexterity " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (heroRequest.getIntelligence() != null && heroRequest.getIntelligence() >= 0 && heroRequest.getIntelligence() <= 10) ? UPDATE_HERO_QUERY + ", intelligence = :intelligence " : UPDATE_HERO_QUERY + "";
         UPDATE_HERO_QUERY += " WHERE power_stats.id = :power_stats_id ";
         return UPDATE_HERO_QUERY;
 

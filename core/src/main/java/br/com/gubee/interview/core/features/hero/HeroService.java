@@ -53,6 +53,7 @@ public class HeroService {
         }
 
     }
+
     @Transactional
     public HttpStatus updateById(UUID id, HeroRequest heroRequest) {
         try {
