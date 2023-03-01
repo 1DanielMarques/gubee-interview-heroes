@@ -30,8 +30,7 @@ public class HeroController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> create(@Validated
-                                       @RequestBody HeroRequest heroRequest) {
+    public ResponseEntity<Void> create(@Validated @RequestBody HeroRequest heroRequest) {
         final UUID heroId = heroService.create(heroRequest);
         return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
     }
@@ -47,7 +46,7 @@ public class HeroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id, @Validated @RequestBody HeroRequest heroRequest) {
+    public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id,  @RequestBody HeroRequest heroRequest) {
         return ResponseEntity.status(heroService.updateById(id, heroRequest)).build();
     }
 

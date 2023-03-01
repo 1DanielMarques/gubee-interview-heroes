@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -45,19 +46,6 @@ public class HeroRepository {
             "  power_stats.intelligence " +
             "  FROM hero INNER JOIN power_stats ON hero.power_stats_id = power_stats.id ";
 
-    private static final String UPDATE_HERO_QUERY = " UPDATE " +
-            " interview_service.hero " +
-            " SET name = :name, " +
-            " race = :race, " +
-            " updated_at = :hero_updatedAt " +
-            " WHERE hero.id = :hero_id; " +
-            " UPDATE interview_service.power_stats " +
-            " SET strength = :strength, " +
-            " agility = :agility, " +
-            " dexterity = :dexterity, " +
-            " intelligence = :intelligence, " +
-            " updated_at = :power_stats_updatedAt" +
-            " WHERE power_stats.id = :power_stats_id ";
     private static final String DELETE_HERO_BY_ID_QUERY = " DELETE " +
             " FROM hero WHERE hero.id = :hero_id; " +
             " DELETE " +
@@ -111,17 +99,42 @@ public class HeroRepository {
     public void updateById(UUID id, HeroRequest heroRequest) {
         SqlParameterSource param = new MapSqlParameterSource("hero_id", id);
         UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
-        final Map<String, Object> params = Map.of("hero_id", id,
-                "name", heroRequest.getName(),
-                "race", heroRequest.getRace().name(),
-                "strength", heroRequest.getStrength(),
-                "agility", heroRequest.getAgility(),
-                "dexterity", heroRequest.getDexterity(),
-                "intelligence", heroRequest.getIntelligence(),
-                "power_stats_id", power_stats_id,
-                "hero_updatedAt", Timestamp.from(Instant.now()),
-                "power_stats_updatedAt", Timestamp.from(Instant.now()));
-        namedParameterJdbcTemplate.update(UPDATE_HERO_QUERY, params);
+        final Map<String, Object> params = createSqlParams(heroRequest);
+        params.put("hero_id", id);
+        params.put("power_stats_id", power_stats_id);
+        params.put("hero_updatedAt", Timestamp.from(Instant.now()));
+        params.put("power_stats_updatedAt", Timestamp.from(Instant.now()));
+        namedParameterJdbcTemplate.update(createUpdateQuery(heroRequest), params);
+    }
+
+    private String createUpdateQuery(HeroRequest heroRequest) {
+        String UPDATE_HERO_QUERY = " UPDATE " +
+                " interview_service.hero " +
+                " SET ";
+        UPDATE_HERO_QUERY += " updated_at = :hero_updatedAt ";
+        UPDATE_HERO_QUERY = (heroRequest.getName() != null) ? UPDATE_HERO_QUERY + ", name = :name " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (heroRequest.getRace() != null) ? UPDATE_HERO_QUERY + ", race = :race " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY += " WHERE hero.id = :hero_id; ";
+        UPDATE_HERO_QUERY += " UPDATE interview_service.power_stats SET ";
+        UPDATE_HERO_QUERY += " updated_at = :power_stats_updatedAt  ";
+        UPDATE_HERO_QUERY = (heroRequest.getStrength() != null) ? UPDATE_HERO_QUERY + ", strength = :strength " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (heroRequest.getAgility() != null) ? UPDATE_HERO_QUERY + ", agility = :agility " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (heroRequest.getDexterity() != null) ? UPDATE_HERO_QUERY + ", dexterity = :dexterity " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (heroRequest.getIntelligence() != null) ? UPDATE_HERO_QUERY + ", intelligence = :intelligence " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY += " WHERE power_stats.id = :power_stats_id ";
+        return UPDATE_HERO_QUERY;
+
+    }
+
+    private Map<String, Object> createSqlParams(HeroRequest heroRequest) {
+        Map<String, Object> params = new HashMap<>();
+        if (heroRequest.getName() != null) params.put("name", heroRequest.getName());
+        if (heroRequest.getRace() != null) params.put("race", heroRequest.getRace().name());
+        if (heroRequest.getStrength() != null) params.put("strength", heroRequest.getStrength());
+        if (heroRequest.getAgility() != null) params.put("agility", heroRequest.getAgility());
+        if (heroRequest.getDexterity() != null) params.put("dexterity", heroRequest.getDexterity());
+        if (heroRequest.getIntelligence() != null) params.put("intelligence", heroRequest.getIntelligence());
+        return params;
     }
 
     public void deleteById(UUID id) {
