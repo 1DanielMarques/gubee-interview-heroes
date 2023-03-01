@@ -26,6 +26,7 @@ public class CompareHeroesUseCase implements CompareHeroes {
         Map<UUID, PowerStats> heroesPowerStats = heroRepository.compareHeroes(id_1, id_2);
         PowerStats hero_1 = heroesPowerStats.get(id_1);
         PowerStats hero_2 = heroesPowerStats.get(id_2);
+        compareHeroesAttributes(comparedHeroes, hero_1, hero_2);
         return comparedHeroes;
     }
 
