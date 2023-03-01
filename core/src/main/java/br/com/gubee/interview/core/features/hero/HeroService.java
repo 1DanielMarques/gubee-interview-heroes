@@ -64,4 +64,13 @@ public class HeroService {
         }
     }
 
+    public void deleteById(UUID id) {
+        try {
+            heroRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new HeroByIdNotFound(id);
+        }
+
+    }
+
 }

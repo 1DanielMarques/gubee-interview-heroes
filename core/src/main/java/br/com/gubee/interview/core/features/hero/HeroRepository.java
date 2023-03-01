@@ -18,8 +18,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class HeroRepository {
 
-    private static final String DELETE_HERO_QUERY = "DELETE FROM hero WHERE id = :id";
-
     private static final String CREATE_HERO_QUERY = "INSERT INTO hero" +
             " (name, race, power_stats_id)" +
             " VALUES (:name, :race, :powerStatsId) RETURNING id";
@@ -48,6 +46,13 @@ public class HeroRepository {
             " dexterity = :dexterity, " +
             " intelligence = :intelligence " +
             " WHERE power_stats.id = :power_stats_id ";
+    private final String GET_POWER_STATS_ID_QUERY = " SELECT " +
+            " power_stats_id " +
+            " FROM hero " +
+            " WHERE hero.id = :hero_id ";
+
+    private static final String DELETE_HERO_QUERY = " DELETE FROM hero WHERE hero.id = :hero_id; " +
+            " DELETE FROM power_stats WHERE power_stats.id = :power_stats_id ";
 
     // EXCLUIR
     private static final String FIND_HERO_QUERY = "SELECT * FROM hero";
@@ -98,22 +103,24 @@ public class HeroRepository {
 
 
     public void updateById(UUID id, HeroRequest heroRequest) {
-
-            final String GET_POWER_STATS_ID_QUERY = " SELECT " +
-                    " power_stats_id " +
-                    " FROM hero " +
-                    " WHERE hero.id = :hero_id ";
-            SqlParameterSource param = new MapSqlParameterSource("hero_id", id);
-            UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
-            final Map<String, Object> params = Map.of("name", heroRequest.getName(),
-                    "race", heroRequest.getRace().name(),
-                    "hero_id", id,
-                    "strength", heroRequest.getStrength(),
-                    "agility", heroRequest.getAgility(),
-                    "dexterity", heroRequest.getDexterity(),
-                    "intelligence", heroRequest.getIntelligence(),
-                    "power_stats_id", power_stats_id);
-            namedParameterJdbcTemplate.update(UPDATE_HERO_QUERY, params);
-
+        SqlParameterSource param = new MapSqlParameterSource("hero_id", id);
+        UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
+        final Map<String, Object> params = Map.of("name", heroRequest.getName(),
+                "race", heroRequest.getRace().name(),
+                "hero_id", id,
+                "strength", heroRequest.getStrength(),
+                "agility", heroRequest.getAgility(),
+                "dexterity", heroRequest.getDexterity(),
+                "intelligence", heroRequest.getIntelligence(),
+                "power_stats_id", power_stats_id);
+        namedParameterJdbcTemplate.update(UPDATE_HERO_QUERY, params);
     }
+
+    public void deleteById(UUID id) {
+        SqlParameterSource param = new MapSqlParameterSource("hero_id", id);
+        UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
+        final Map<String, Object> params = Map.of("hero_id", id, "power_stats_id", power_stats_id);
+        namedParameterJdbcTemplate.update(DELETE_HERO_QUERY, params);
+    }
+
 }

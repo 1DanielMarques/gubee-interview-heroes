@@ -47,17 +47,23 @@ public class HeroController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<HeroRequest> findById(@PathVariable(value = "id") UUID id) {
-            return ResponseEntity.ok().body(heroService.findById(id));
+        return ResponseEntity.ok().body(heroService.findById(id));
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<HeroRequest> findByName(@PathVariable(value = "name") String name){
-            return ResponseEntity.ok().body(heroService.findByName(name));
+    public ResponseEntity<HeroRequest> findByName(@PathVariable(value = "name") String name) {
+        return ResponseEntity.ok().body(heroService.findByName(name));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id,@Validated @RequestBody HeroRequest heroRequest){
-        return ResponseEntity.status(heroService.updateById(id,heroRequest)).build();
+    public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id, @Validated @RequestBody HeroRequest heroRequest) {
+        return ResponseEntity.status(heroService.updateById(id, heroRequest)).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable(value = "id") UUID id) {
+        heroService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 
