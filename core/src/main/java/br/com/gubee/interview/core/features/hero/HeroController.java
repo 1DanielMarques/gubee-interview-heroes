@@ -67,9 +67,9 @@ public class HeroController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/compare/{id_1}/with/{id_2}")
-    public ResponseEntity<ComparedHeroes> compareHeroes(@PathVariable(value = "id_1") UUID id_1, @PathVariable(value = "id_2") UUID id_2) {
-        return ResponseEntity.ok().body(heroService.compareHeroes(id_1, id_2));
+    @GetMapping("/compare/{name_1}/with/{name_2}")
+    public ResponseEntity<ComparedHeroes> compareHeroes(@PathVariable(value = "name_1") String name_1, @PathVariable(value = "name_2") String name_2) {
+        return ResponseEntity.ok().body(heroService.compareHeroes(name_1, name_2));
     }
 
 

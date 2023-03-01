@@ -54,6 +54,11 @@ public class HeroRepository {
             " FROM hero " +
             " WHERE hero.id = :hero_id ";
 
+    private final String GET_HERO_ID_QUERY = " SELECT " +
+            " id " +
+            " FROM hero " +
+            " WHERE hero.name = :hero_name ";
+
     private static final String DELETE_HERO_QUERY = " DELETE FROM hero WHERE hero.id = :hero_id; " +
             " DELETE FROM power_stats WHERE power_stats.id = :power_stats_id ";
 
@@ -77,8 +82,8 @@ public class HeroRepository {
 
     UUID cleaningDBAndCreating(Hero hero) {
         for (Hero h : findAll()) {
-            SqlParameterSource namedParameters = new MapSqlParameterSource("id", h.getId());
-            namedParameterJdbcTemplate.update(DELETE_HERO_QUERY, namedParameters);
+            Map<String, Object> params = Map.of("hero_id", h.getId(), "power_stats_id", h.getPowerStatsId());
+            namedParameterJdbcTemplate.update(DELETE_HERO_QUERY, params);
         }
         final Map<String, Object> params = Map.of("name", hero.getName(),
                 "race", hero.getRace().name(),
@@ -126,6 +131,11 @@ public class HeroRepository {
         UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
         final Map<String, Object> params = Map.of("hero_id", id, "power_stats_id", power_stats_id);
         namedParameterJdbcTemplate.update(DELETE_HERO_QUERY, params);
+    }
+
+    public UUID getHeroIdByName(String name) {
+        SqlParameterSource param = new MapSqlParameterSource("hero_name", name);
+        return namedParameterJdbcTemplate.queryForObject(GET_HERO_ID_QUERY, param, UUID.class);
     }
 
     public Map<UUID, PowerStats> compareHeroes(UUID id_1, UUID id_2) {

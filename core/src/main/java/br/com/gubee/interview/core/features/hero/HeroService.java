@@ -75,8 +75,10 @@ public class HeroService {
         }
     }
 
-    public ComparedHeroes compareHeroes(UUID id_1, UUID id_2) {
-        Map<UUID, PowerStats> heroesAttributes = heroRepository.compareHeroes(id_1, id_2);
+    public ComparedHeroes compareHeroes(String name_1, String name_2) {
+        UUID id_1 = heroRepository.getHeroIdByName(name_1);
+        UUID id_2 = heroRepository.getHeroIdByName(name_2);
+        Map<UUID, PowerStats> heroesAttributes = heroRepository.compareHeroes(id_1,id_2);
         PowerStats hero_1 = heroesAttributes.get(id_1);
         PowerStats hero_2 = heroesAttributes.get(id_2);
         ComparedHeroes comparedHeroes = new ComparedHeroes();
