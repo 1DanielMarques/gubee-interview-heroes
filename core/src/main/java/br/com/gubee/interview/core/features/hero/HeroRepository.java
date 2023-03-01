@@ -1,6 +1,8 @@
 package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.model.Hero;
+import br.com.gubee.interview.model.PowerStats;
+import br.com.gubee.interview.model.request.ComparedHeroes;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -53,6 +56,8 @@ public class HeroRepository {
 
     private static final String DELETE_HERO_QUERY = " DELETE FROM hero WHERE hero.id = :hero_id; " +
             " DELETE FROM power_stats WHERE power_stats.id = :power_stats_id ";
+
+    private static final String GET_POWER_STATS_QUERY = " SELECT strength, agility, dexterity, intelligence FROM power_stats WHERE id = :power_stats_id";
 
     // EXCLUIR
     private static final String FIND_HERO_QUERY = "SELECT * FROM hero";
@@ -121,6 +126,21 @@ public class HeroRepository {
         UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
         final Map<String, Object> params = Map.of("hero_id", id, "power_stats_id", power_stats_id);
         namedParameterJdbcTemplate.update(DELETE_HERO_QUERY, params);
+    }
+
+    public Map<UUID, PowerStats> compareHeroes(UUID id_1, UUID id_2) {
+
+        SqlParameterSource param = new MapSqlParameterSource("hero_id", id_1);
+        UUID power_stats_id_1 = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
+        param = new MapSqlParameterSource("hero_id", id_2);
+        UUID power_stats_id_2 = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
+
+        param = new MapSqlParameterSource("power_stats_id", power_stats_id_1);
+        PowerStats powerStats_1 = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_QUERY, param, BeanPropertyRowMapper.newInstance(PowerStats.class));
+        param = new MapSqlParameterSource("power_stats_id", power_stats_id_2);
+        PowerStats powerStats_2 = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_QUERY, param, BeanPropertyRowMapper.newInstance(PowerStats.class));
+
+        return Map.of(id_1, powerStats_1, id_2, powerStats_2);
     }
 
 }
