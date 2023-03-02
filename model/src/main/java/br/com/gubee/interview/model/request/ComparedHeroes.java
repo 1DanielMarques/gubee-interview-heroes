@@ -13,17 +13,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ComparedHeroes {
 
-    private UUID id_1;
-    private int strength_1;
-    private int agility_1;
-    private int dexterity_1;
-    private int intelligence_1;
+    private UUID firstId;
+    private int firstStrength;
+    private int firstAgility;
+    private int firstDexterity;
+    private int firstIntelligence;
 
-    private UUID id_2;
-    private int strength_2;
-    private int agility_2;
-    private int dexterity_2;
-    private int intelligence_2;
+    private UUID secondId;
+    private int secondStrength;
+    private int secondAgility;
+    private int secondDexterity;
+    private int secondIntelligence;
 
 
 }

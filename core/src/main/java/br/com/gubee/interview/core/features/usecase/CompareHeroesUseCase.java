@@ -15,30 +15,30 @@ public class CompareHeroesUseCase implements CompareHeroes {
     private final HeroRepository heroRepository;
 
     @Override
-    public ComparedHeroes compareHeroes(String name_1, String name_2) {
+    public ComparedHeroes compareHeroes(String firstHero, String secondHero) {
         ComparedHeroes comparedHeroes = new ComparedHeroes();
 
-        UUID id_1 = heroRepository.getHeroIdByName(name_1);
-        comparedHeroes.setId_1(id_1);
-        UUID id_2 = heroRepository.getHeroIdByName(name_2);
-        comparedHeroes.setId_2(id_2);
+        UUID FirstHeroId = heroRepository.getHeroIdByName(firstHero);
+        comparedHeroes.setFirstId(FirstHeroId);
+        UUID SecondHeroId = heroRepository.getHeroIdByName(secondHero);
+        comparedHeroes.setSecondId(SecondHeroId);
 
-        Map<UUID, PowerStats> heroesPowerStats = heroRepository.compareHeroes(id_1, id_2);
-        PowerStats hero_1 = heroesPowerStats.get(id_1);
-        PowerStats hero_2 = heroesPowerStats.get(id_2);
-        compareHeroesAttributes(comparedHeroes, hero_1, hero_2);
+        Map<UUID, PowerStats> heroesPowerStats = heroRepository.compareHeroes(FirstHeroId, SecondHeroId);
+        PowerStats firstHeroPowerStats = heroesPowerStats.get(FirstHeroId);
+        PowerStats secondHeroPowerStats = heroesPowerStats.get(SecondHeroId);
+        compareHeroesAttributes(comparedHeroes, firstHeroPowerStats, secondHeroPowerStats);
         return comparedHeroes;
     }
 
-    private void compareHeroesAttributes(ComparedHeroes comparedHeroes, PowerStats hero_1, PowerStats hero_2) {
-        comparedHeroes.setStrength_1((hero_1.getStrength() >= hero_2.getStrength()) ? hero_1.getStrength() : hero_1.getStrength() * -1);
-        comparedHeroes.setAgility_1((hero_1.getAgility() >= hero_2.getAgility()) ? hero_1.getAgility() : hero_1.getAgility() * -1);
-        comparedHeroes.setDexterity_1((hero_1.getDexterity() >= hero_2.getDexterity()) ? hero_1.getDexterity() : hero_1.getDexterity() * -1);
-        comparedHeroes.setIntelligence_1((hero_1.getIntelligence() >= hero_2.getIntelligence()) ? hero_1.getIntelligence() : hero_1.getIntelligence() * -1);
+    private void compareHeroesAttributes(ComparedHeroes comparedHeroes, PowerStats firstHeroPowerStats, PowerStats secondHeroPowerStats) {
+        comparedHeroes.setFirstStrength((firstHeroPowerStats.getStrength() >= secondHeroPowerStats.getStrength()) ? firstHeroPowerStats.getStrength() : firstHeroPowerStats.getStrength() * -1);
+        comparedHeroes.setFirstAgility((firstHeroPowerStats.getAgility() >= secondHeroPowerStats.getAgility()) ? firstHeroPowerStats.getAgility() : firstHeroPowerStats.getAgility() * -1);
+        comparedHeroes.setFirstDexterity((firstHeroPowerStats.getDexterity() >= secondHeroPowerStats.getDexterity()) ? firstHeroPowerStats.getDexterity() : firstHeroPowerStats.getDexterity() * -1);
+        comparedHeroes.setFirstIntelligence((firstHeroPowerStats.getIntelligence() >= secondHeroPowerStats.getIntelligence()) ? firstHeroPowerStats.getIntelligence() : firstHeroPowerStats.getIntelligence() * -1);
 
-        comparedHeroes.setStrength_2((hero_2.getStrength() >= hero_1.getStrength()) ? hero_2.getStrength() : hero_2.getStrength() * -1);
-        comparedHeroes.setAgility_2((hero_2.getAgility() >= hero_1.getAgility()) ? hero_2.getAgility() : hero_2.getAgility() * -1);
-        comparedHeroes.setDexterity_2((hero_2.getDexterity() >= hero_1.getDexterity()) ? hero_2.getDexterity() : hero_2.getDexterity() * -1);
-        comparedHeroes.setIntelligence_2((hero_2.getIntelligence() >= hero_1.getIntelligence()) ? hero_2.getIntelligence() : hero_2.getIntelligence() * -1);
+        comparedHeroes.setSecondStrength((secondHeroPowerStats.getStrength() >= firstHeroPowerStats.getStrength()) ? secondHeroPowerStats.getStrength() : secondHeroPowerStats.getStrength() * -1);
+        comparedHeroes.setSecondAgility((secondHeroPowerStats.getAgility() >= firstHeroPowerStats.getAgility()) ? secondHeroPowerStats.getAgility() : secondHeroPowerStats.getAgility() * -1);
+        comparedHeroes.setSecondDexterity((secondHeroPowerStats.getDexterity() >= firstHeroPowerStats.getDexterity()) ? secondHeroPowerStats.getDexterity() : secondHeroPowerStats.getDexterity() * -1);
+        comparedHeroes.setSecondIntelligence((secondHeroPowerStats.getIntelligence() >= firstHeroPowerStats.getIntelligence()) ? secondHeroPowerStats.getIntelligence() : secondHeroPowerStats.getIntelligence() * -1);
     }
 }

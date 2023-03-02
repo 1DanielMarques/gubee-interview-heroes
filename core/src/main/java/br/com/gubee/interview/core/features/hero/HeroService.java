@@ -73,8 +73,8 @@ public class HeroService {
         }
     }
 
-    public ComparedHeroes compareHeroes(String name_1, String name_2) {
-        return compareHeroes.compareHeroes(name_1, name_2);
+    public ComparedHeroes compareHeroes(String firstHero, String secondHero) {
+        return compareHeroes.compareHeroes(firstHero, secondHero);
     }
 
 
