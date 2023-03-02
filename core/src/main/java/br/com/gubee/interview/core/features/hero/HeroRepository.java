@@ -140,7 +140,7 @@ public class HeroRepository {
     public void deleteById(UUID id) {
         SqlParameterSource param = new MapSqlParameterSource("heroId", id);
         UUID powerStatsId = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
-        final Map<String, Object> params = Map.of("hero_id", id, "powerStatsId", powerStatsId);
+        final Map<String, Object> params = Map.of("heroId", id, "powerStatsId", powerStatsId);
         namedParameterJdbcTemplate.update(DELETE_HERO_BY_ID_QUERY, params);
     }
 
