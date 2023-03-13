@@ -2,6 +2,7 @@ package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.model.enums.Race;
 import br.com.gubee.interview.model.request.HeroRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,13 +13,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(HeroController.class)
 class HeroControllerTest {
@@ -45,8 +47,8 @@ class HeroControllerTest {
 
         //when
         final ResultActions resultActions = mockMvc.perform(post("/api/v1/heroes")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(body));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body));
 
         //then
         resultActions.andExpect(status().isCreated()).andExpect(header().exists("Location"));
@@ -55,12 +57,29 @@ class HeroControllerTest {
 
     private HeroRequest createHeroRequest() {
         return HeroRequest.builder()
-            .name("Batman")
-            .agility(5)
-            .dexterity(8)
-            .strength(6)
-            .intelligence(10)
-            .race(Race.HUMAN)
-            .build();
+                .name("Batman")
+                .agility(5)
+                .dexterity(8)
+                .strength(6)
+                .intelligence(10)
+                .race(Race.HUMAN)
+                .build();
     }
+
+    @Test
+    void findAllHeroesWithItsAttributes() throws Exception {
+        HeroRequest heroRequest = createHeroRequest();
+        heroRequest.setId(UUID.randomUUID());
+        when(heroService.findAll()).thenReturn(List.of(heroRequest));
+
+        //when
+        final ResultActions resultActions = mockMvc.perform(get("/api/v1/heroes")).andExpect(status().isOk());
+
+        var json = String.format("[ { \"id\": \"%s\", \"name\": \"Batman\", \"race\": \"HUMAN\", \"strength\": 6, \"agility\": 5, \"dexterity\": 8, \"intelligence\": 10 } ]", heroRequest.getId().toString());
+
+        //then
+        resultActions.andExpect(status().isOk()).andExpect(content().json(json));
+    }
+
+
 }
