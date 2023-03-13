@@ -27,4 +27,9 @@ public class FindHeroUseCase implements FindHero {
     public HeroRequest findByName(String name) {
         return heroRepository.findByName(name);
     }
+
+    @Override
+    public UUID getHeroIdByName(String name) {
+        return heroRepository.getHeroIdByName(name);
+    }
 }

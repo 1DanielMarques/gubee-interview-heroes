@@ -51,7 +51,10 @@ public class HeroService {
         } catch (EmptyResultDataAccessException e) {
             throw new HeroByNameNotFound(name);
         }
+    }
 
+    public UUID getHeroIdByName(String name) {
+        return findHero.getHeroIdByName(name);
     }
 
     @Transactional

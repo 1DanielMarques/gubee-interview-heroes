@@ -14,19 +14,21 @@ public class HeroServiceIT {
     @Autowired
     private HeroService heroService;
 
+
     @Test
     public void createHeroWithAllRequiredArguments() {
+        heroService.deleteById(heroService.getHeroIdByName("Batman"));
         heroService.create(createHeroRequest());
     }
 
     private HeroRequest createHeroRequest() {
         return HeroRequest.builder()
-            .name("Batman")
-            .agility(5)
-            .dexterity(8)
-            .strength(6)
-            .intelligence(10)
-            .race(Race.HUMAN)
-            .build();
+                .name("Batman")
+                .agility(5)
+                .dexterity(8)
+                .strength(6)
+                .intelligence(10)
+                .race(Race.HUMAN)
+                .build();
     }
 }

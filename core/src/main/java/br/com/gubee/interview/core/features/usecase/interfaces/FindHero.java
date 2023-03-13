@@ -12,4 +12,6 @@ public interface FindHero {
     HeroRequest findById(UUID id);
 
     HeroRequest findByName(String name);
+
+    UUID getHeroIdByName(String name);
 }
