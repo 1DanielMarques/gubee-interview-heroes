@@ -4,6 +4,7 @@ import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -66,7 +67,7 @@ public class HeroRepository {
             " FROM power_stats " +
             " WHERE id = :powerStatsId ";
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public UUID create(Hero hero) {
         final Map<String, Object> params = Map.of("name", hero.getName(),
@@ -160,5 +161,6 @@ public class HeroRepository {
                 new MapSqlParameterSource("powerStatsId", powerStatsIdSecondHero), BeanPropertyRowMapper.newInstance(PowerStats.class));
         return Map.of(firstHeroId, powerStatsFirstHero, secondHeroId, powerStatsSecondHero);
     }
+
 
 }

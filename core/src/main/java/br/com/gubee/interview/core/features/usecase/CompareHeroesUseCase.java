@@ -9,10 +9,13 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 public class CompareHeroesUseCase implements CompareHeroes {
 
     private final HeroRepository heroRepository;
+
+    public CompareHeroesUseCase(HeroRepository heroRepository) {
+        this.heroRepository = heroRepository;
+    }
 
 
     @Override
@@ -38,7 +41,7 @@ public class CompareHeroesUseCase implements CompareHeroes {
         comparedHeroes.setSecondDexterity((secondHeroPowerStats.getDexterity() >= firstHeroPowerStats.getDexterity()) ? secondHeroPowerStats.getDexterity() : secondHeroPowerStats.getDexterity() * -1);
         comparedHeroes.setSecondIntelligence((secondHeroPowerStats.getIntelligence() >= firstHeroPowerStats.getIntelligence()) ? secondHeroPowerStats.getIntelligence() : secondHeroPowerStats.getIntelligence() * -1);
         return comparedHeroes;
-
     }
+
 
 }

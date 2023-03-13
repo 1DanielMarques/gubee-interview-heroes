@@ -34,10 +34,20 @@ class HeroControllerTest {
     @MockBean
     private HeroService heroService;
 
+    private HeroRequest heroRequest;
+
     @BeforeEach
     public void initTest() {
         when(heroService.create(any())).thenReturn(UUID.randomUUID());
+
     }
+
+    @BeforeEach
+    public void heroRequestWithId() {
+        heroRequest = createHeroRequest();
+        heroRequest.setId(UUID.randomUUID());
+    }
+
 
     @Test
     void createAHeroWithAllRequiredArguments() throws Exception {
@@ -68,18 +78,26 @@ class HeroControllerTest {
 
     @Test
     void findAllHeroesWithItsAttributes() throws Exception {
-        HeroRequest heroRequest = createHeroRequest();
-        heroRequest.setId(UUID.randomUUID());
         when(heroService.findAll()).thenReturn(List.of(heroRequest));
-
         //when
         final ResultActions resultActions = mockMvc.perform(get("/api/v1/heroes")).andExpect(status().isOk());
 
         var json = String.format("[ { \"id\": \"%s\", \"name\": \"Batman\", \"race\": \"HUMAN\", \"strength\": 6, \"agility\": 5, \"dexterity\": 8, \"intelligence\": 10 } ]", heroRequest.getId().toString());
-
         //then
         resultActions.andExpect(status().isOk()).andExpect(content().json(json));
     }
 
+    @Test
+    void findHeroByIdWithItsAttributes() throws Exception {
+        when(heroService.findById(any())).thenReturn(this.heroRequest);
+
+        var url = String.format("/api/v1/heroes/id/%s", heroRequest.getId().toString());
+        //when
+        final ResultActions resultActions = mockMvc.perform(get(url)).andExpect(status().isOk());
+
+        var json = String.format(" { \"id\": \"%s\", \"name\": \"Batman\", \"race\": \"HUMAN\", \"strength\": 6, \"agility\": 5, \"dexterity\": 8, \"intelligence\": 10 } ", heroRequest.getId().toString());
+        //then
+        resultActions.andExpect(status().isOk()).andExpect(content().json(json));
+    }
 
 }
