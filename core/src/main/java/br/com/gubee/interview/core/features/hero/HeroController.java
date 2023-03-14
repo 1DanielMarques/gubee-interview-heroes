@@ -3,6 +3,7 @@ package br.com.gubee.interview.core.features.hero;
 import br.com.gubee.interview.model.request.ComparedHeroes;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,9 +31,9 @@ public class HeroController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> create(@Validated @RequestBody HeroRequest heroRequest) {
-        final UUID heroId = heroService.create(heroRequest);
-        return created(URI.create(format("/api/v1/heroes/%s", heroId))).build();
+    public ResponseEntity<HeroRequest> create(@Validated @RequestBody HeroRequest heroRequest) {
+        final HeroRequest hero = heroService.create(heroRequest);
+        return created(URI.create(format("/api/v1/heroes/%s", hero.getId()))).body(hero);
     }
 
     @GetMapping("/id/{id}")

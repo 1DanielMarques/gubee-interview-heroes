@@ -2,7 +2,6 @@ package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.model.enums.Race;
 import br.com.gubee.interview.model.request.HeroRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ class HeroControllerTest {
 
     @BeforeEach
     public void initTest() {
-        when(heroService.create(any())).thenReturn(UUID.randomUUID());
+        when(heroService.create(any())).thenReturn(createHeroRequest());
 
     }
 

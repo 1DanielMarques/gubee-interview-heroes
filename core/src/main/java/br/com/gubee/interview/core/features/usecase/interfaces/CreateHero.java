@@ -6,6 +6,6 @@ import java.util.UUID;
 
 public interface CreateHero {
 
-    UUID create(HeroRequest heroRequest, UUID powerStatsId);
+    HeroRequest create(HeroRequest heroRequest, UUID powerStatsId);
 
 }

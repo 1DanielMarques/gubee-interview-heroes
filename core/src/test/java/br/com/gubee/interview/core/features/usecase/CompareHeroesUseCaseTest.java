@@ -4,28 +4,18 @@ import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.hero.HeroRepositoryStub;
 import br.com.gubee.interview.core.features.usecase.interfaces.CompareHeroes;
 import br.com.gubee.interview.model.request.ComparedHeroes;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 
-@RequiredArgsConstructor
 public class CompareHeroesUseCaseTest {
 
-    private HeroRepository heroRepositoryStub;
-
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-
+    private final HeroRepository heroRepositoryStub = new HeroRepositoryStub();
+    private final CompareHeroes compareHeroes = new CompareHeroesUseCase(heroRepositoryStub);
 
     @Test
-    void compareHeroes() {
-        heroRepositoryStub = new HeroRepositoryStub(namedParameterJdbcTemplate);
-        CompareHeroes compareHeroes = new CompareHeroesUseCase(heroRepositoryStub);
+    void shouldCompareHeroesAttributesAndReturnThem() {
         ComparedHeroes result = compareHeroes.compareHeroes("Batman", "Superman");
-
         ComparedHeroes expected = ComparedHeroes.builder()
                 .firstId(result.getFirstId())
                 .firstAgility(-5)

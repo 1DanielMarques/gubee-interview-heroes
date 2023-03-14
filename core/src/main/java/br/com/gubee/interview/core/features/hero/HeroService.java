@@ -28,7 +28,7 @@ public class HeroService {
 
 
     @Transactional
-    public UUID create(HeroRequest heroRequest) {
+    public HeroRequest create(HeroRequest heroRequest) {
         return createHero.create(heroRequest, createPowerStats.create(new PowerStats(heroRequest)));
     }
 

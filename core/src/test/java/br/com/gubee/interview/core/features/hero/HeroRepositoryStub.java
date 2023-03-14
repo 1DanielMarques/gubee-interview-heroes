@@ -1,18 +1,78 @@
 package br.com.gubee.interview.core.features.hero;
 
+import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.PowerStats;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import br.com.gubee.interview.model.request.HeroRequest;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+public class HeroRepositoryStub implements HeroRepository {
 
-public class HeroRepositoryStub extends HeroRepository {
+    private final Map<UUID, Hero> heroesMap = new HashMap<>();
+    private final Map<UUID, PowerStats> powerStatsMap = new HashMap<>();
 
-    public HeroRepositoryStub(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(namedParameterJdbcTemplate);
+    private void savePowerStats(UUID powerStatsId) {
+        PowerStats powerStats = PowerStats.builder()
+                .id(powerStatsId)
+                .agility(5)
+                .dexterity(8)
+                .strength(6)
+                .intelligence(10)
+                .build();
+        powerStatsMap.put(powerStatsId, powerStats);
     }
 
+    private HeroRequest buildHeroRequest(UUID heroId, UUID powerStatsId) {
+        Hero hero = heroesMap.get(heroId);
+        PowerStats powerStats = powerStatsMap.get(powerStatsId);
+        return HeroRequest.builder()
+                .name(hero.getName())
+                .race(hero.getRace())
+                .agility(powerStats.getAgility())
+                .dexterity(powerStats.getDexterity())
+                .strength(powerStats.getStrength())
+                .intelligence(powerStats.getIntelligence())
+                .build();
+
+    }
+
+    @Override
+    public HeroRequest create(Hero hero) {
+        savePowerStats(hero.getPowerStatsId());
+        hero.setId(UUID.randomUUID());
+        heroesMap.put(hero.getId(), hero);
+        return buildHeroRequest(hero.getId(), hero.getPowerStatsId());
+    }
+
+    @Override
+    public List<HeroRequest> findAll() {
+        return null;
+    }
+
+    @Override
+    public HeroRequest findById(UUID id) {
+
+        // return heroesMap.get(id);
+        return null;
+    }
+
+    @Override
+    public HeroRequest findByName(String name) {
+        return null;
+    }
+
+    @Override
+    public void updateById(UUID id, HeroRequest heroRequest) {
+
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+
+    }
 
     @Override
     public UUID getHeroIdByName(String name) {
@@ -36,5 +96,4 @@ public class HeroRepositoryStub extends HeroRepository {
                 .build();
         return Map.of(firstHeroId, powerStatsFirstHero, secondHeroId, powerStatsSecondHero);
     }
-
 }

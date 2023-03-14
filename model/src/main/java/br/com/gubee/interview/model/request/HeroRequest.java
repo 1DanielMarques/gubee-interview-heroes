@@ -1,5 +1,6 @@
 package br.com.gubee.interview.model.request;
 
+import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.enums.Race;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,4 +50,6 @@ public class HeroRequest {
     @Max(value = 10, message = "message.powerstats.intelligence.max")
     @NotNull(message = "message.powerstats.intelligence.mandatory")
     private Integer intelligence;
+
+
 }

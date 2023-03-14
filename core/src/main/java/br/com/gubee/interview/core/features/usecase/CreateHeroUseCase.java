@@ -15,7 +15,7 @@ public class CreateHeroUseCase implements CreateHero {
     private final HeroRepository heroRepository;
 
     @Override
-    public UUID create(HeroRequest heroRequest, UUID powerStatsId) {
+    public HeroRequest create(HeroRequest heroRequest, UUID powerStatsId) {
         return heroRepository.create(new Hero(heroRequest, powerStatsId));
     }
 }

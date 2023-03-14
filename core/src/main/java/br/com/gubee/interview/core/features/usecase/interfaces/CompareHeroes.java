@@ -4,5 +4,5 @@ import br.com.gubee.interview.model.request.ComparedHeroes;
 
 public interface CompareHeroes {
 
-    ComparedHeroes compareHeroes(String name_1, String name_2);
+    ComparedHeroes compareHeroes(String firstHeroName, String secondHeroName);
 }
