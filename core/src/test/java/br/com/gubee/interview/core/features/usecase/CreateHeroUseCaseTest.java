@@ -20,6 +20,7 @@ public class CreateHeroUseCaseTest {
     void shouldCreateHeroAndReturnIt() {
         HeroRequest heroRequest = createHeroRequest();
         HeroRequest createdHero = heroRepositoryStub.create(new Hero(heroRequest, UUID.randomUUID()));
+        heroRequest.setId(createdHero.getId());
         Assertions.assertEquals(heroRequest, createdHero);
     }
 

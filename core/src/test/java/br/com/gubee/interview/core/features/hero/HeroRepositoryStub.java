@@ -29,6 +29,7 @@ public class HeroRepositoryStub implements HeroRepository {
         Hero hero = heroesMap.get(heroId);
         PowerStats powerStats = powerStatsMap.get(powerStatsId);
         return HeroRequest.builder()
+                .id(hero.getId())
                 .name(hero.getName())
                 .race(hero.getRace())
                 .agility(powerStats.getAgility())
@@ -54,9 +55,8 @@ public class HeroRepositoryStub implements HeroRepository {
 
     @Override
     public HeroRequest findById(UUID id) {
-
-        // return heroesMap.get(id);
-        return null;
+        Hero hero = heroesMap.get(id);
+        return buildHeroRequest(hero.getId(), powerStatsMap.get(hero.getPowerStatsId()).getId());
     }
 
     @Override
