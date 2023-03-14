@@ -3,7 +3,6 @@ package br.com.gubee.interview.core.features.hero;
 import br.com.gubee.interview.model.request.ComparedHeroes;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -51,11 +50,12 @@ public class HeroController {
         return ResponseEntity.status(heroService.updateById(id, heroRequest)).build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(value = "id") UUID id) {
         heroService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 
     @GetMapping("/compare/{firstHero}/with/{secondHero}")
     public ResponseEntity<ComparedHeroes> compareHeroes(@PathVariable(value = "firstHero") String firstHero, @PathVariable(value = "secondHero") String secondHero) {

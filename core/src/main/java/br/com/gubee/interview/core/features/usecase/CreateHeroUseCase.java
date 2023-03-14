@@ -11,7 +11,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CreateHeroUseCase implements CreateHero {
 
-
     private final HeroRepository heroRepository;
 
     @Override

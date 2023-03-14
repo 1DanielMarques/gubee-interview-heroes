@@ -1,7 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
-import br.com.gubee.interview.core.exception.HeroByIdNotFound;
-import br.com.gubee.interview.core.exception.HeroByNameNotFound;
+import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
+import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
 import br.com.gubee.interview.core.features.usecase.interfaces.*;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.request.ComparedHeroes;
@@ -41,7 +41,7 @@ public class HeroService {
         try {
             return findHero.findById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new HeroByIdNotFound(id);
+            throw new HeroByIdNotFoundException(id);
         }
     }
 
@@ -49,7 +49,7 @@ public class HeroService {
         try {
             return findHero.findByName(name);
         } catch (EmptyResultDataAccessException e) {
-            throw new HeroByNameNotFound(name);
+            throw new HeroByNameNotFoundException(name);
         }
     }
 
@@ -63,7 +63,7 @@ public class HeroService {
             updateHero.updateById(id, heroRequest);
             return HttpStatus.valueOf(200);
         } catch (EmptyResultDataAccessException e) {
-            throw new HeroByIdNotFound(id);
+            throw new HeroByIdNotFoundException(id);
         }
     }
 
@@ -72,7 +72,16 @@ public class HeroService {
         try {
             deleteHero.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new HeroByIdNotFound(id);
+            throw new HeroByIdNotFoundException(id);
+        }
+    }
+
+    @Transactional
+    public void deleteByName(String name) {
+        try {
+            deleteHero.deleteById(getHeroIdByName(name));
+        } catch (EmptyResultDataAccessException e) {
+            throw new HeroByNameNotFoundException(name);
         }
     }
 

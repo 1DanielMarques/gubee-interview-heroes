@@ -95,13 +95,13 @@ public class ExceptionAdvice {
         return status(BAD_GATEWAY).body("message.integration.connection.refused");
     }
 
-    @ExceptionHandler(HeroByIdNotFound.class)
-    ResponseEntity<HttpStatus> heroByIdNotFound(HeroByIdNotFound e) {
+    @ExceptionHandler(HeroByIdNotFoundException.class)
+    ResponseEntity<HttpStatus> heroByIdNotFound(HeroByIdNotFoundException e) {
         return ResponseEntity.status(NOT_FOUND).build();
     }
 
 
-    @ExceptionHandler({EmptyResultDataAccessException.class, HeroByNameNotFound.class})
+    @ExceptionHandler({EmptyResultDataAccessException.class, HeroByNameNotFoundException.class})
     ResponseEntity<HttpStatus> heroByNameNotFound(Exception e) {
         return ResponseEntity.ok().build();
     }

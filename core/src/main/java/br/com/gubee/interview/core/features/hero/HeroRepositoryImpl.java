@@ -1,5 +1,6 @@
 package br.com.gubee.interview.core.features.hero;
 
+import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.request.HeroRequest;
@@ -21,35 +22,36 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class HeroRepositoryImpl implements HeroRepository {
 
-    private static final String CREATE_HERO_QUERY = " INSERT " +
+    private final String CREATE_HERO_QUERY = " INSERT " +
             " INTO hero " +
             " (name, race, power_stats_id) " +
             " VALUES (:name, :race, :powerStatsId) RETURNING id ";
 
-    private static final String FIND_HERO_BY_ID_QUERY = " SELECT " +
+    private final String FIND_HERO_BY_ID_QUERY = " SELECT " +
             "  hero.name, hero.race, " +
             "  power_stats.strength, power_stats.agility, power_stats.dexterity, " +
             "  power_stats.intelligence " +
             "  FROM hero INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
             "  WHERE hero.id = :id ";
 
-    private static final String FIND_HERO_BY_NAME_QUERY = " SELECT " +
+    private final String FIND_HERO_BY_NAME_QUERY = " SELECT " +
             "  hero.name, hero.race, " +
             "  power_stats.strength, power_stats.agility, power_stats.dexterity, " +
             "  power_stats.intelligence " +
             "  FROM hero INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
             "  WHERE hero.name = :name ";
 
-    private static final String FIND_HERO_ATTRIBUTES_QUERY = "SELECT " +
+    private final String FIND_HERO_ATTRIBUTES_QUERY = "SELECT " +
             "  hero.id, hero.name, hero.race, " +
             "  power_stats.strength, power_stats.agility, power_stats.dexterity, " +
             "  power_stats.intelligence " +
             "  FROM hero INNER JOIN power_stats ON hero.power_stats_id = power_stats.id ";
 
-    private static final String DELETE_HERO_BY_ID_QUERY = " DELETE " +
+    private final String DELETE_HERO_BY_ID_QUERY = " DELETE " +
             " FROM hero WHERE hero.id = :heroId; " +
             " DELETE " +
             " FROM power_stats WHERE power_stats.id = :powerStatsId ";
+
 
     private final String GET_POWER_STATS_ID_QUERY = " SELECT " +
             " power_stats_id " +
@@ -61,7 +63,7 @@ public class HeroRepositoryImpl implements HeroRepository {
             " FROM hero " +
             " WHERE hero.name = :heroName ";
 
-    private static final String GET_POWER_STATS_QUERY = " SELECT " +
+    private final String GET_POWER_STATS_QUERY = " SELECT " +
             " strength, agility, dexterity, intelligence " +
             " FROM power_stats " +
             " WHERE id = :powerStatsId ";
@@ -146,9 +148,16 @@ public class HeroRepositoryImpl implements HeroRepository {
         namedParameterJdbcTemplate.update(DELETE_HERO_BY_ID_QUERY, params);
     }
 
+
     public UUID getHeroIdByName(String name) {
         SqlParameterSource param = new MapSqlParameterSource("heroName", name);
-        return namedParameterJdbcTemplate.queryForObject(GET_HERO_ID_QUERY, param, UUID.class);
+        UUID heroId = namedParameterJdbcTemplate.queryForObject(GET_HERO_ID_QUERY, param, UUID.class);
+        if (heroId != null) {
+            return heroId;
+        } else {
+            throw new HeroByIdNotFoundException(heroId);
+        }
+
     }
 
     public Map<UUID, PowerStats> compareHeroes(UUID firstHeroId, UUID secondHeroId) {
