@@ -35,12 +35,10 @@ public class HeroRepositoryStub implements HeroRepository {
     public void updateById(UUID id, HeroRequest heroRequest) {
 
     }
-
     @Override
     public void deleteById(UUID id) {
 
     }
-
 
     @Override
     public UUID getHeroIdByName(String name) {

@@ -1,6 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.model.enums.Race;
+import br.com.gubee.interview.model.request.ComparedHeroes;
 import br.com.gubee.interview.model.request.HeroRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +77,7 @@ class HeroControllerTest {
     }
 
     @Test
-    void findAllHeroesWithItsAttributes() throws Exception {
+    void shouldReturnListOfHeroesWithItsAttributes() throws Exception {
         when(heroService.findAll()).thenReturn(List.of(heroRequest));
         //when
         final ResultActions resultActions = mockMvc.perform(get("/api/v1/heroes")).andExpect(status().isOk());
@@ -87,7 +88,7 @@ class HeroControllerTest {
     }
 
     @Test
-    void findHeroByIdWithItsAttributes() throws Exception {
+    void shouldFindHeroByIdWithItsAttributes() throws Exception {
         when(heroService.findById(any())).thenReturn(this.heroRequest);
 
         var url = String.format("/api/v1/heroes/id/%s", heroRequest.getId().toString());
@@ -95,6 +96,58 @@ class HeroControllerTest {
         final ResultActions resultActions = mockMvc.perform(get(url)).andExpect(status().isOk());
 
         var json = String.format(" { \"id\": \"%s\", \"name\": \"Batman\", \"race\": \"HUMAN\", \"strength\": 6, \"agility\": 5, \"dexterity\": 8, \"intelligence\": 10 } ", heroRequest.getId().toString());
+        //then
+        resultActions.andExpect(status().isOk()).andExpect(content().json(json));
+    }
+
+    @Test
+    void shouldFindHeroByNameWithItsAttributes() throws Exception {
+        when(heroService.findByName(any())).thenReturn(this.heroRequest);
+
+        var url = String.format("/api/v1/heroes/name/%s", this.heroRequest.getName());
+
+        final ResultActions resultActions = mockMvc.perform(get(url)).andExpect(status().isOk());
+
+        var json = String.format(" { \"id\": \"%s\", \"name\": \"Batman\", \"race\": \"HUMAN\", \"strength\": 6, \"agility\": 5, \"dexterity\": 8, \"intelligence\": 10 } ", heroRequest.getId().toString());
+        //then
+        resultActions.andExpect(status().isOk()).andExpect(content().json(json));
+    }
+
+    @Test
+    void shouldReturnComparedHeroes() throws Exception {
+        UUID firstHeroId = UUID.randomUUID();
+        UUID secondHeroId = UUID.randomUUID();
+        ComparedHeroes comparedHeroes = ComparedHeroes.builder()
+                .firstId(firstHeroId)
+                .firstAgility(-5)
+                .firstDexterity(8)
+                .firstStrength(-6)
+                .firstIntelligence(10)
+                .secondId(secondHeroId)
+                .secondAgility(7)
+                .secondDexterity(-6)
+                .secondStrength(8)
+                .secondIntelligence(-6)
+                .build();
+        when(heroService.compareHeroes(any(), any())).thenReturn(comparedHeroes);
+
+        var url = String.format("/api/v1/heroes/compare/%s/with/%s", this.heroRequest.getName(), "Superman");
+
+        final ResultActions resultActions = mockMvc.perform(get(url)).andExpect(status().isOk());
+
+
+        var json = String.format("  {\n" +
+                "            \"first_id\": \"%s\",\n" +
+                "                \"first_strength\": -6,\n" +
+                "                \"first_agility\": -5,\n" +
+                "                \"first_dexterity\": 8,\n" +
+                "                \"first_intelligence\": 10,\n" +
+                "                \"second_id\": \"%s\",\n" +
+                "                \"second_strength\": 8,\n" +
+                "                \"second_agility\": 7,\n" +
+                "                \"second_dexterity\": -6,\n" +
+                "                \"second_intelligence\": -6\n" +
+                "        } ", firstHeroId, secondHeroId);
         //then
         resultActions.andExpect(status().isOk()).andExpect(content().json(json));
     }
