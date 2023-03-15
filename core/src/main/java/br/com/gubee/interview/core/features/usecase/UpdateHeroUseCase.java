@@ -1,7 +1,6 @@
 package br.com.gubee.interview.core.features.usecase;
 
 import br.com.gubee.interview.core.features.hero.HeroRepository;
-import br.com.gubee.interview.core.features.hero.HeroRepositoryImpl;
 import br.com.gubee.interview.core.features.usecase.interfaces.UpdateHero;
 import br.com.gubee.interview.model.request.HeroRequest;
 import lombok.RequiredArgsConstructor;

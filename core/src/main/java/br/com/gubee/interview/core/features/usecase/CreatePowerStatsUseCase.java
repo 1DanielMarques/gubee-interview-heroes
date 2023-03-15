@@ -1,7 +1,6 @@
 package br.com.gubee.interview.core.features.usecase;
 
 import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
-import br.com.gubee.interview.core.features.powerstats.PowerStatsRepositoryImpl;
 import br.com.gubee.interview.core.features.usecase.interfaces.CreatePowerStats;
 import br.com.gubee.interview.model.PowerStats;
 import lombok.RequiredArgsConstructor;

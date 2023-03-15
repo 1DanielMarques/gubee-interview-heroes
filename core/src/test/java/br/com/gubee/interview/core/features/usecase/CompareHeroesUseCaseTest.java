@@ -1,7 +1,7 @@
 package br.com.gubee.interview.core.features.usecase;
 
 import br.com.gubee.interview.core.features.hero.HeroRepository;
-import br.com.gubee.interview.core.features.hero.HeroRepositoryStub;
+import br.com.gubee.interview.core.features.hero.stub.HeroRepositoryStub;
 import br.com.gubee.interview.core.features.usecase.interfaces.CompareHeroes;
 import br.com.gubee.interview.model.request.ComparedHeroes;
 import org.junit.jupiter.api.Assertions;
