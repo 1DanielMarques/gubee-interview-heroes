@@ -1,16 +1,14 @@
-package br.com.gubee.interview.core.features.hero.resource;
+package br.com.gubee.interview.core.features.hero.resource.controller;
 
 import br.com.gubee.interview.core.features.hero.resource.facade.HeroFacade;
 import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -24,18 +22,18 @@ public class HeroResource {
     private final HeroFacade heroFacade;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<HeroDTO> create(@Validated @RequestBody HeroDTO heroDTO) {
-        var heroDto = heroFacade.create(heroDTO);
-        return created(URI.create(format("/api/v1/heroes/%s", heroDto.getId()))).body(heroDTO);
+    public ResponseEntity<HeroDTO> create(@Validated @RequestBody HeroDTO heroToCreate) {
+        var heroDTO = heroFacade.create(heroToCreate);
+        return created(URI.create(format("/api/v1/heroes/%s", heroDTO.getId()))).body(heroDTO);
     }
-/*
+
     @GetMapping
-    public ResponseEntity<List<HeroRequest>> findAll() {
-        List<Hero> heroList = heroService.findAll();
-        List<PowerStats> powerStatsList = powerStatsService.findAll();
-        List<HeroRequest> heroRequestList = assembler.toRequestList(heroList, powerStatsList);
-        return ResponseEntity.ok().body(heroRequestList);
+    public ResponseEntity<List<HeroDTO>> findAll() {
+        List<HeroDTO> heroDTOList = heroFacade.findAll();
+        return ResponseEntity.ok().body(heroDTOList);
     }
+
+    /*
 
 
     @GetMapping("/id/{id}")

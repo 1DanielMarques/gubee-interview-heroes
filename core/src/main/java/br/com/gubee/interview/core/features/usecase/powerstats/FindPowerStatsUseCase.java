@@ -14,6 +14,6 @@ public class FindPowerStatsUseCase implements FindPowerStats {
 
     @Override
     public List<PowerStats> findAll() {
-        return powerStatsRepository.findAll();
+        return powerStatsRepository.findAll().stream().map(entity -> entity.toPowerStats()).toList();
     }
 }

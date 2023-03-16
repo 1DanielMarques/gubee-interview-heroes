@@ -16,7 +16,7 @@ public class FindHeroUseCase implements FindHero {
 
     @Override
     public List<Hero> findAll() {
-        return heroRepository.findAll();
+        return heroRepository.findAll().stream().map(entity -> entity.toHero()).toList();
     }
 
     @Override

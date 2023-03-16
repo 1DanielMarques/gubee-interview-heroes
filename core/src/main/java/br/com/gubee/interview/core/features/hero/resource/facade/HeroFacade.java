@@ -6,6 +6,7 @@ import br.com.gubee.interview.core.features.hero.resource.assembler.Assembler;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.*;
 import br.com.gubee.interview.model.ComparedHeroes;
 import br.com.gubee.interview.model.Hero;
+import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -31,12 +32,15 @@ public class HeroFacade {
     public HeroDTO create(HeroDTO heroDto) {
         var powerStats = powerStatsFacade.create(assembler.toPowerStatsDomain(heroDto));
         var hero = createHero.create(assembler.toHeroDomain(heroDto, powerStats.getId()));
-        return assembler.toHeroDto(hero, powerStats);
+        return assembler.toHeroDTO(hero, powerStats);
     }
 
 
-    public List<Hero> findAll() {
-        return findHero.findAll();
+    public List<HeroDTO> findAll() {
+        List<PowerStats> powerStatsList = powerStatsFacade.findAll();
+        List<Hero> heroList = findHero.findAll();
+        List<HeroDTO> heroDTOList = assembler.toDTOList(heroList, powerStatsList);
+        return heroDTOList;
     }
 
 

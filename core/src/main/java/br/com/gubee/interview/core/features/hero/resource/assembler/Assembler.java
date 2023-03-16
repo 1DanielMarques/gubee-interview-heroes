@@ -27,11 +27,11 @@ public class Assembler {
                 .build();
     }
 
-    public List<HeroDTO> toRequestList(List<Hero> heroList, List<PowerStats> powerStatsList) {
+    public List<HeroDTO> toDTOList(List<Hero> heroList, List<PowerStats> powerStatsList) {
         List<HeroDTO> heroDTOList = new ArrayList<>();
         for (var hero : heroList) {
             for (var powerStats : powerStatsList) {
-                if (hero.getPowerStatsId() == powerStats.getId()) {
+                if (hero.getPowerStatsId().equals(powerStats.getId())) {
                     var heroDTO = HeroDTO.builder()
                             .name(hero.getName())
                             .race(hero.getRace())
@@ -48,8 +48,8 @@ public class Assembler {
         return heroDTOList;
     }
 
-    public HeroDTO toHeroDto(Hero hero, PowerStats powerStats) {
-        var heroDto = HeroDTO.builder()
+    public HeroDTO toHeroDTO(Hero hero, PowerStats powerStats) {
+        var heroDTO = HeroDTO.builder()
                 .id(hero.getId())
                 .name(hero.getName())
                 .race(hero.getRace())
@@ -59,7 +59,7 @@ public class Assembler {
                 .intelligence(powerStats.getIntelligence())
                 .build();
 
-        return heroDto;
+        return heroDTO;
     }
 
 }

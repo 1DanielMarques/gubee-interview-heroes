@@ -40,15 +40,17 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
-    public PowerStatsEntity findById(UUID powerStatsId) {
-        SqlParameterSource param = new MapSqlParameterSource("powerStatsId", powerStatsId);
-        return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
+    public List<PowerStatsEntity> findAll() {
+        List<PowerStatsEntity> powerStatsList = namedParameterJdbcTemplate.query(FIND_ALL_POWER_STATS_QUERY,
+                new BeanPropertyRowMapper<>(PowerStatsEntity.class));
+        return powerStatsList;
     }
 
     @Override
-    public List<PowerStats> findAll() {
-        List<PowerStats> powerStatsList = namedParameterJdbcTemplate.query(FIND_ALL_POWER_STATS_QUERY,
-                new BeanPropertyRowMapper<>(PowerStats.class));
-        return powerStatsList;
+    public PowerStatsEntity findById(UUID powerStatsId) {
+        var param = new MapSqlParameterSource("powerStatsId", powerStatsId);
+        return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
     }
+
+
 }

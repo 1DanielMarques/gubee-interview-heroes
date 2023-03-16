@@ -37,8 +37,7 @@ public class HeroRepositoryImpl implements HeroRepository {
             "  FROM hero INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
             "  WHERE hero.name = :name ";
 
-    private final String FIND_ALL_HEROES_QUERY = "SELECT " +
-            "  * FROM HERO ";
+    private final String FIND_ALL_HEROES_QUERY = " SELECT * FROM hero ";
 
     private final String DELETE_HERO_BY_ID_QUERY = " DELETE " +
             " FROM hero WHERE hero.id = :heroId; " +
@@ -76,25 +75,25 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
 
-    public List<Hero> findAll() {
-        List<Hero> heroList = namedParameterJdbcTemplate.query(FIND_ALL_HEROES_QUERY, new
-                BeanPropertyRowMapper<>(Hero.class));
+    public List<HeroEntity> findAll() {
+        List<HeroEntity> heroList = namedParameterJdbcTemplate.query(FIND_ALL_HEROES_QUERY, new
+                BeanPropertyRowMapper<>(HeroEntity.class));
         return heroList;
     }
 
     public HeroEntity findById(UUID id) {
-        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        var param = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
     }
 
     public HeroDTO findByName(String name) {
-        SqlParameterSource param = new MapSqlParameterSource("name", name);
+        var param = new MapSqlParameterSource("name", name);
         return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroDTO.class));
     }
 
 
     public void updateById(UUID id, HeroDTO heroDTO) {
-        SqlParameterSource param = new MapSqlParameterSource("heroId", id);
+        var param = new MapSqlParameterSource("heroId", id);
         UUID powerStatsId = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
         final Map<String, Object> params = createSqlParams(heroDTO);
         params.put("heroId", id);
@@ -105,7 +104,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     private String createUpdateQuery(HeroDTO heroDTO) {
-        String UPDATE_HERO_QUERY = " UPDATE " +
+        var UPDATE_HERO_QUERY = " UPDATE " +
                 " interview_service.hero " +
                 " SET ";
         UPDATE_HERO_QUERY += " updated_at = :heroUpdatedAt ";
@@ -135,16 +134,16 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     public void deleteById(UUID id) {
-        SqlParameterSource param = new MapSqlParameterSource("heroId", id);
-        UUID powerStatsId = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
+        var param = new MapSqlParameterSource("heroId", id);
+        var powerStatsId = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
         final Map<String, Object> params = Map.of("heroId", id, "powerStatsId", powerStatsId);
         namedParameterJdbcTemplate.update(DELETE_HERO_BY_ID_QUERY, params);
     }
 
 
     public UUID getHeroIdByName(String name) {
-        SqlParameterSource param = new MapSqlParameterSource("heroName", name);
-        UUID heroId = namedParameterJdbcTemplate.queryForObject(GET_HERO_ID_QUERY, param, UUID.class);
+        var param = new MapSqlParameterSource("heroName", name);
+        var heroId = namedParameterJdbcTemplate.queryForObject(GET_HERO_ID_QUERY, param, UUID.class);
         if (heroId != null) {
             return heroId;
         } else {
@@ -155,13 +154,13 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     //REFATORAR
     public Map<UUID, PowerStats> compareHeroes(UUID firstHeroId, UUID secondHeroId) {
-        UUID powerStatsIdFirstHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY,
+        var powerStatsIdFirstHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY,
                 new MapSqlParameterSource("heroId", firstHeroId), UUID.class);
-        UUID powerStatsIdSecondHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY,
+        var powerStatsIdSecondHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY,
                 new MapSqlParameterSource("heroId", secondHeroId), UUID.class);
-        PowerStats powerStatsFirstHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_QUERY,
+        var powerStatsFirstHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_QUERY,
                 new MapSqlParameterSource("powerStatsId", powerStatsIdFirstHero), BeanPropertyRowMapper.newInstance(PowerStats.class));
-        PowerStats powerStatsSecondHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_QUERY,
+        var powerStatsSecondHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_QUERY,
                 new MapSqlParameterSource("powerStatsId", powerStatsIdSecondHero), BeanPropertyRowMapper.newInstance(PowerStats.class));
         return Map.of(firstHeroId, powerStatsFirstHero, secondHeroId, powerStatsSecondHero);
     }

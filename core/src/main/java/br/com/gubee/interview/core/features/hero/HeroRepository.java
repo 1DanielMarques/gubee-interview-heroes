@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface HeroRepository {
     HeroEntity create(HeroEntity hero);
 
-    List<Hero> findAll();
+    List<HeroEntity> findAll();
 
     HeroEntity findById(UUID id);
 

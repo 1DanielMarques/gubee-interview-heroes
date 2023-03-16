@@ -10,5 +10,5 @@ public interface PowerStatsRepository {
     PowerStatsEntity create(PowerStatsEntity powerStatsEntity);
 
     PowerStatsEntity findById(UUID id);
-    List<PowerStats> findAll();
+    List<PowerStatsEntity> findAll();
 }
