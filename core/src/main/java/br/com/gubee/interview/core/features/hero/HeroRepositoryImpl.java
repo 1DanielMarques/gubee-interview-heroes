@@ -28,12 +28,7 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     private final String FIND_HERO_BY_ID_QUERY = " SELECT * FROM hero WHERE hero.id = :id ";
 
-    private final String FIND_HERO_BY_NAME_QUERY = " SELECT " +
-            "  hero.name, hero.race, " +
-            "  power_stats.strength, power_stats.agility, power_stats.dexterity, " +
-            "  power_stats.intelligence " +
-            "  FROM hero INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
-            "  WHERE hero.name = :name ";
+    private final String FIND_HERO_BY_NAME_QUERY = " SELECT * FROM hero WHERE hero.name = :name ";
 
     private final String FIND_ALL_HEROES_QUERY = " SELECT * FROM hero ";
 
@@ -84,9 +79,9 @@ public class HeroRepositoryImpl implements HeroRepository {
         return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
     }
 
-    public HeroDTO findByName(String name) {
+    public HeroEntity findByName(String name) {
         var param = new MapSqlParameterSource("name", name);
-        return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroDTO.class));
+        return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
     }
 
 

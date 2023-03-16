@@ -43,12 +43,14 @@ public class HeroResource {
         return ResponseEntity.ok().body(heroDTO);
     }
 
-    /*
+
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<HeroRequest> findByName(@PathVariable(value = "name") String name) {
-        return ResponseEntity.ok().body(heroService.findByName(name));
+    public ResponseEntity<HeroDTO> findByName(@PathVariable(value = "name") String name) {
+        var heroDTO = heroFacade.findByName(name);
+        return ResponseEntity.ok().body(heroDTO);
     }
+    /*
 
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id, @RequestBody HeroRequest heroRequest) {

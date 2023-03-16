@@ -16,7 +16,7 @@ public interface HeroRepository {
 
     HeroEntity findById(UUID id);
 
-    HeroDTO findByName(String name);
+    HeroEntity findByName(String name);
 
     void updateById(UUID id, HeroDTO heroDTO);
 

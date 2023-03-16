@@ -12,7 +12,7 @@ public interface FindHero {
 
     Hero findById(UUID id);
 
-    HeroDTO findByName(String name);
+    Hero findByName(String name);
 
     UUID getHeroIdByName(String name);
 }

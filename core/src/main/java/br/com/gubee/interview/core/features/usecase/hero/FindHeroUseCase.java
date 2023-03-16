@@ -25,8 +25,8 @@ public class FindHeroUseCase implements FindHero {
     }
 
     @Override
-    public HeroDTO findByName(String name) {
-        return heroRepository.findByName(name);
+    public Hero findByName(String name) {
+        return heroRepository.findByName(name).toHero();
     }
 
     @Override
