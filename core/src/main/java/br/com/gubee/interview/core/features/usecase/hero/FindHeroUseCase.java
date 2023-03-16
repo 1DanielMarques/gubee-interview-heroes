@@ -20,8 +20,8 @@ public class FindHeroUseCase implements FindHero {
     }
 
     @Override
-    public HeroDTO findById(UUID id) {
-        return null;
+    public Hero findById(UUID id) {
+        return heroRepository.findById(id).toHero();
     }
 
     @Override

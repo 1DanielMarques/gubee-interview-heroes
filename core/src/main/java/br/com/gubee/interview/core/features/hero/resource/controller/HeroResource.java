@@ -1,14 +1,17 @@
 package br.com.gubee.interview.core.features.hero.resource.controller;
 
 import br.com.gubee.interview.core.features.hero.resource.facade.HeroFacade;
+import br.com.gubee.interview.model.ComparedHeroes;
 import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -33,13 +36,14 @@ public class HeroResource {
         return ResponseEntity.ok().body(heroDTOList);
     }
 
-    /*
-
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<HeroRequest> findById(@PathVariable(value = "id") UUID id) {
-        return ResponseEntity.ok().body(heroService.findById(id));
+    public ResponseEntity<HeroDTO> findById(@PathVariable(value = "id") UUID id) {
+        var heroDTO = heroFacade.findById(id);
+        return ResponseEntity.ok().body(heroDTO);
     }
+
+    /*
 
     @GetMapping("/name/{name}")
     public ResponseEntity<HeroRequest> findByName(@PathVariable(value = "name") String name) {

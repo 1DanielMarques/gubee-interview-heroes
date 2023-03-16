@@ -6,6 +6,7 @@ import br.com.gubee.interview.model.PowerStats;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class FindPowerStatsUseCase implements FindPowerStats {
@@ -16,4 +17,11 @@ public class FindPowerStatsUseCase implements FindPowerStats {
     public List<PowerStats> findAll() {
         return powerStatsRepository.findAll().stream().map(entity -> entity.toPowerStats()).toList();
     }
+
+    @Override
+    public PowerStats findById(UUID id) {
+        return powerStatsRepository.findById(id).toPowerStats();
+    }
+
+
 }

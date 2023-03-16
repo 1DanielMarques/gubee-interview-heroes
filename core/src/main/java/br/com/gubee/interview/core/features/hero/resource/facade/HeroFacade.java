@@ -45,11 +45,9 @@ public class HeroFacade {
 
 
     public HeroDTO findById(UUID id) {
-        try {
-            return findHero.findById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new HeroByIdNotFoundException(id);
-        }
+        var hero = findHero.findById(id);
+        var powerStats = powerStatsFacade.findById(hero.getPowerStatsId());
+        return assembler.toHeroDTO(hero, powerStats);
     }
 
 

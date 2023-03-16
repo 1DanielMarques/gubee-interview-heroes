@@ -10,7 +10,7 @@ public interface FindHero {
 
     List<Hero> findAll();
 
-    HeroDTO findById(UUID id);
+    Hero findById(UUID id);
 
     HeroDTO findByName(String name);
 

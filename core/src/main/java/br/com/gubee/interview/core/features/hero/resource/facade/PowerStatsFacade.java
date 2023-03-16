@@ -6,6 +6,7 @@ import br.com.gubee.interview.model.PowerStats;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class PowerStatsFacade {
@@ -15,6 +16,10 @@ public class PowerStatsFacade {
 
     public PowerStats create(PowerStats powerStats) {
         return createPowerStats.create(powerStats);
+    }
+
+    public PowerStats findById(UUID id) {
+        return findPowerStats.findById(id);
     }
 
 

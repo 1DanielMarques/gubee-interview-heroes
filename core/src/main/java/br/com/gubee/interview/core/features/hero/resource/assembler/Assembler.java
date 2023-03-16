@@ -33,6 +33,7 @@ public class Assembler {
             for (var powerStats : powerStatsList) {
                 if (hero.getPowerStatsId().equals(powerStats.getId())) {
                     var heroDTO = HeroDTO.builder()
+                            .id(hero.getId())
                             .name(hero.getName())
                             .race(hero.getRace())
                             .agility(powerStats.getAgility())
