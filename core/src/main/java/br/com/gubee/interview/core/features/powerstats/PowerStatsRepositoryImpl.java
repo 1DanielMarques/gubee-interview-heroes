@@ -47,8 +47,8 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
-    public PowerStatsEntity findById(UUID powerStatsId) {
-        var param = new MapSqlParameterSource("powerStatsId", powerStatsId);
+    public PowerStatsEntity findById(UUID id) {
+        var param = new MapSqlParameterSource("powerStatsId", id);
         return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
     }
 
