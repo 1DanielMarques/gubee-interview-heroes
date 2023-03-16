@@ -16,4 +16,9 @@ public class DeleteHeroUseCase implements DeleteHero {
         heroRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteByName(String name) {
+        heroRepository.deleteByName(name);
+    }
+
 }

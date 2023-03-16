@@ -21,6 +21,7 @@ public interface HeroRepository {
     void updateById(UUID id, HeroDTO heroDTO);
 
     void deleteById(UUID id);
+    void deleteByName(String name);
 
     UUID getHeroIdByName(String name);
 

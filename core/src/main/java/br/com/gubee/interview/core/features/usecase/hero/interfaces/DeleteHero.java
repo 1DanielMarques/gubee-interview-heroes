@@ -5,4 +5,5 @@ import java.util.UUID;
 public interface DeleteHero {
 
     void deleteById(UUID id);
+    void deleteByName(String name);
 }

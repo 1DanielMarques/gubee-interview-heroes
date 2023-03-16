@@ -79,12 +79,19 @@ public class HeroFacade {
 
 
     public void deleteByName(String name) {
+        var powerStatsId = findHero.findByName(name).getPowerStatsId();
+        deleteHero.deleteByName(name);
+        powerStatsFacade.deleteById(powerStatsId);
+    }
+    /*
+        public void deleteByName(String name) {
         try {
             deleteHero.deleteById(getHeroIdByName(name));
         } catch (EmptyResultDataAccessException e) {
             throw new HeroByNameNotFoundException(name);
         }
     }
+     */
 
 
     public ComparedHeroes compareHeroes(String firstHero, String secondHero) {

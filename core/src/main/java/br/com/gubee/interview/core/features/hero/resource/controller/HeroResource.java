@@ -61,6 +61,13 @@ public class HeroResource {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/name/{name}")
+    public ResponseEntity<Void> deleteByName(@PathVariable(value = "name") String name) {
+        heroFacade.deleteByName(name);
+        return ResponseEntity.noContent().build();
+    }
+
+
 /*
     @GetMapping("/compare/{firstHero}/with/{secondHero}")
     public ResponseEntity<ComparedHeroes> compareHeroes(@PathVariable(value = "firstHero") String firstHero, @PathVariable(value = "secondHero") String secondHero) {
