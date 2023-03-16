@@ -1,6 +1,5 @@
 package br.com.gubee.interview.core.features.powerstats;
 
-import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.PowerStatsEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -8,6 +7,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,10 +27,6 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     private final String FIND_BY_ID_QUERY = "SELECT * FROM power_stats WHERE power_stats.id = :id ";
 
     private final String DELETE_BY_ID_QUERY = " DELETE FROM power_stats WHERE power_stats.id = :id ";
-
-    private final String UPDATE_BY_ID_QUERY = " UPDATE power_stats " +
-            " SET agility = :agility, dexterity = :dexterity, strength = :strength, intelligence = :intelligence " +
-            " WHERE power_stats.id = :id ";
 
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -66,14 +64,34 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
 
 
     @Override
-    public PowerStatsEntity updateById(UUID id, PowerStats powerStatsToUpdate) {
-        Map<String, Object> params = Map.of("agility", powerStatsToUpdate.getAgility(),
-                "dexterity", powerStatsToUpdate.getDexterity(),
-                "strength", powerStatsToUpdate.getStrength(),
-                "intelligence", powerStatsToUpdate.getIntelligence(),
-                "id", id);
-        namedParameterJdbcTemplate.update(UPDATE_BY_ID_QUERY, params);
+    public PowerStatsEntity updateById(UUID id, PowerStatsEntity powerStatsToUpdate) {
+        Map<String, Object> params = createUpdateParams(powerStatsToUpdate);
+        params.put("id", id);
+        namedParameterJdbcTemplate.update(createUpdateQuery(powerStatsToUpdate), params);
         return findById(id);
+    }
+
+    private String createUpdateQuery(PowerStatsEntity powerStats) {
+        var UPDATE_POWER_STATS_QUERY = " UPDATE " +
+                " power_stats " +
+                " SET ";
+        UPDATE_POWER_STATS_QUERY += " updated_at = :updatedAt ";
+        UPDATE_POWER_STATS_QUERY = ((powerStats.getAgility() >= 0 || powerStats.getAgility() <= 10) && powerStats.getAgility() != null) ? UPDATE_POWER_STATS_QUERY + ", agility = :agility " : UPDATE_POWER_STATS_QUERY + "";
+        UPDATE_POWER_STATS_QUERY = ((powerStats.getDexterity() >= 0 || powerStats.getDexterity() <= 10) && powerStats.getDexterity() != null) ? UPDATE_POWER_STATS_QUERY + ", dexterity = :dexterity " : UPDATE_POWER_STATS_QUERY + "";
+        UPDATE_POWER_STATS_QUERY = ((powerStats.getStrength() >= 0 || powerStats.getStrength() <= 10) && powerStats.toPowerStats().getStrength() != null) ? UPDATE_POWER_STATS_QUERY + ", strength = :strength " : UPDATE_POWER_STATS_QUERY + "";
+        UPDATE_POWER_STATS_QUERY = ((powerStats.getIntelligence() >= 0 || powerStats.getIntelligence() <= 10) && powerStats.getIntelligence() != null) ? UPDATE_POWER_STATS_QUERY + ", intelligence = :intelligence " : UPDATE_POWER_STATS_QUERY + "";
+        UPDATE_POWER_STATS_QUERY += " WHERE power_stats.id = :id ";
+        return UPDATE_POWER_STATS_QUERY;
+    }
+
+    private Map<String, Object> createUpdateParams(PowerStatsEntity powerStats) {
+        Map<String, Object> params = new HashMap<>();
+        if (powerStats.getAgility() != null) params.put("agility", powerStats.getAgility());
+        if (powerStats.getDexterity() != null) params.put("dexterity", powerStats.getDexterity());
+        if (powerStats.getStrength() != null) params.put("strength", powerStats.getStrength());
+        if (powerStats.getIntelligence() != null) params.put("intelligence", powerStats.getIntelligence());
+        params.put("updatedAt", Timestamp.from(Instant.now()));
+        return params;
     }
 
 

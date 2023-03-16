@@ -15,5 +15,5 @@ public interface PowerStatsRepository {
 
     void deleteById(UUID id);
 
-    PowerStatsEntity updateById(UUID id, PowerStats powerStatsToUpdate);
+    PowerStatsEntity updateById(UUID id, PowerStatsEntity powerStatsToUpdate);
 }

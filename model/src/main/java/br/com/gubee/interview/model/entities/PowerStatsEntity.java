@@ -13,10 +13,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PowerStatsEntity {
     private UUID id;
-    private int strength;
-    private int agility;
-    private int dexterity;
-    private int intelligence;
+    private Integer strength;
+    private Integer agility;
+    private Integer dexterity;
+    private Integer intelligence;
     private Instant createdAt;
     private Instant updatedAt;
 
