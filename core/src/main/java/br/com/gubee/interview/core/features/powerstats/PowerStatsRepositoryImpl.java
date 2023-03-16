@@ -1,5 +1,6 @@
 package br.com.gubee.interview.core.features.powerstats;
 
+import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.PowerStatsEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -25,6 +26,11 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
 
     private final String DELETE_BY_ID_QUERY = " DELETE FROM power_stats WHERE power_stats.id = :id ";
 
+    private final String UPDATE_BY_ID_QUERY = " UPDATE power_stats " +
+            " SET agility = :agility, dexterity = :dexterity, strength = :strength, intelligence = :intelligence " +
+            " WHERE power_stats.id = :id ";
+
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public PowerStatsEntity create(PowerStatsEntity powerStatsEntity) {
@@ -32,11 +38,11 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
                 "agility", powerStatsEntity.getAgility(),
                 "dexterity", powerStatsEntity.getDexterity(),
                 "intelligence", powerStatsEntity.getIntelligence());
-        var powerStatsId = namedParameterJdbcTemplate.queryForObject(
+        var id = namedParameterJdbcTemplate.queryForObject(
                 CREATE_POWER_STATS_QUERY,
                 params,
                 UUID.class);
-        return findById(powerStatsId);
+        return findById(id);
     }
 
     @Override
@@ -47,15 +53,27 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
+    public PowerStatsEntity findById(UUID id) {
+        var param = new MapSqlParameterSource("id", id);
+        return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
+    }
+
+    @Override
     public void deleteById(UUID id) {
         var param = new MapSqlParameterSource("id", id);
         namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
     }
 
+
     @Override
-    public PowerStatsEntity findById(UUID id) {
-        var param = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
+    public PowerStatsEntity updateById(UUID id, PowerStats powerStatsToUpdate) {
+        Map<String, Object> params = Map.of("agility", powerStatsToUpdate.getAgility(),
+                "dexterity", powerStatsToUpdate.getDexterity(),
+                "strength", powerStatsToUpdate.getStrength(),
+                "intelligence", powerStatsToUpdate.getIntelligence(),
+                "id", id);
+        namedParameterJdbcTemplate.update(UPDATE_BY_ID_QUERY, params);
+        return findById(id);
     }
 
 

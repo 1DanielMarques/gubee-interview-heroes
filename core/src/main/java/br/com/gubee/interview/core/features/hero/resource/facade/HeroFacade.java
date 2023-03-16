@@ -1,6 +1,5 @@
 package br.com.gubee.interview.core.features.hero.resource.facade;
 
-import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
 import br.com.gubee.interview.core.features.hero.resource.assembler.Assembler;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.*;
@@ -9,8 +8,6 @@ import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,15 +58,15 @@ public class HeroFacade {
         return findHero.getHeroIdByName(name);
     }
 
-    public HttpStatus updateById(UUID id, HeroDTO heroDTO) {
-        try {
-            updateHero.updateById(id, heroDTO);
-            return HttpStatus.valueOf(200);
-        } catch (EmptyResultDataAccessException e) {
-            throw new HeroByIdNotFoundException(id);
-        }
-    }
+    public HeroDTO updateById(UUID id, HeroDTO heroDTO) {
+        var powerStatsToUpdate = assembler.toPowerStatsDomain(heroDTO);
+        powerStatsToUpdate.setId(findHero.findById(id).getPowerStatsId());
+        var updatedPowerStats = powerStatsFacade.updateById(powerStatsToUpdate.getId(), powerStatsToUpdate);
 
+        var heroToUpdate = assembler.toHeroDomain(heroDTO, updatedPowerStats.getId());
+        var updatedHero = updateHero.updateById(id, heroToUpdate);
+        return assembler.toHeroDTO(updatedHero, updatedPowerStats);
+    }
 
     public void deleteById(UUID id) {
         var powerStatsId = findHero.findById(id).getPowerStatsId();

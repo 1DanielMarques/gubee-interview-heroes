@@ -48,12 +48,12 @@ public class HeroResource {
         return ResponseEntity.ok().body(heroDTO);
     }
 
-/*
-    @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id, @RequestBody HeroRequest heroRequest) {
-        return ResponseEntity.status(heroService.updateById(id, heroRequest)).build();
+
+    @PutMapping("/id/{id}")
+    public ResponseEntity<HeroDTO> updateById(@PathVariable(value = "id") UUID id, @RequestBody HeroDTO heroToUpdate) {
+        var updatedHero = heroFacade.updateById(id, heroToUpdate);
+        return ResponseEntity.ok().body(updatedHero);
     }
-*/
 
     @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(value = "id") UUID id) {

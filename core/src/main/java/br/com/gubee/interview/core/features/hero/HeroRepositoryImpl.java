@@ -2,7 +2,6 @@ package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.model.PowerStats;
-import br.com.gubee.interview.model.dto.HeroDTO;
 import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -83,44 +82,30 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
 
-    public void updateById(UUID id, HeroDTO heroDTO) {
-        var param = new MapSqlParameterSource("heroId", id);
-        UUID powerStatsId = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
-        final Map<String, Object> params = createSqlParams(heroDTO);
-        params.put("heroId", id);
-        params.put("powerStatsId", powerStatsId);
-        params.put("heroUpdatedAt", Timestamp.from(Instant.now()));
-        params.put("powerStatsUpdatedAt", Timestamp.from(Instant.now()));
-        namedParameterJdbcTemplate.update(createUpdateQuery(heroDTO), params);
+    public HeroEntity updateById(UUID id, HeroEntity hero) {
+        final Map<String, Object> params = createSqlParams(hero);
+        params.put("id", id);
+        namedParameterJdbcTemplate.update(createUpdateQuery(hero), params);
+        return findById(id);
     }
 
-    private String createUpdateQuery(HeroDTO heroDTO) {
+    private String createUpdateQuery(HeroEntity hero) {
         var UPDATE_HERO_QUERY = " UPDATE " +
-                " interview_service.hero " +
+                " hero " +
                 " SET ";
-        UPDATE_HERO_QUERY += " updated_at = :heroUpdatedAt ";
-        UPDATE_HERO_QUERY = (heroDTO.getName() != null) ? UPDATE_HERO_QUERY + ", name = :name " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY = (heroDTO.getRace() != null) ? UPDATE_HERO_QUERY + ", race = :race " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY += " WHERE hero.id = :heroId; ";
-        UPDATE_HERO_QUERY += " UPDATE interview_service.power_stats SET ";
-        UPDATE_HERO_QUERY += " updated_at = :powerStatsUpdatedAt  ";
-        UPDATE_HERO_QUERY = (heroDTO.getStrength() != null && heroDTO.getStrength() >= 0 && heroDTO.getStrength() <= 10) ? UPDATE_HERO_QUERY + ", strength = :strength " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY = (heroDTO.getAgility() != null && heroDTO.getAgility() >= 0 && heroDTO.getAgility() <= 10) ? UPDATE_HERO_QUERY + ", agility = :agility " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY = (heroDTO.getDexterity() != null && heroDTO.getDexterity() >= 0 && heroDTO.getDexterity() <= 10) ? UPDATE_HERO_QUERY + ", dexterity = :dexterity " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY = (heroDTO.getIntelligence() != null && heroDTO.getIntelligence() >= 0 && heroDTO.getIntelligence() <= 10) ? UPDATE_HERO_QUERY + ", intelligence = :intelligence " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY += " WHERE power_stats.id = :powerStatsId ";
+        UPDATE_HERO_QUERY += " updated_at = :updatedAt ";
+        UPDATE_HERO_QUERY = (hero.getName() != null) ? UPDATE_HERO_QUERY + ", name = :name " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY = (hero.getRace() != null) ? UPDATE_HERO_QUERY + ", race = :race " : UPDATE_HERO_QUERY + "";
+        UPDATE_HERO_QUERY += " WHERE hero.id = :id ";
         return UPDATE_HERO_QUERY;
 
     }
 
-    private Map<String, Object> createSqlParams(HeroDTO heroDTO) {
+    private Map<String, Object> createSqlParams(HeroEntity hero) {
         Map<String, Object> params = new HashMap<>();
-        if (heroDTO.getName() != null) params.put("name", heroDTO.getName());
-        if (heroDTO.getRace() != null) params.put("race", heroDTO.getRace().name());
-        if (heroDTO.getStrength() != null) params.put("strength", heroDTO.getStrength());
-        if (heroDTO.getAgility() != null) params.put("agility", heroDTO.getAgility());
-        if (heroDTO.getDexterity() != null) params.put("dexterity", heroDTO.getDexterity());
-        if (heroDTO.getIntelligence() != null) params.put("intelligence", heroDTO.getIntelligence());
+        if (hero.getName() != null) params.put("name", hero.getName());
+        if (hero.getRace() != null) params.put("race", hero.getRace().name());
+        params.put("updatedAt", Timestamp.from(Instant.now()));
         return params;
     }
 

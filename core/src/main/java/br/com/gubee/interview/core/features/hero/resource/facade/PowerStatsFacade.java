@@ -3,6 +3,7 @@ package br.com.gubee.interview.core.features.hero.resource.facade;
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.CreatePowerStats;
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.DeletePowerStats;
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.FindPowerStats;
+import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.UpdatePowerStats;
 import br.com.gubee.interview.model.PowerStats;
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,7 @@ public class PowerStatsFacade {
     private final CreatePowerStats createPowerStats;
     private final FindPowerStats findPowerStats;
     private final DeletePowerStats deletePowerStats;
+    private final UpdatePowerStats updatePowerStats;
 
     public PowerStats create(PowerStats powerStats) {
         return createPowerStats.create(powerStats);
@@ -31,6 +33,10 @@ public class PowerStatsFacade {
 
     public void deleteById(UUID id) {
         deletePowerStats.deleteById(id);
+    }
+
+    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
+        return updatePowerStats.updateById(id, powerStatsToUpdate);
     }
 
 

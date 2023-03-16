@@ -1,8 +1,6 @@
 package br.com.gubee.interview.core.features.hero;
 
-import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.PowerStats;
-import br.com.gubee.interview.model.dto.HeroDTO;
 import br.com.gubee.interview.model.entities.HeroEntity;
 
 import java.util.List;
@@ -18,9 +16,10 @@ public interface HeroRepository {
 
     HeroEntity findByName(String name);
 
-    void updateById(UUID id, HeroDTO heroDTO);
+    HeroEntity updateById(UUID id, HeroEntity hero);
 
     void deleteById(UUID id);
+
     void deleteByName(String name);
 
     UUID getHeroIdByName(String name);

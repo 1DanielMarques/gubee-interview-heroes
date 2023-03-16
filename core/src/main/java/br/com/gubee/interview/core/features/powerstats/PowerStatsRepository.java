@@ -1,5 +1,6 @@
 package br.com.gubee.interview.core.features.powerstats;
 
+import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.PowerStatsEntity;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface PowerStatsRepository {
     List<PowerStatsEntity> findAll();
 
     void deleteById(UUID id);
+
+    PowerStatsEntity updateById(UUID id, PowerStats powerStatsToUpdate);
 }
