@@ -1,4 +1,4 @@
-package br.com.gubee.interview.model.request;
+package br.com.gubee.interview.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,16 +1,16 @@
-package br.com.gubee.interview.core.features.hero;
+package br.com.gubee.interview.core.features.hero.resource;
 
-import br.com.gubee.interview.model.request.ComparedHeroes;
-import br.com.gubee.interview.model.request.HeroRequest;
+import br.com.gubee.interview.core.features.hero.resource.facade.HeroFacade;
+import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.List;
-import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -19,21 +19,24 @@ import static org.springframework.http.ResponseEntity.created;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/heroes", produces = APPLICATION_JSON_VALUE)
-public class HeroController {
+public class HeroResource {
 
-    private final HeroService heroService;
-
-    @GetMapping
-    public ResponseEntity<List<HeroRequest>> findAll() {
-        List<HeroRequest> heroList = heroService.findAll();
-        return ResponseEntity.ok().body(heroList);
-    }
+    private final HeroFacade heroFacade;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<HeroRequest> create(@Validated @RequestBody HeroRequest heroRequest) {
-        final HeroRequest hero = heroService.create(heroRequest);
-        return created(URI.create(format("/api/v1/heroes/%s", hero.getId()))).body(hero);
+    public ResponseEntity<HeroDTO> create(@Validated @RequestBody HeroDTO heroDTO) {
+        var heroDto = heroFacade.create(heroDTO);
+        return created(URI.create(format("/api/v1/heroes/%s", heroDto.getId()))).body(heroDTO);
     }
+/*
+    @GetMapping
+    public ResponseEntity<List<HeroRequest>> findAll() {
+        List<Hero> heroList = heroService.findAll();
+        List<PowerStats> powerStatsList = powerStatsService.findAll();
+        List<HeroRequest> heroRequestList = assembler.toRequestList(heroList, powerStatsList);
+        return ResponseEntity.ok().body(heroRequestList);
+    }
+
 
     @GetMapping("/id/{id}")
     public ResponseEntity<HeroRequest> findById(@PathVariable(value = "id") UUID id) {
@@ -60,7 +63,7 @@ public class HeroController {
     @GetMapping("/compare/{firstHero}/with/{secondHero}")
     public ResponseEntity<ComparedHeroes> compareHeroes(@PathVariable(value = "firstHero") String firstHero, @PathVariable(value = "secondHero") String secondHero) {
         return ResponseEntity.ok().body(heroService.compareHeroes(firstHero, secondHero));
-    }
+    } */
 
 
 }

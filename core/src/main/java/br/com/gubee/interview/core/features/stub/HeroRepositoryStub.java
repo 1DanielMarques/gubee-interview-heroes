@@ -1,20 +1,19 @@
-package br.com.gubee.interview.core.features.hero.stub;
+package br.com.gubee.interview.core.features.stub;
 
-import br.com.gubee.interview.core.features.hero.HeroRepository;
-import br.com.gubee.interview.model.Hero;
-import br.com.gubee.interview.model.PowerStats;
-import br.com.gubee.interview.model.request.HeroRequest;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+/*
 public class HeroRepositoryStub implements HeroRepository {
 
+    private Map<UUID, Hero> heroInMemory = new HashMap<>();
 
     @Override
     public HeroRequest create(Hero hero) {
-        return null;
+        UUID heroId = hero.getId();
+        if (heroId == null) {
+            heroId = UUID.randomUUID();
+        }
+        heroInMemory.put(heroId, hero);
+        HeroRequest
+        return ;
     }
 
     @Override
@@ -36,6 +35,7 @@ public class HeroRepositoryStub implements HeroRepository {
     public void updateById(UUID id, HeroRequest heroRequest) {
 
     }
+
     @Override
     public void deleteById(UUID id) {
 
@@ -64,3 +64,4 @@ public class HeroRepositoryStub implements HeroRepository {
         return Map.of(firstHeroId, powerStatsFirstHero, secondHeroId, powerStatsSecondHero);
     }
 }
+*/

@@ -1,44 +1,46 @@
-package br.com.gubee.interview.core.features.hero;
+package br.com.gubee.interview.core.features.hero.resource.facade;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
-import br.com.gubee.interview.core.features.usecase.interfaces.*;
-import br.com.gubee.interview.model.PowerStats;
-import br.com.gubee.interview.model.request.ComparedHeroes;
-import br.com.gubee.interview.model.request.HeroRequest;
+import br.com.gubee.interview.core.features.hero.resource.assembler.Assembler;
+import br.com.gubee.interview.core.features.usecase.hero.interfaces.*;
+import br.com.gubee.interview.model.ComparedHeroes;
+import br.com.gubee.interview.model.Hero;
+import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class HeroServiceImpl implements HeroService {
+public class HeroFacade {
 
+    private final Assembler assembler = new Assembler();
     private final CreateHero createHero;
     private final FindHero findHero;
     private final UpdateHero updateHero;
     private final DeleteHero deleteHero;
     private final CompareHeroes compareHeroes;
-    private final CreatePowerStats createPowerStats;
+    private final PowerStatsFacade powerStatsFacade;
 
-    @Override
-    @Transactional
-    public HeroRequest create(HeroRequest heroRequest) {
-        return createHero.create(heroRequest, createPowerStats.create(new PowerStats(heroRequest)));
+
+    public HeroDTO create(HeroDTO heroDto) {
+        var powerStats = powerStatsFacade.create(assembler.toPowerStatsDomain(heroDto));
+        var hero = createHero.create(assembler.toHeroDomain(heroDto, powerStats.getId()));
+        return assembler.toHeroDto(hero, powerStats);
     }
 
-    @Override
-    public List<HeroRequest> findAll() {
+
+    public List<Hero> findAll() {
         return findHero.findAll();
     }
 
-    @Override
-    public HeroRequest findById(UUID id) {
+
+    public HeroDTO findById(UUID id) {
         try {
             return findHero.findById(id);
         } catch (EmptyResultDataAccessException e) {
@@ -46,8 +48,8 @@ public class HeroServiceImpl implements HeroService {
         }
     }
 
-    @Override
-    public HeroRequest findByName(String name) {
+
+    public HeroDTO findByName(String name) throws HeroByNameNotFoundException {
         try {
             return findHero.findByName(name);
         } catch (EmptyResultDataAccessException e) {
@@ -59,19 +61,16 @@ public class HeroServiceImpl implements HeroService {
         return findHero.getHeroIdByName(name);
     }
 
-    @Override
-    @Transactional
-    public HttpStatus updateById(UUID id, HeroRequest heroRequest) {
+    public HttpStatus updateById(UUID id, HeroDTO heroDTO) {
         try {
-            updateHero.updateById(id, heroRequest);
+            updateHero.updateById(id, heroDTO);
             return HttpStatus.valueOf(200);
         } catch (EmptyResultDataAccessException e) {
             throw new HeroByIdNotFoundException(id);
         }
     }
 
-    @Override
-    @Transactional
+
     public void deleteById(UUID id) {
         try {
             deleteHero.deleteById(id);
@@ -81,7 +80,6 @@ public class HeroServiceImpl implements HeroService {
     }
 
 
-    @Transactional
     public void deleteByName(String name) {
         try {
             deleteHero.deleteById(getHeroIdByName(name));
@@ -90,7 +88,7 @@ public class HeroServiceImpl implements HeroService {
         }
     }
 
-    @Override
+
     public ComparedHeroes compareHeroes(String firstHero, String secondHero) {
         return compareHeroes.compareHeroes(firstHero, secondHero);
     }

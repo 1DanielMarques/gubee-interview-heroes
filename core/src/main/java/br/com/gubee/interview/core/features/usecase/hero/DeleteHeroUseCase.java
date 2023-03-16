@@ -1,7 +1,7 @@
-package br.com.gubee.interview.core.features.usecase;
+package br.com.gubee.interview.core.features.usecase.hero;
 
 import br.com.gubee.interview.core.features.hero.HeroRepository;
-import br.com.gubee.interview.core.features.usecase.interfaces.DeleteHero;
+import br.com.gubee.interview.core.features.usecase.hero.interfaces.DeleteHero;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;

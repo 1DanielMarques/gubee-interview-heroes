@@ -1,6 +1,5 @@
-package br.com.gubee.interview.model.request;
+package br.com.gubee.interview.model.dto;
 
-import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.enums.Race;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE)
-public class HeroRequest {
+public class HeroDTO {
 
     private UUID id;
 

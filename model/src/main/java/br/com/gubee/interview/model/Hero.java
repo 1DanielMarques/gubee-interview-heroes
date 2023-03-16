@@ -1,11 +1,8 @@
 package br.com.gubee.interview.model;
 
 import br.com.gubee.interview.model.enums.Race;
-import br.com.gubee.interview.model.request.HeroRequest;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import br.com.gubee.interview.model.dto.HeroDTO;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -26,9 +23,13 @@ public class Hero {
     private Instant updatedAt;
     private boolean enabled;
 
-    public Hero(HeroRequest heroRequest, UUID powerStatsId) {
-        this.name = heroRequest.getName();
-        this.race = heroRequest.getRace();
+    public Hero(HeroDTO heroDTO, UUID powerStatsId) {
+        this.name = heroDTO.getName();
+        this.race = heroDTO.getRace();
         this.powerStatsId = powerStatsId;
+    }
+
+    public boolean getEnabled(){
+        return this.enabled;
     }
 }

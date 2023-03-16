@@ -1,8 +1,9 @@
-package br.com.gubee.interview.core.features.usecase;
+package br.com.gubee.interview.core.features.usecase.hero;
 
 import br.com.gubee.interview.core.features.hero.HeroRepository;
-import br.com.gubee.interview.core.features.usecase.interfaces.FindHero;
-import br.com.gubee.interview.model.request.HeroRequest;
+import br.com.gubee.interview.core.features.usecase.hero.interfaces.FindHero;
+import br.com.gubee.interview.model.Hero;
+import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -14,17 +15,17 @@ public class FindHeroUseCase implements FindHero {
     private final HeroRepository heroRepository;
 
     @Override
-    public List<HeroRequest> findAll() {
+    public List<Hero> findAll() {
         return heroRepository.findAll();
     }
 
     @Override
-    public HeroRequest findById(UUID id) {
-        return heroRepository.findById(id);
+    public HeroDTO findById(UUID id) {
+        return null;
     }
 
     @Override
-    public HeroRequest findByName(String name) {
+    public HeroDTO findByName(String name) {
         return heroRepository.findByName(name);
     }
 

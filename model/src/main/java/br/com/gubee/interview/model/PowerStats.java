@@ -1,6 +1,6 @@
 package br.com.gubee.interview.model;
 
-import br.com.gubee.interview.model.request.HeroRequest;
+import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,10 +25,10 @@ public class PowerStats {
     private Instant createdAt;
     private Instant updatedAt;
 
-    public PowerStats(HeroRequest heroRequest) {
-        this.strength = heroRequest.getStrength();
-        this.agility = heroRequest.getAgility();
-        this.dexterity = heroRequest.getDexterity();
-        this.intelligence = heroRequest.getIntelligence();
+    public PowerStats(HeroDTO heroDTO) {
+        this.strength = heroDTO.getStrength();
+        this.agility = heroDTO.getAgility();
+        this.dexterity = heroDTO.getDexterity();
+        this.intelligence = heroDTO.getIntelligence();
     }
 }

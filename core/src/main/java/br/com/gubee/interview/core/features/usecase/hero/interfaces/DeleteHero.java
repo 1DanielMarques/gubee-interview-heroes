@@ -1,4 +1,4 @@
-package br.com.gubee.interview.core.features.usecase.interfaces;
+package br.com.gubee.interview.core.features.usecase.hero.interfaces;
 
 import java.util.UUID;
 
