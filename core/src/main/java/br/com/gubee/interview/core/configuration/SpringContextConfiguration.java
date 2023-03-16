@@ -6,8 +6,10 @@ import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.core.features.usecase.hero.*;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.*;
 import br.com.gubee.interview.core.features.usecase.powerstats.CreatePowerStatsUseCase;
+import br.com.gubee.interview.core.features.usecase.powerstats.DeletePowerStatsUseCase;
 import br.com.gubee.interview.core.features.usecase.powerstats.FindPowerStatsUseCase;
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.CreatePowerStats;
+import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.DeletePowerStats;
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.FindPowerStats;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -49,7 +51,7 @@ public class SpringContextConfiguration {
 
     @Bean
     public PowerStatsFacade powerStatsFacade() {
-        return new PowerStatsFacade(createPowerStats(), findPowerStats());
+        return new PowerStatsFacade(createPowerStats(), findPowerStats(), deletePowerStats());
     }
 
     @Bean
@@ -60,6 +62,11 @@ public class SpringContextConfiguration {
     @Bean
     public FindPowerStats findPowerStats() {
         return new FindPowerStatsUseCase(powerStatsRepository);
+    }
+
+    @Bean
+    public DeletePowerStats deletePowerStats() {
+        return new DeletePowerStatsUseCase(powerStatsRepository);
     }
 
 }

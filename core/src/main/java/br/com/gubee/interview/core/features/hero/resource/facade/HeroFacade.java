@@ -43,7 +43,7 @@ public class HeroFacade {
         return heroDTOList;
     }
 
-        // Throws exception aqui? Ou tratar a exceção aqui
+    // Throws exception aqui? Ou tratar a exceção aqui
     public HeroDTO findById(UUID id) {
         var hero = findHero.findById(id);
         var powerStats = powerStatsFacade.findById(hero.getPowerStatsId());
@@ -72,11 +72,9 @@ public class HeroFacade {
 
 
     public void deleteById(UUID id) {
-        try {
-            deleteHero.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new HeroByIdNotFoundException(id);
-        }
+        var powerStatsId = findHero.findById(id).getPowerStatsId();
+        deleteHero.deleteById(id);
+        powerStatsFacade.deleteById(powerStatsId);
     }
 
 

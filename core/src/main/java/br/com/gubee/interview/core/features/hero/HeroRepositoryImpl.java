@@ -32,10 +32,7 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     private final String FIND_ALL_HEROES_QUERY = " SELECT * FROM hero ";
 
-    private final String DELETE_HERO_BY_ID_QUERY = " DELETE " +
-            " FROM hero WHERE hero.id = :heroId; " +
-            " DELETE " +
-            " FROM power_stats WHERE power_stats.id = :powerStatsId ";
+    private final String DELETE_BY_ID_QUERY = " DELETE FROM hero WHERE hero.id = :id ";
 
 
     private final String GET_POWER_STATS_ID_QUERY = " SELECT " +
@@ -127,10 +124,8 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     public void deleteById(UUID id) {
-        var param = new MapSqlParameterSource("heroId", id);
-        var powerStatsId = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY, param, UUID.class);
-        final Map<String, Object> params = Map.of("heroId", id, "powerStatsId", powerStatsId);
-        namedParameterJdbcTemplate.update(DELETE_HERO_BY_ID_QUERY, params);
+        var param = new MapSqlParameterSource("id", id);
+        namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
     }
 
 

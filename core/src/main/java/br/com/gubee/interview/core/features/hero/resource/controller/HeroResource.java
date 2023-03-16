@@ -1,10 +1,8 @@
 package br.com.gubee.interview.core.features.hero.resource.controller;
 
 import br.com.gubee.interview.core.features.hero.resource.facade.HeroFacade;
-import br.com.gubee.interview.model.ComparedHeroes;
 import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,26 +42,26 @@ public class HeroResource {
     }
 
 
-
     @GetMapping("/name/{name}")
     public ResponseEntity<HeroDTO> findByName(@PathVariable(value = "name") String name) {
         var heroDTO = heroFacade.findByName(name);
         return ResponseEntity.ok().body(heroDTO);
     }
-    /*
 
+/*
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> updateById(@PathVariable(value = "id") UUID id, @RequestBody HeroRequest heroRequest) {
         return ResponseEntity.status(heroService.updateById(id, heroRequest)).build();
     }
+*/
 
     @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(value = "id") UUID id) {
-        heroService.deleteById(id);
+        heroFacade.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-
+/*
     @GetMapping("/compare/{firstHero}/with/{secondHero}")
     public ResponseEntity<ComparedHeroes> compareHeroes(@PathVariable(value = "firstHero") String firstHero, @PathVariable(value = "secondHero") String secondHero) {
         return ResponseEntity.ok().body(heroService.compareHeroes(firstHero, secondHero));

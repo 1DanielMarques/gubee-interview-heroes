@@ -1,12 +1,10 @@
 package br.com.gubee.interview.core.features.powerstats;
 
-import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.PowerStatsEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,7 +21,9 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
 
     private final String FIND_ALL_POWER_STATS_QUERY = " SELECT * FROM power_stats ";
 
-    private final String FIND_BY_ID = "SELECT * FROM power_stats WHERE power_stats.id = :powerStatsId ";
+    private final String FIND_BY_ID_QUERY = "SELECT * FROM power_stats WHERE power_stats.id = :id ";
+
+    private final String DELETE_BY_ID_QUERY = " DELETE FROM power_stats WHERE power_stats.id = :id ";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -47,9 +47,15 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
+    public void deleteById(UUID id) {
+        var param = new MapSqlParameterSource("id", id);
+        namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
+    }
+
+    @Override
     public PowerStatsEntity findById(UUID id) {
-        var param = new MapSqlParameterSource("powerStatsId", id);
-        return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
+        var param = new MapSqlParameterSource("id", id);
+        return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
     }
 
 
