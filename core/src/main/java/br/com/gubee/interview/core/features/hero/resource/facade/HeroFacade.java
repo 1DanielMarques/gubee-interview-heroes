@@ -54,9 +54,6 @@ public class HeroFacade {
         return assembler.toHeroDTO(hero, powerStats);
     }
 
-    public UUID getHeroIdByName(String name) {
-        return findHero.getHeroIdByName(name);
-    }
 
     public HeroDTO updateById(UUID id, HeroDTO heroDTO) {
         var powerStatsToUpdate = assembler.toPowerStatsDomain(heroDTO);

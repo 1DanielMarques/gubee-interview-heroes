@@ -2,8 +2,8 @@ package br.com.gubee.interview.core.features.usecase.hero;
 
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.CompareHeroes;
-import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.ComparedHeroes;
+import br.com.gubee.interview.model.PowerStats;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
@@ -26,8 +26,8 @@ public class CompareHeroesUseCase implements CompareHeroes {
 
          */
         ComparedHeroes comparedHeroes = new ComparedHeroes();
-        UUID firstHeroId = heroRepository.getHeroIdByName(firstHeroName);
-        UUID secondHeroId = heroRepository.getHeroIdByName(secondHeroName);
+        UUID firstHeroId = null;
+        UUID secondHeroId = null;
 
         Map<UUID, PowerStats> heroesPowerStats = heroRepository.compareHeroes(firstHeroId, secondHeroId);
 

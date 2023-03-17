@@ -14,5 +14,4 @@ public interface FindHero {
 
     Hero findByName(String name);
 
-    UUID getHeroIdByName(String name);
 }

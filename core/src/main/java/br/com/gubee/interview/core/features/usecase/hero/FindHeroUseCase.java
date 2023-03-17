@@ -1,10 +1,12 @@
 package br.com.gubee.interview.core.features.usecase.hero;
 
+import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
+import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.FindHero;
 import br.com.gubee.interview.model.Hero;
-import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,16 +23,21 @@ public class FindHeroUseCase implements FindHero {
 
     @Override
     public Hero findById(UUID id) {
-        return heroRepository.findById(id).toHero();
+        try {
+            return heroRepository.findById(id).toHero();
+        } catch (EmptyResultDataAccessException e) {
+            throw new HeroByIdNotFoundException(id);
+        }
     }
 
     @Override
     public Hero findByName(String name) {
-        return heroRepository.findByName(name).toHero();
+        try {
+            return heroRepository.findByName(name).toHero();
+        } catch (EmptyResultDataAccessException e) {
+            throw new HeroByNameNotFoundException(name);
+        }
+
     }
 
-    @Override
-    public UUID getHeroIdByName(String name) {
-        return heroRepository.getHeroIdByName(name);
-    }
 }

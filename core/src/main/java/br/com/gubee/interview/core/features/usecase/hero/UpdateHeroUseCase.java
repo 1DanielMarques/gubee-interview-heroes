@@ -1,10 +1,12 @@
 package br.com.gubee.interview.core.features.usecase.hero;
 
+import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.UpdateHero;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.UUID;
 
@@ -14,6 +16,10 @@ public class UpdateHeroUseCase implements UpdateHero {
 
     @Override
     public Hero updateById(UUID id, Hero hero) {
-       return heroRepository.updateById(id, HeroEntity.fromHero(hero)).toHero();
+        try {
+            return heroRepository.updateById(id, HeroEntity.fromHero(hero)).toHero();
+        } catch (EmptyResultDataAccessException e) {
+            throw new HeroByIdNotFoundException(id);
+        }
     }
 }

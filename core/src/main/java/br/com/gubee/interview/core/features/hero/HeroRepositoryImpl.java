@@ -1,9 +1,9 @@
 package br.com.gubee.interview.core.features.hero;
 
-import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -53,7 +53,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
-    public HeroEntity create(HeroEntity heroEntity) {
+    public HeroEntity create(HeroEntity heroEntity) throws EmptyResultDataAccessException {
         final Map<String, Object> params = Map.of("name", heroEntity.getName(),
                 "race", heroEntity.getRace().name(),
                 "powerStatsId", heroEntity.getPowerStatsId());
@@ -71,18 +71,18 @@ public class HeroRepositoryImpl implements HeroRepository {
         return heroList;
     }
 
-    public HeroEntity findById(UUID id) {
+    public HeroEntity findById(UUID id) throws EmptyResultDataAccessException {
         var param = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
     }
 
-    public HeroEntity findByName(String name) {
+    public HeroEntity findByName(String name)  throws EmptyResultDataAccessException{
         var param = new MapSqlParameterSource("name", name);
         return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
     }
 
 
-    public HeroEntity updateById(UUID id, HeroEntity hero) {
+    public HeroEntity updateById(UUID id, HeroEntity hero) throws EmptyResultDataAccessException {
         final Map<String, Object> params = createSqlParams(hero);
         params.put("id", id);
         namedParameterJdbcTemplate.update(createUpdateQuery(hero), params);
@@ -109,27 +109,15 @@ public class HeroRepositoryImpl implements HeroRepository {
         return params;
     }
 
-    public void deleteById(UUID id) {
+    public void deleteById(UUID id) throws EmptyResultDataAccessException {
         var param = new MapSqlParameterSource("id", id);
         namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
     }
 
     @Override
-    public void deleteByName(String name) {
+    public void deleteByName(String name) throws EmptyResultDataAccessException{
         var param = new MapSqlParameterSource("name", name);
         namedParameterJdbcTemplate.update(DELETE_BY_NAME_QUERY, param);
-    }
-
-
-    public UUID getHeroIdByName(String name) {
-        var param = new MapSqlParameterSource("heroName", name);
-        var heroId = namedParameterJdbcTemplate.queryForObject(GET_HERO_ID_QUERY, param, UUID.class);
-        if (heroId != null) {
-            return heroId;
-        } else {
-            throw new HeroByIdNotFoundException(heroId);
-        }
-
     }
 
     //REFATORAR
