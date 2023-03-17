@@ -12,7 +12,7 @@ public class Assembler {
 
     public Hero toHeroDomain(HeroDTO heroDTO, UUID powerStatsId) {
         return Hero.builder()
-                .name(heroDTO.getName().toUpperCase())
+                .name((heroDTO.getName() != null) ? heroDTO.getName().toUpperCase() : heroDTO.getName())
                 .race(heroDTO.getRace())
                 .powerStatsId(powerStatsId)
                 .build();

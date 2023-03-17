@@ -88,10 +88,14 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
                 " power_stats " +
                 " SET ";
         UPDATE_POWER_STATS_QUERY += " updated_at = :updatedAt ";
-        UPDATE_POWER_STATS_QUERY = ((powerStats.getAgility() >= 0 || powerStats.getAgility() <= 10) && powerStats.getAgility() != null) ? UPDATE_POWER_STATS_QUERY + ", agility = :agility " : UPDATE_POWER_STATS_QUERY + "";
-        UPDATE_POWER_STATS_QUERY = ((powerStats.getDexterity() >= 0 || powerStats.getDexterity() <= 10) && powerStats.getDexterity() != null) ? UPDATE_POWER_STATS_QUERY + ", dexterity = :dexterity " : UPDATE_POWER_STATS_QUERY + "";
-        UPDATE_POWER_STATS_QUERY = ((powerStats.getStrength() >= 0 || powerStats.getStrength() <= 10) && powerStats.toPowerStats().getStrength() != null) ? UPDATE_POWER_STATS_QUERY + ", strength = :strength " : UPDATE_POWER_STATS_QUERY + "";
-        UPDATE_POWER_STATS_QUERY = ((powerStats.getIntelligence() >= 0 || powerStats.getIntelligence() <= 10) && powerStats.getIntelligence() != null) ? UPDATE_POWER_STATS_QUERY + ", intelligence = :intelligence " : UPDATE_POWER_STATS_QUERY + "";
+        if (powerStats.getAgility() != null)
+            UPDATE_POWER_STATS_QUERY = ((powerStats.getAgility() >= 0 && powerStats.getAgility() <= 10)) ? UPDATE_POWER_STATS_QUERY + ", agility = :agility " : UPDATE_POWER_STATS_QUERY + "";
+        if (powerStats.getDexterity() != null)
+            UPDATE_POWER_STATS_QUERY = ((powerStats.getDexterity() >= 0 && powerStats.getDexterity() <= 10)) ? UPDATE_POWER_STATS_QUERY + ", dexterity = :dexterity " : UPDATE_POWER_STATS_QUERY + "";
+        if (powerStats.getStrength() != null)
+            UPDATE_POWER_STATS_QUERY = ((powerStats.getStrength() >= 0 && powerStats.getStrength() <= 10)) ? UPDATE_POWER_STATS_QUERY + ", strength = :strength " : UPDATE_POWER_STATS_QUERY + "";
+        if (powerStats.getIntelligence() != null)
+            UPDATE_POWER_STATS_QUERY = ((powerStats.getIntelligence() >= 0 && powerStats.getIntelligence() <= 10)) ? UPDATE_POWER_STATS_QUERY + ", intelligence = :intelligence " : UPDATE_POWER_STATS_QUERY + "";
         UPDATE_POWER_STATS_QUERY += " WHERE power_stats.id = :id ";
         return UPDATE_POWER_STATS_QUERY;
     }
