@@ -7,6 +7,7 @@ import br.com.gubee.interview.core.features.usecase.hero.interfaces.UpdateHero;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class UpdateHeroUseCase implements UpdateHero {
     private final HeroRepository heroRepository;
 
+    @Transactional
     @Override
     public Hero updateById(UUID id, Hero hero) {
         try {

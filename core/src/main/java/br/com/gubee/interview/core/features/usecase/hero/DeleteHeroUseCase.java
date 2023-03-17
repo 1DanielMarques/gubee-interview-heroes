@@ -6,6 +6,7 @@ import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.DeleteHero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ public class DeleteHeroUseCase implements DeleteHero {
 
     private final HeroRepository heroRepository;
 
+    @Transactional
     @Override
     public void deleteById(UUID id) {
         try {
@@ -23,6 +25,7 @@ public class DeleteHeroUseCase implements DeleteHero {
         }
     }
 
+    @Transactional
     @Override
     public void deleteByName(String name) {
         try {

@@ -7,6 +7,7 @@ import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.Update
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.PowerStatsEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class UpdatePowerStatsUseCase implements UpdatePowerStats {
     private final PowerStatsRepository powerStatsRepository;
 
+    @Transactional
     @Override
     public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
         try {

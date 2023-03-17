@@ -5,6 +5,7 @@ import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.DeletePowerStats;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 public class DeletePowerStatsUseCase implements DeletePowerStats {
     private final PowerStatsRepository powerStatsRepository;
 
+    @Transactional
     @Override
     public void deleteById(UUID id) {
         try {
