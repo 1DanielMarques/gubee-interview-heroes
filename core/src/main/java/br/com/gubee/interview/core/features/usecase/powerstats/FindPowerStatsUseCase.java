@@ -17,13 +17,13 @@ public class FindPowerStatsUseCase implements FindPowerStats {
 
     @Override
     public List<PowerStats> findAll() {
-        return powerStatsRepository.findAll().stream().map(entity -> entity.toPowerStats()).toList();
+        return powerStatsRepository.findAll();
     }
 
     @Override
     public PowerStats findById(UUID id) {
         try {
-            return powerStatsRepository.findById(id).toPowerStats();
+            return powerStatsRepository.findById(id);
         } catch (ResourceNotFoundException e) {
             throw new PowerStatsByIdNotFoundException(id);
         }

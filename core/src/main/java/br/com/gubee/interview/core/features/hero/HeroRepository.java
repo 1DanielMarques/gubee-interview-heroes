@@ -1,24 +1,21 @@
 package br.com.gubee.interview.core.features.hero;
 
-import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.ResourceNotFoundException;
-import br.com.gubee.interview.model.PowerStats;
-import br.com.gubee.interview.model.entities.HeroEntity;
+import br.com.gubee.interview.model.Hero;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public interface HeroRepository {
-    HeroEntity create(HeroEntity hero);
+    Hero create(Hero hero);
 
-    List<HeroEntity> findAll();
+    List<Hero> findAll();
 
-    HeroEntity findById(UUID id) throws ResourceNotFoundException;
+    Hero findById(UUID id) throws ResourceNotFoundException;
 
-    HeroEntity findByName(String name) throws ResourceNotFoundException;
+    Hero findByName(String name) throws ResourceNotFoundException;
 
-    HeroEntity updateById(UUID id, HeroEntity hero) throws ResourceNotFoundException;
+    Hero updateById(UUID id, Hero hero) throws ResourceNotFoundException;
 
     void deleteById(UUID id) throws ResourceNotFoundException;
 

@@ -4,7 +4,6 @@ import br.com.gubee.interview.core.exception.HeroAlreadyExistException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.CreateHero;
 import br.com.gubee.interview.model.Hero;
-import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +17,6 @@ public class CreateHeroUseCase implements CreateHero {
     public Hero create(Hero hero) {
         if (heroRepository.exist(hero.getName()))
             throw new HeroAlreadyExistException(hero.getName());
-        return heroRepository.create(HeroEntity.fromHero(hero)).toHero();
+        return heroRepository.create(hero);
     }
 }

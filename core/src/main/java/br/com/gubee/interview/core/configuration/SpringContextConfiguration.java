@@ -16,63 +16,65 @@ import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.Update
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
+@Import(PersistenceContextConfiguration.class)
 @RequiredArgsConstructor
 public class SpringContextConfiguration {
 
 
-    private final HeroRepository heroRepository;
-    private final PowerStatsRepository powerStatsRepository;
-
     @Bean
-    public CreateHero createHero() {
+    public CreateHero createHero(HeroRepository heroRepository) {
         return new CreateHeroUseCase(heroRepository);
     }
 
     @Bean
-    public FindHero findHero() {
+    public FindHero findHero(HeroRepository heroRepository) {
         return new FindHeroUseCase(heroRepository);
     }
 
     @Bean
-    public UpdateHero updateHero() {
+    public UpdateHero updateHero(HeroRepository heroRepository) {
         return new UpdateHeroUseCase(heroRepository);
     }
 
     @Bean
-    public DeleteHero deleteHero() {
+    public DeleteHero deleteHero(HeroRepository heroRepository) {
         return new DeleteHeroUseCase(heroRepository);
     }
 
     @Bean
-    public CompareHeroes compareHeroes() {
+    public CompareHeroes compareHeroes(HeroRepository heroRepository, PowerStatsRepository powerStatsRepository) {
         return new CompareHeroesUseCase(heroRepository, powerStatsRepository);
     }
 
 
     @Bean
-    public PowerStatsFacade powerStatsFacade() {
-        return new PowerStatsFacade(createPowerStats(), findPowerStats(), deletePowerStats(), updatePowerStats());
+    public PowerStatsFacade powerStatsFacade(PowerStatsRepository powerStatsRepository) {
+        return new PowerStatsFacade(createPowerStats(powerStatsRepository),
+                findPowerStats(powerStatsRepository),
+                deletePowerStats(powerStatsRepository),
+                updatePowerStats(powerStatsRepository));
     }
 
     @Bean
-    public CreatePowerStats createPowerStats() {
+    public CreatePowerStats createPowerStats(PowerStatsRepository powerStatsRepository) {
         return new CreatePowerStatsUseCase(powerStatsRepository);
     }
 
     @Bean
-    public FindPowerStats findPowerStats() {
+    public FindPowerStats findPowerStats(PowerStatsRepository powerStatsRepository) {
         return new FindPowerStatsUseCase(powerStatsRepository);
     }
 
     @Bean
-    public DeletePowerStats deletePowerStats() {
+    public DeletePowerStats deletePowerStats(PowerStatsRepository powerStatsRepository) {
         return new DeletePowerStatsUseCase(powerStatsRepository);
     }
 
     @Bean
-    public UpdatePowerStats updatePowerStats() {
+    public UpdatePowerStats updatePowerStats(PowerStatsRepository powerStatsRepository) {
         return new UpdatePowerStatsUseCase(powerStatsRepository);
     }
 

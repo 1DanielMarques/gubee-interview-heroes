@@ -1,67 +1,56 @@
 package br.com.gubee.interview.core.features.stub;
 
-/*
+
+import br.com.gubee.interview.core.exception.ResourceNotFoundException;
+import br.com.gubee.interview.core.features.hero.HeroRepository;
+import br.com.gubee.interview.model.Hero;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 public class HeroRepositoryStub implements HeroRepository {
 
-    private Map<UUID, Hero> heroInMemory = new HashMap<>();
+    final Map<UUID, Hero> inMemory = new HashMap<>();
 
     @Override
-    public HeroRequest create(Hero hero) {
-        UUID heroId = hero.getId();
-        if (heroId == null) {
-            heroId = UUID.randomUUID();
-        }
-        heroInMemory.put(heroId, hero);
-        HeroRequest
-        return ;
-    }
-
-    @Override
-    public List<HeroRequest> findAll() {
+    public Hero create(Hero hero) {
         return null;
     }
 
     @Override
-    public HeroRequest findById(UUID id) {
+    public List<Hero> findAll() {
         return null;
     }
 
     @Override
-    public HeroRequest findByName(String name) {
+    public Hero findById(UUID id) throws ResourceNotFoundException {
         return null;
     }
 
     @Override
-    public void updateById(UUID id, HeroRequest heroRequest) {
+    public Hero findByName(String name) throws ResourceNotFoundException {
+        return null;
+    }
+
+    @Override
+    public Hero updateById(UUID id, Hero hero) throws ResourceNotFoundException {
+        return null;
+    }
+
+    @Override
+    public void deleteById(UUID id) throws ResourceNotFoundException {
 
     }
 
     @Override
-    public void deleteById(UUID id) {
+    public void deleteByName(String name) throws ResourceNotFoundException {
 
     }
 
     @Override
-    public UUID getHeroIdByName(String name) {
-        return UUID.randomUUID();
-    }
-
-    @Override
-    public Map<UUID, PowerStats> compareHeroes(UUID firstHeroId, UUID secondHeroId) {
-        PowerStats powerStatsFirstHero = PowerStats.builder()
-                .agility(5)
-                .dexterity(8)
-                .strength(6)
-                .intelligence(10)
-                .build();
-
-        PowerStats powerStatsSecondHero = PowerStats.builder()
-                .agility(7)
-                .dexterity(4)
-                .strength(10)
-                .intelligence(8)
-                .build();
-        return Map.of(firstHeroId, powerStatsFirstHero, secondHeroId, powerStatsSecondHero);
+    public boolean exist(String name) {
+        return false;
     }
 }
-*/

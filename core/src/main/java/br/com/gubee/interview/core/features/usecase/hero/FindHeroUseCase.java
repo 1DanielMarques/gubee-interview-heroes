@@ -18,13 +18,13 @@ public class FindHeroUseCase implements FindHero {
 
     @Override
     public List<Hero> findAll() {
-        return heroRepository.findAll().stream().map(entity -> entity.toHero()).toList();
+        return heroRepository.findAll();
     }
 
     @Override
     public Hero findById(UUID id) {
         try {
-            return heroRepository.findById(id).toHero();
+            return heroRepository.findById(id);
         } catch (ResourceNotFoundException e) {
             throw new HeroByIdNotFoundException(id);
         }
@@ -33,7 +33,7 @@ public class FindHeroUseCase implements FindHero {
     @Override
     public Hero findByName(String name) {
         try {
-            return heroRepository.findByName(name).toHero();
+            return heroRepository.findByName(name);
         } catch (ResourceNotFoundException e) {
             throw new HeroByNameNotFoundException(name);
         }

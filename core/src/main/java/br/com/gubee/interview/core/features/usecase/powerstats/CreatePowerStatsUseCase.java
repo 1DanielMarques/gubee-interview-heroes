@@ -15,6 +15,6 @@ public class CreatePowerStatsUseCase implements CreatePowerStats {
     @Transactional
     @Override
     public PowerStats create(PowerStats powerStats) {
-        return powerStatsRepository.create(PowerStatsEntity.fromPowerStats(powerStats)).toPowerStats();
+        return powerStatsRepository.create(powerStats);
     }
 }

@@ -5,7 +5,6 @@ import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.UpdateHero;
 import br.com.gubee.interview.model.Hero;
-import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,7 @@ public class UpdateHeroUseCase implements UpdateHero {
     public Hero updateById(UUID id, Hero hero) {
         try {
             hero.setName(hero.getName());
-            return heroRepository.updateById(id, HeroEntity.fromHero(hero)).toHero();
+            return heroRepository.updateById(id, hero);
         } catch (ResourceNotFoundException e) {
             throw new HeroByIdNotFoundException(id);
         }
