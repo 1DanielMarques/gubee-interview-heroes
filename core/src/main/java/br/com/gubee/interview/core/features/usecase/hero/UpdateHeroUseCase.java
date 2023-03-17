@@ -1,6 +1,7 @@
 package br.com.gubee.interview.core.features.usecase.hero;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
+import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.UpdateHero;
 import br.com.gubee.interview.model.Hero;
@@ -18,7 +19,7 @@ public class UpdateHeroUseCase implements UpdateHero {
     public Hero updateById(UUID id, Hero hero) {
         try {
             return heroRepository.updateById(id, HeroEntity.fromHero(hero)).toHero();
-        } catch (EmptyResultDataAccessException e) {
+        } catch (ResourceNotFoundException e) {
             throw new HeroByIdNotFoundException(id);
         }
     }

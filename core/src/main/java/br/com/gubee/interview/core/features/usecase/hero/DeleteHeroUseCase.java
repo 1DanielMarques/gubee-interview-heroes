@@ -2,10 +2,10 @@ package br.com.gubee.interview.core.features.usecase.hero;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
+import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.DeleteHero;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.UUID;
 
@@ -18,7 +18,7 @@ public class DeleteHeroUseCase implements DeleteHero {
     public void deleteById(UUID id) {
         try {
             heroRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        } catch (ResourceNotFoundException e) {
             throw new HeroByIdNotFoundException(id);
         }
     }
@@ -26,8 +26,8 @@ public class DeleteHeroUseCase implements DeleteHero {
     @Override
     public void deleteByName(String name) {
         try {
-            heroRepository.deleteByName(name);
-        } catch (EmptyResultDataAccessException e) {
+            heroRepository.deleteByName(name.toUpperCase());
+        } catch (ResourceNotFoundException e) {
             throw new HeroByNameNotFoundException(name);
         }
 

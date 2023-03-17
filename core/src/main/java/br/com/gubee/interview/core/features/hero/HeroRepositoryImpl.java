@@ -1,5 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
+import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
+import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +55,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
-    public HeroEntity create(HeroEntity heroEntity) throws EmptyResultDataAccessException {
+    public HeroEntity create(HeroEntity heroEntity) {
         final Map<String, Object> params = Map.of("name", heroEntity.getName(),
                 "race", heroEntity.getRace().name(),
                 "powerStatsId", heroEntity.getPowerStatsId());
@@ -61,7 +63,11 @@ public class HeroRepositoryImpl implements HeroRepository {
                 CREATE_HERO_QUERY,
                 params,
                 UUID.class);
-        return findById(heroId);
+        try {
+            return findById(heroId);
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByIdNotFoundException(heroId);
+        }
     }
 
 
@@ -71,18 +77,29 @@ public class HeroRepositoryImpl implements HeroRepository {
         return heroList;
     }
 
-    public HeroEntity findById(UUID id) throws EmptyResultDataAccessException {
-        var param = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
+    public HeroEntity findById(UUID id) throws ResourceNotFoundException {
+        try {
+            var param = new MapSqlParameterSource("id", id);
+            return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException();
+        }
+
     }
 
-    public HeroEntity findByName(String name)  throws EmptyResultDataAccessException{
-        var param = new MapSqlParameterSource("name", name);
-        return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
+    public HeroEntity findByName(String name) throws ResourceNotFoundException {
+        try {
+            var param = new MapSqlParameterSource("name", name);
+            HeroEntity hero = namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
+            return hero;
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException();
+        }
+
     }
 
 
-    public HeroEntity updateById(UUID id, HeroEntity hero) throws EmptyResultDataAccessException {
+    public HeroEntity updateById(UUID id, HeroEntity hero) throws ResourceNotFoundException {
         final Map<String, Object> params = createSqlParams(hero);
         params.put("id", id);
         namedParameterJdbcTemplate.update(createUpdateQuery(hero), params);
@@ -109,15 +126,28 @@ public class HeroRepositoryImpl implements HeroRepository {
         return params;
     }
 
-    public void deleteById(UUID id) throws EmptyResultDataAccessException {
+    public void deleteById(UUID id) throws ResourceNotFoundException {
         var param = new MapSqlParameterSource("id", id);
         namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
     }
 
     @Override
-    public void deleteByName(String name) throws EmptyResultDataAccessException{
+    public void deleteByName(String name) throws ResourceNotFoundException {
+        try {
+            var param = new MapSqlParameterSource("name", name);
+            namedParameterJdbcTemplate.update(DELETE_BY_NAME_QUERY, param);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException();
+        }
+
+    }
+
+    @Override
+    public boolean exist(String name) {
+        final String HERO_ALREADY_EXIST_QUERY = " SELECT COUNT(hero.name) FROM hero WHERE hero.name = :name ";
         var param = new MapSqlParameterSource("name", name);
-        namedParameterJdbcTemplate.update(DELETE_BY_NAME_QUERY, param);
+        var exist = namedParameterJdbcTemplate.queryForObject(HERO_ALREADY_EXIST_QUERY, param, Integer.class);
+        return exist != null && exist > 0;
     }
 
     //REFATORAR

@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.StringUtils;
@@ -96,14 +95,24 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(HeroByIdNotFoundException.class)
-    ResponseEntity<HttpStatus> heroByIdNotFound(HeroByIdNotFoundException e) {
-        return ResponseEntity.status(NOT_FOUND).build();
+    ResponseEntity<Object> heroByIdNotFound(HeroByIdNotFoundException e) {
+        return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
     }
 
 
     @ExceptionHandler({EmptyResultDataAccessException.class, HeroByNameNotFoundException.class})
-    ResponseEntity<HttpStatus> heroByNameNotFound(Exception e) {
-        return ResponseEntity.ok().build();
+    ResponseEntity<Object> heroByNameNotFound(Exception e) {
+        return ResponseEntity.ok().body(e.getMessage());
+    }
+
+    @ExceptionHandler(HeroAlreadyExistException.class)
+    ResponseEntity<Object> heroAlreadyExist(HeroAlreadyExistException e) {
+        return ResponseEntity.status(BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(PowerStatsByIdNotFoundException.class)
+    ResponseEntity<Object> powerStatsByIdNotFound(PowerStatsByIdNotFoundException e) {
+        return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
     }
 
 

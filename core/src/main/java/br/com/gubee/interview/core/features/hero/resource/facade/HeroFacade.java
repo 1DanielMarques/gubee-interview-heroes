@@ -40,7 +40,6 @@ public class HeroFacade {
         return heroDTOList;
     }
 
-    // Throws exception aqui? Ou tratar a exceção aqui
     public HeroDTO findById(UUID id) {
         var hero = findHero.findById(id);
         var powerStats = powerStatsFacade.findById(hero.getPowerStatsId());
@@ -48,7 +47,7 @@ public class HeroFacade {
     }
 
 
-    public HeroDTO findByName(String name) throws HeroByNameNotFoundException {
+    public HeroDTO findByName(String name) {
         var hero = findHero.findByName(name);
         var powerStats = powerStatsFacade.findById(hero.getPowerStatsId());
         return assembler.toHeroDTO(hero, powerStats);
@@ -77,15 +76,6 @@ public class HeroFacade {
         deleteHero.deleteByName(name);
         powerStatsFacade.deleteById(powerStatsId);
     }
-    /*
-        public void deleteByName(String name) {
-        try {
-            deleteHero.deleteById(getHeroIdByName(name));
-        } catch (EmptyResultDataAccessException e) {
-            throw new HeroByNameNotFoundException(name);
-        }
-    }
-     */
 
 
     public ComparedHeroes compareHeroes(String firstHero, String secondHero) {

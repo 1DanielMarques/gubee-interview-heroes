@@ -1,7 +1,10 @@
 package br.com.gubee.interview.core.features.powerstats;
 
+import br.com.gubee.interview.core.exception.PowerStatsByIdNotFoundException;
+import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.model.entities.PowerStatsEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -40,7 +43,11 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
                 CREATE_POWER_STATS_QUERY,
                 params,
                 UUID.class);
-        return findById(id);
+        try {
+            return findById(id);
+        } catch (ResourceNotFoundException e) {
+            throw new PowerStatsByIdNotFoundException(id);
+        }
     }
 
     @Override
@@ -51,20 +58,25 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
-    public PowerStatsEntity findById(UUID id) {
-        var param = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
+    public PowerStatsEntity findById(UUID id) throws ResourceNotFoundException {
+        try {
+            var param = new MapSqlParameterSource("id", id);
+            return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException();
+        }
+
     }
 
     @Override
-    public void deleteById(UUID id) {
+    public void deleteById(UUID id) throws ResourceNotFoundException {
         var param = new MapSqlParameterSource("id", id);
         namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
     }
 
 
     @Override
-    public PowerStatsEntity updateById(UUID id, PowerStatsEntity powerStatsToUpdate) {
+    public PowerStatsEntity updateById(UUID id, PowerStatsEntity powerStatsToUpdate) throws ResourceNotFoundException {
         Map<String, Object> params = createUpdateParams(powerStatsToUpdate);
         params.put("id", id);
         namedParameterJdbcTemplate.update(createUpdateQuery(powerStatsToUpdate), params);
