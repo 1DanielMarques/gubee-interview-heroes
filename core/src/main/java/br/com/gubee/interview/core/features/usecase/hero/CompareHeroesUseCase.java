@@ -1,51 +1,51 @@
 package br.com.gubee.interview.core.features.usecase.hero;
 
+import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
+import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
+import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.CompareHeroes;
 import br.com.gubee.interview.model.ComparedHeroes;
-import br.com.gubee.interview.model.PowerStats;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Map;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 public class CompareHeroesUseCase implements CompareHeroes {
 
     private final HeroRepository heroRepository;
+    private final PowerStatsRepository powerStatsRepository;
 
 
     @Override
     public ComparedHeroes compareHeroes(String firstHeroName, String secondHeroName) {
+        try {
+            ComparedHeroes comparedHeroes = new ComparedHeroes();
 
-        /* 1.busca p nome o heroi
-            2. busca poderes do heroi
-            3. compara os herors
-            4. retorna comparedheroes
+            var firstHero = heroRepository.findByName(firstHeroName).toHero();
+            var secondHero = heroRepository.findByName(secondHeroName).toHero();
+
+            var firstPowerStats = powerStatsRepository.findById(firstHero.getPowerStatsId());
+            var secondPowerStats = powerStatsRepository.findById(secondHero.getPowerStatsId());
 
 
-         */
-        ComparedHeroes comparedHeroes = new ComparedHeroes();
-        UUID firstHeroId = null;
-        UUID secondHeroId = null;
+            comparedHeroes.setFirstId(firstHero.getId());
+            comparedHeroes.setFirstStrength((firstPowerStats.getStrength() >= secondPowerStats.getStrength()) ? firstPowerStats.getStrength() : firstPowerStats.getStrength() * -1);
+            comparedHeroes.setFirstAgility((firstPowerStats.getAgility() >= secondPowerStats.getAgility()) ? firstPowerStats.getAgility() : firstPowerStats.getAgility() * -1);
+            comparedHeroes.setFirstDexterity((firstPowerStats.getDexterity() >= secondPowerStats.getDexterity()) ? firstPowerStats.getDexterity() : firstPowerStats.getDexterity() * -1);
+            comparedHeroes.setFirstIntelligence((firstPowerStats.getIntelligence() >= secondPowerStats.getIntelligence()) ? firstPowerStats.getIntelligence() : firstPowerStats.getIntelligence() * -1);
 
-        Map<UUID, PowerStats> heroesPowerStats = heroRepository.compareHeroes(firstHeroId, secondHeroId);
-
-        PowerStats firstHeroPowerStats = heroesPowerStats.get(firstHeroId);
-        PowerStats secondHeroPowerStats = heroesPowerStats.get(secondHeroId);
-
-        comparedHeroes.setFirstId(firstHeroId);
-        comparedHeroes.setFirstStrength((firstHeroPowerStats.getStrength() >= secondHeroPowerStats.getStrength()) ? firstHeroPowerStats.getStrength() : firstHeroPowerStats.getStrength() * -1);
-        comparedHeroes.setFirstAgility((firstHeroPowerStats.getAgility() >= secondHeroPowerStats.getAgility()) ? firstHeroPowerStats.getAgility() : firstHeroPowerStats.getAgility() * -1);
-        comparedHeroes.setFirstDexterity((firstHeroPowerStats.getDexterity() >= secondHeroPowerStats.getDexterity()) ? firstHeroPowerStats.getDexterity() : firstHeroPowerStats.getDexterity() * -1);
-        comparedHeroes.setFirstIntelligence((firstHeroPowerStats.getIntelligence() >= secondHeroPowerStats.getIntelligence()) ? firstHeroPowerStats.getIntelligence() : firstHeroPowerStats.getIntelligence() * -1);
-
-        comparedHeroes.setSecondId(secondHeroId);
-        comparedHeroes.setSecondStrength((secondHeroPowerStats.getStrength() >= firstHeroPowerStats.getStrength()) ? secondHeroPowerStats.getStrength() : secondHeroPowerStats.getStrength() * -1);
-        comparedHeroes.setSecondAgility((secondHeroPowerStats.getAgility() >= firstHeroPowerStats.getAgility()) ? secondHeroPowerStats.getAgility() : secondHeroPowerStats.getAgility() * -1);
-        comparedHeroes.setSecondDexterity((secondHeroPowerStats.getDexterity() >= firstHeroPowerStats.getDexterity()) ? secondHeroPowerStats.getDexterity() : secondHeroPowerStats.getDexterity() * -1);
-        comparedHeroes.setSecondIntelligence((secondHeroPowerStats.getIntelligence() >= firstHeroPowerStats.getIntelligence()) ? secondHeroPowerStats.getIntelligence() : secondHeroPowerStats.getIntelligence() * -1);
-        return comparedHeroes;
+            comparedHeroes.setSecondId(secondHero.getId());
+            comparedHeroes.setSecondStrength((secondPowerStats.getStrength() >= firstPowerStats.getStrength()) ? secondPowerStats.getStrength() : secondPowerStats.getStrength() * -1);
+            comparedHeroes.setSecondAgility((secondPowerStats.getAgility() >= firstPowerStats.getAgility()) ? secondPowerStats.getAgility() : secondPowerStats.getAgility() * -1);
+            comparedHeroes.setSecondDexterity((secondPowerStats.getDexterity() >= firstPowerStats.getDexterity()) ? secondPowerStats.getDexterity() : secondPowerStats.getDexterity() * -1);
+            comparedHeroes.setSecondIntelligence((secondPowerStats.getIntelligence() >= firstPowerStats.getIntelligence()) ? secondPowerStats.getIntelligence() : secondPowerStats.getIntelligence() * -1);
+            return comparedHeroes;
+        } catch (ResourceNotFoundException e) {
+            if (firstHeroName == null) {
+                throw new HeroByNameNotFoundException(firstHeroName);
+            } else {
+                throw new HeroByNameNotFoundException(secondHeroName);
+            }
+        }
     }
 
 

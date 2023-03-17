@@ -47,7 +47,7 @@ public class SpringContextConfiguration {
 
     @Bean
     public CompareHeroes compareHeroes() {
-        return new CompareHeroesUseCase(heroRepository);
+        return new CompareHeroesUseCase(heroRepository, powerStatsRepository);
     }
 
 

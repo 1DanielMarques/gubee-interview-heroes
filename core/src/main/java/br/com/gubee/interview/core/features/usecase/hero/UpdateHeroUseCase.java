@@ -17,7 +17,7 @@ public class UpdateHeroUseCase implements UpdateHero {
     @Override
     public Hero updateById(UUID id, Hero hero) {
         try {
-            hero.setName(hero.getName().toUpperCase());
+            hero.setName(hero.getName());
             return heroRepository.updateById(id, HeroEntity.fromHero(hero)).toHero();
         } catch (ResourceNotFoundException e) {
             throw new HeroByIdNotFoundException(id);

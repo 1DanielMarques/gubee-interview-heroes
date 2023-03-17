@@ -2,7 +2,6 @@ package br.com.gubee.interview.core.features.hero;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.ResourceNotFoundException;
-import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -36,21 +35,6 @@ public class HeroRepositoryImpl implements HeroRepository {
     private final String DELETE_BY_ID_QUERY = " DELETE FROM hero WHERE hero.id = :id ";
     private final String DELETE_BY_NAME_QUERY = " DELETE FROM hero WHERE hero.name = :name ";
 
-
-    private final String GET_POWER_STATS_ID_QUERY = " SELECT " +
-            " power_stats_id " +
-            " FROM hero " +
-            " WHERE hero.id = :heroId ";
-
-    private final String GET_HERO_ID_QUERY = " SELECT " +
-            " id " +
-            " FROM hero " +
-            " WHERE hero.name = :heroName ";
-
-    private final String GET_POWER_STATS_QUERY = " SELECT " +
-            " strength, agility, dexterity, intelligence " +
-            " FROM power_stats " +
-            " WHERE id = :powerStatsId ";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -148,19 +132,6 @@ public class HeroRepositoryImpl implements HeroRepository {
         var param = new MapSqlParameterSource("name", name);
         var exist = namedParameterJdbcTemplate.queryForObject(HERO_ALREADY_EXIST_QUERY, param, Integer.class);
         return exist != null && exist > 0;
-    }
-
-    //REFATORAR
-    public Map<UUID, PowerStats> compareHeroes(UUID firstHeroId, UUID secondHeroId) {
-        var powerStatsIdFirstHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY,
-                new MapSqlParameterSource("heroId", firstHeroId), UUID.class);
-        var powerStatsIdSecondHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_ID_QUERY,
-                new MapSqlParameterSource("heroId", secondHeroId), UUID.class);
-        var powerStatsFirstHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_QUERY,
-                new MapSqlParameterSource("powerStatsId", powerStatsIdFirstHero), BeanPropertyRowMapper.newInstance(PowerStats.class));
-        var powerStatsSecondHero = namedParameterJdbcTemplate.queryForObject(GET_POWER_STATS_QUERY,
-                new MapSqlParameterSource("powerStatsId", powerStatsIdSecondHero), BeanPropertyRowMapper.newInstance(PowerStats.class));
-        return Map.of(firstHeroId, powerStatsFirstHero, secondHeroId, powerStatsSecondHero);
     }
 
 

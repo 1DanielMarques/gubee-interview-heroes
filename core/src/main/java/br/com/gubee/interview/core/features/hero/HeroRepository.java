@@ -24,8 +24,6 @@ public interface HeroRepository {
 
     void deleteByName(String name) throws ResourceNotFoundException;
 
-    Map<UUID, PowerStats> compareHeroes(UUID firstHeroId, UUID secondHeroId);
-
     boolean exist(String name);
 
 }

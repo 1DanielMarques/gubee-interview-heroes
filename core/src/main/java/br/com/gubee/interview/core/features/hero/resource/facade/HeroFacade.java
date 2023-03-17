@@ -1,6 +1,5 @@
 package br.com.gubee.interview.core.features.hero.resource.facade;
 
-import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
 import br.com.gubee.interview.core.features.hero.resource.assembler.Assembler;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.*;
 import br.com.gubee.interview.model.ComparedHeroes;
@@ -48,7 +47,7 @@ public class HeroFacade {
 
 
     public HeroDTO findByName(String name) {
-        var hero = findHero.findByName(name);
+        var hero = findHero.findByName(name.toUpperCase());
         var powerStats = powerStatsFacade.findById(hero.getPowerStatsId());
         return assembler.toHeroDTO(hero, powerStats);
     }
@@ -72,14 +71,15 @@ public class HeroFacade {
 
 
     public void deleteByName(String name) {
-        var powerStatsId = findHero.findByName(name).getPowerStatsId();
-        deleteHero.deleteByName(name);
+        var nameUpperCase = name.toUpperCase();
+        var powerStatsId = findHero.findByName(nameUpperCase).getPowerStatsId();
+        deleteHero.deleteByName(nameUpperCase);
         powerStatsFacade.deleteById(powerStatsId);
     }
 
 
     public ComparedHeroes compareHeroes(String firstHero, String secondHero) {
-        return compareHeroes.compareHeroes(firstHero, secondHero);
+        return compareHeroes.compareHeroes(firstHero.toUpperCase(), secondHero.toUpperCase());
     }
 
 

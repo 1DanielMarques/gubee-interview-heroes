@@ -1,6 +1,7 @@
 package br.com.gubee.interview.core.features.hero.resource.controller;
 
 import br.com.gubee.interview.core.features.hero.resource.facade.HeroFacade;
+import br.com.gubee.interview.model.ComparedHeroes;
 import br.com.gubee.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -68,11 +69,10 @@ public class HeroResource {
     }
 
 
-/*
     @GetMapping("/compare/{firstHero}/with/{secondHero}")
     public ResponseEntity<ComparedHeroes> compareHeroes(@PathVariable(value = "firstHero") String firstHero, @PathVariable(value = "secondHero") String secondHero) {
-        return ResponseEntity.ok().body(heroService.compareHeroes(firstHero, secondHero));
-    } */
+        return ResponseEntity.ok().body(heroFacade.compareHeroes(firstHero, secondHero));
+    }
 
 
 }
