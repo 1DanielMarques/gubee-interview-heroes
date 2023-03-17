@@ -1,8 +1,11 @@
 package br.com.gubee.interview.model;
 
-import br.com.gubee.interview.model.enums.Race;
 import br.com.gubee.interview.model.dto.HeroDTO;
-import lombok.*;
+import br.com.gubee.interview.model.enums.Race;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -25,11 +28,17 @@ public class Hero {
 
     public Hero(HeroDTO heroDTO, UUID powerStatsId) {
         this.name = heroDTO.getName();
-        this.race = heroDTO.getRace();
+        this.race = switch (heroDTO.getRace()) {
+            case "HUMAN" -> Race.HUMAN;
+            case "ALIEN" -> Race.ALIEN;
+            case "DIVINE" -> Race.DIVINE;
+            case "CYBORG" -> Race.CYBORG;
+            default -> throw new IllegalArgumentException("Invalid Race of Hero: " + heroDTO.getRace());
+        };
         this.powerStatsId = powerStatsId;
     }
 
-    public boolean getEnabled(){
+    public boolean getEnabled() {
         return this.enabled;
     }
 }

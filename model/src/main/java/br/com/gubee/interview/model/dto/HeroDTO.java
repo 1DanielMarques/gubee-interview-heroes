@@ -28,7 +28,7 @@ public class HeroDTO {
     private String name;
 
     @NotNull(message = "message.race.mandatory")
-    private Race race;
+    private String race;
 
     @Min(value = 0, message = "message.powerstats.strength.min")
     @Max(value = 10, message = "message.powerstats.strength.max")

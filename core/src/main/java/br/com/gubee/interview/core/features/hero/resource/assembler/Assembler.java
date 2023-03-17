@@ -3,6 +3,7 @@ package br.com.gubee.interview.core.features.hero.resource.assembler;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.dto.HeroDTO;
+import br.com.gubee.interview.model.enums.Race;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,17 @@ import java.util.UUID;
 public class Assembler {
 
     public Hero toHeroDomain(HeroDTO heroDTO, UUID powerStatsId) {
+        heroDTO.setRace(heroDTO.getRace().toUpperCase());
         return Hero.builder()
                 .name((heroDTO.getName() != null) ? heroDTO.getName().toUpperCase() : heroDTO.getName())
-                .race(heroDTO.getRace())
+                .race(switch (heroDTO.getRace()) {
+                            case "HUMAN" -> Race.HUMAN;
+                            case "ALIEN" -> Race.ALIEN;
+                            case "DIVINE" -> Race.DIVINE;
+                            case "CYBORG" -> Race.CYBORG;
+                            default -> throw new IllegalArgumentException("Invalid Race of Hero: " + heroDTO.getRace());
+                        }
+                )
                 .powerStatsId(powerStatsId)
                 .build();
     }
@@ -35,7 +44,7 @@ public class Assembler {
                     var heroDTO = HeroDTO.builder()
                             .id(hero.getId())
                             .name(hero.getName())
-                            .race(hero.getRace())
+                            .race(hero.getRace().toString())
                             .agility(powerStats.getAgility())
                             .dexterity(powerStats.getDexterity())
                             .strength(powerStats.getStrength())
@@ -53,7 +62,7 @@ public class Assembler {
         var heroDTO = HeroDTO.builder()
                 .id(hero.getId())
                 .name(hero.getName())
-                .race(hero.getRace())
+                .race(hero.getRace().toString())
                 .agility(powerStats.getAgility())
                 .dexterity(powerStats.getDexterity())
                 .strength(powerStats.getStrength())
