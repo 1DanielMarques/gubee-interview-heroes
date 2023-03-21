@@ -1,6 +1,6 @@
 package br.com.gubee.interview.core.features.usecase;
 
-/*import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.CreatePowerStats;
+import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.CreatePowerStats;
 import br.com.gubee.interview.model.PowerStats;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -50,4 +50,3 @@ public class CreatePowerStatsUseCaseTest {
         Assertions.assertSame(UUID.class, powerStatsId);
     }
 }
-*/

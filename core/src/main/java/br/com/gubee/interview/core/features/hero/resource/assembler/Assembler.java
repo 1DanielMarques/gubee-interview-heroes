@@ -12,17 +12,21 @@ import java.util.UUID;
 public class Assembler {
 
     public Hero toHeroDomain(HeroDTO heroDTO, UUID powerStatsId) {
-        heroDTO.setRace(heroDTO.getRace().toUpperCase());
+        // Is this method clean or not?
+        heroDTO.setRace((heroDTO.getRace() != null) ? heroDTO.getRace().toUpperCase() : null);
+        heroDTO.setName((heroDTO.getName() != null) ? heroDTO.getName().toUpperCase() : null);
+        var race = switch (heroDTO.getRace()) {
+            case "HUMAN" -> Race.HUMAN;
+            case "ALIEN" -> Race.ALIEN;
+            case "DIVINE" -> Race.DIVINE;
+            case "CYBORG" -> Race.CYBORG;
+            case null -> null;
+            default -> throw new IllegalArgumentException("Invalid Race of Hero: " + heroDTO.getRace());
+        };
+
         return Hero.builder()
-                .name((heroDTO.getName() != null) ? heroDTO.getName().toUpperCase() : heroDTO.getName())
-                .race(switch (heroDTO.getRace()) {
-                            case "HUMAN" -> Race.HUMAN;
-                            case "ALIEN" -> Race.ALIEN;
-                            case "DIVINE" -> Race.DIVINE;
-                            case "CYBORG" -> Race.CYBORG;
-                            default -> throw new IllegalArgumentException("Invalid Race of Hero: " + heroDTO.getRace());
-                        }
-                )
+                .name(heroDTO.getName())
+                .race(race)
                 .powerStatsId(powerStatsId)
                 .build();
     }

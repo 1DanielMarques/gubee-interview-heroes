@@ -1,4 +1,4 @@
-package br.com.gubee.interview.core.features.hero;
+package br.com.gubee.interview.core.features.hero.resource.controller;
 
 
 import br.com.gubee.interview.core.features.hero.resource.controller.HeroResource;
