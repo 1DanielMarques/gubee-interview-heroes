@@ -16,7 +16,8 @@ public class HeroRepositoryStub implements HeroRepository {
 
     @Override
     public Hero create(Hero hero) {
-        return null;
+        hero.setId(UUID.randomUUID());
+        return inMemory.put(hero.getId(), hero);
     }
 
     @Override
@@ -31,7 +32,9 @@ public class HeroRepositoryStub implements HeroRepository {
 
     @Override
     public Hero findByName(String name) throws ResourceNotFoundException {
-        return null;
+        Hero heroFound = inMemory.values().stream().filter(hero -> hero.getName().equals(name))
+                .toList().get(0);
+        return heroFound;
     }
 
     @Override
