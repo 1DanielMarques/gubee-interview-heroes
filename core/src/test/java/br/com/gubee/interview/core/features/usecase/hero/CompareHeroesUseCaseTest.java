@@ -1,4 +1,4 @@
-package br.com.gubee.interview.core.features.usecase;
+package br.com.gubee.interview.core.features.usecase.hero;
 
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;

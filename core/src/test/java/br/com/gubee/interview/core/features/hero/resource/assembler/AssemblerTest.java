@@ -148,7 +148,6 @@ public class AssemblerTest {
         //when
        var heroDTOList =  assembler.toDTOList(heroList, powerStatsList);
         //then
-
         assertEquals(heroDTOListExpected,heroDTOList);
     }
 

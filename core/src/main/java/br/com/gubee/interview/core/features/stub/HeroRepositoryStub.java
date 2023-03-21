@@ -54,6 +54,6 @@ public class HeroRepositoryStub implements HeroRepository {
 
     @Override
     public boolean exist(String name) {
-        return false;
+        return inMemory.values().stream().anyMatch(hero -> hero.getName().equals(name));
     }
 }
