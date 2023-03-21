@@ -48,12 +48,14 @@ public class HeroRepositoryStub implements HeroRepository {
 
     @Override
     public void deleteById(UUID id) throws ResourceNotFoundException {
+        var hero = findById(id);
+        inMemory.remove(hero.getId());
 
     }
 
     @Override
     public void deleteByName(String name) throws ResourceNotFoundException {
-
+        inMemory.remove(findByName(name).getId());
     }
 
     @Override
