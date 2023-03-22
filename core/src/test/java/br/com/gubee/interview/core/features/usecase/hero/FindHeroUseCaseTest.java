@@ -10,10 +10,11 @@ import br.com.gubee.interview.model.enums.Race;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FindHeroUseCaseTest {
     private final HeroRepository heroRepository = new HeroRepositoryStub();
@@ -31,7 +32,6 @@ public class FindHeroUseCaseTest {
 
     @Test
     void shouldReturnHeroById() {
-
         //when
         var heroId = findHero.findById(createdHero.getId()).getId();
 
@@ -66,6 +66,21 @@ public class FindHeroUseCaseTest {
         var exception = assertThrows(HeroByNameNotFoundException.class, () -> findHero.findByName("BATMA"));
         //then
         assertEquals("Hero not found: BATMA", exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnListOfHeroes() {
+        //given
+        var secondHero = Hero.builder()
+                .name("SUPERMAN")
+                .race(Race.ALIEN)
+                .build();
+        heroRepository.create(secondHero);
+        //when
+        List<Hero> heroList = findHero.findAll();
+        //then
+        // assertNotEquals(expectedList, heroList);
+        assertTrue(heroList.containsAll(Arrays.asList(createdHero, secondHero)));
     }
 
 

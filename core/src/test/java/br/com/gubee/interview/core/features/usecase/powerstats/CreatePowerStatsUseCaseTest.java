@@ -1,4 +1,4 @@
-package br.com.gubee.interview.core.features.usecase;
+package br.com.gubee.interview.core.features.usecase.powerstats;
 
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.CreatePowerStats;
 import br.com.gubee.interview.model.PowerStats;

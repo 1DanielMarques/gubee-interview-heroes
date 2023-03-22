@@ -23,7 +23,7 @@ public class HeroRepositoryStub implements HeroRepository {
 
     @Override
     public List<Hero> findAll() {
-        return null;
+        return inMemory.values().stream().toList();
     }
 
     @Override
