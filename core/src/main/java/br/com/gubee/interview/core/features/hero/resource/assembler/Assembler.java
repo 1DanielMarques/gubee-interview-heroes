@@ -14,7 +14,6 @@ public class Assembler {
     public Hero toHeroDomain(HeroDTO heroDTO, UUID powerStatsId) {
         // Is this method clean or not?
         heroDTO.setRace((heroDTO.getRace() != null) ? heroDTO.getRace().toUpperCase() : null);
-        heroDTO.setName((heroDTO.getName() != null) ? heroDTO.getName().toUpperCase() : null);
         var race = switch (heroDTO.getRace()) {
             case "HUMAN" -> Race.HUMAN;
             case "ALIEN" -> Race.ALIEN;

@@ -33,9 +33,9 @@ public class FindHeroUseCase implements FindHero {
     @Override
     public Hero findByName(String name) {
         try {
-            return heroRepository.findByName(name);
+            return heroRepository.findByName(name.toUpperCase());
         } catch (ResourceNotFoundException e) {
-            throw new HeroByNameNotFoundException(name);
+            throw new HeroByNameNotFoundException(name.toUpperCase());
         }
 
     }

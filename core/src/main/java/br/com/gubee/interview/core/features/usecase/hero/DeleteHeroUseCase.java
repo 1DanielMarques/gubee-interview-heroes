@@ -29,7 +29,7 @@ public class DeleteHeroUseCase implements DeleteHero {
     @Override
     public void deleteByName(String name) {
         try {
-            heroRepository.deleteByName(name);
+            heroRepository.deleteByName(name.toUpperCase());
         } catch (ResourceNotFoundException e) {
             throw new HeroByNameNotFoundException(name);
         }

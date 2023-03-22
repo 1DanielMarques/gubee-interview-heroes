@@ -15,6 +15,7 @@ public class CreateHeroUseCase implements CreateHero {
     @Transactional
     @Override
     public Hero create(Hero hero) {
+        hero.setName(hero.getName().toUpperCase());
         if (heroRepository.exist(hero.getName()))
             throw new HeroAlreadyExistException(hero.getName());
         return heroRepository.create(hero);

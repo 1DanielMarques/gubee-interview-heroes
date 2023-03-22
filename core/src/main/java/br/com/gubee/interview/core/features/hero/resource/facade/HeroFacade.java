@@ -47,7 +47,7 @@ public class HeroFacade {
 
 
     public HeroDTO findByName(String name) {
-        var hero = findHero.findByName(name.toUpperCase());
+        var hero = findHero.findByName(name);
         var powerStats = powerStatsFacade.findById(hero.getPowerStatsId());
         return assembler.toHeroDTO(hero, powerStats);
     }
@@ -71,7 +71,7 @@ public class HeroFacade {
 
 
     public void deleteByName(String name) {
-        var nameUpperCase = name.toUpperCase();
+        var nameUpperCase = name;
         var powerStatsId = findHero.findByName(nameUpperCase).getPowerStatsId();
         deleteHero.deleteByName(nameUpperCase);
         powerStatsFacade.deleteById(powerStatsId);
@@ -79,7 +79,7 @@ public class HeroFacade {
 
 
     public ComparedHeroes compareHeroes(String firstHero, String secondHero) {
-        return compareHeroes.compareHeroes(firstHero.toUpperCase(), secondHero.toUpperCase());
+        return compareHeroes.compareHeroes(firstHero, secondHero);
     }
 
 

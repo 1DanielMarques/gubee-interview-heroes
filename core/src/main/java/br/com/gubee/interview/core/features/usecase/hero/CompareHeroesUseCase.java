@@ -20,8 +20,8 @@ public class CompareHeroesUseCase implements CompareHeroes {
         try {
             ComparedHeroes comparedHeroes = new ComparedHeroes();
 
-            var firstHero = heroRepository.findByName(firstHeroName);
-            var secondHero = heroRepository.findByName(secondHeroName);
+            var firstHero = heroRepository.findByName(firstHeroName.toUpperCase());
+            var secondHero = heroRepository.findByName(secondHeroName.toUpperCase());
 
             var firstPowerStats = powerStatsRepository.findById(firstHero.getPowerStatsId());
             var secondPowerStats = powerStatsRepository.findById(secondHero.getPowerStatsId());
