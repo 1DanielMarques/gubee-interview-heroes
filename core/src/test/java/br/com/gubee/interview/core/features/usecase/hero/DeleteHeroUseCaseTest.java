@@ -2,6 +2,7 @@ package br.com.gubee.interview.core.features.usecase.hero;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
+import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.stub.HeroRepositoryStub;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.DeleteHero;
@@ -33,7 +34,7 @@ public class DeleteHeroUseCaseTest {
         //when
         deleteHero.deleteById(createdHero.getId());
         //then
-        assertFalse(heroRepository.exist(createdHero.getName()));
+        assertThrows(ResourceNotFoundException.class, () -> heroRepository.findById(createdHero.getId()));
     }
 
     @Test

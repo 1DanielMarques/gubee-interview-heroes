@@ -25,6 +25,7 @@ public class CompareHeroesUseCaseTest {
     @DisplayName("Should compare two heroes attributes and return them")
     void shouldCompareHeroesAttributesAndReturnThem() {
         //Given
+        //First Hero
         var firstPowerStats = PowerStats.builder()
                 .agility(5)
                 .dexterity(8)
@@ -33,12 +34,13 @@ public class CompareHeroesUseCaseTest {
                 .build();
         powerStatsRepositoryStub.create(firstPowerStats);
         var firstHero = Hero.builder()
-                .name("batman")
+                .name("BATMAN")
                 .race(Race.HUMAN)
                 .powerStatsId(firstPowerStats.getId())
                 .build();
         heroRepositoryStub.create(firstHero);
 
+        //Second Hero
         var secondPowerStats = PowerStats.builder()
                 .agility(7)
                 .dexterity(4)
@@ -47,13 +49,13 @@ public class CompareHeroesUseCaseTest {
                 .build();
         powerStatsRepositoryStub.create(secondPowerStats);
         var secondHero = Hero.builder()
-                .name("superman")
+                .name("SUPERMAN")
                 .race(Race.ALIEN)
                 .powerStatsId(secondPowerStats.getId())
                 .build();
         heroRepositoryStub.create(secondHero);
 
-
+        //Expected result
         ComparedHeroes expected = ComparedHeroes.builder()
                 .firstId(firstHero.getId())
                 .firstAgility(-5)

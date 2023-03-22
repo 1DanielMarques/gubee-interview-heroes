@@ -42,9 +42,17 @@ public class HeroRepositoryStub implements HeroRepository {
     }
 
     @Override
-    public Hero updateById(UUID id, Hero hero) throws ResourceNotFoundException {
-        return null;
+    public Hero updateById(UUID id, Hero heroToUpdate) throws ResourceNotFoundException {
+        if (inMemory.get(id) == null) throw new ResourceNotFoundException();
+        heroToUpdate.setId(id);
+        return save(heroToUpdate);
     }
+
+    private Hero save(Hero hero) {
+        inMemory.put(hero.getId(), hero);
+        return inMemory.get(hero.getId());
+    }
+
 
     @Override
     public void deleteById(UUID id) throws ResourceNotFoundException {
