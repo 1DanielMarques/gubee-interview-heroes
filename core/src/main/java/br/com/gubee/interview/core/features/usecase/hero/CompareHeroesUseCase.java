@@ -40,8 +40,8 @@ public class CompareHeroesUseCase implements CompareHeroes {
             comparedHeroes.setSecondIntelligence((secondPowerStats.getIntelligence() >= firstPowerStats.getIntelligence()) ? secondPowerStats.getIntelligence() : secondPowerStats.getIntelligence() * -1);
             return comparedHeroes;
         } catch (ResourceNotFoundException e) {
-            // It doesn't work well. Improve it!
-            if (firstHeroName == null) {
+            // Is it clean?
+            if (!heroRepository.exist(firstHeroName.toUpperCase())) {
                 throw new HeroByNameNotFoundException(firstHeroName);
             } else {
                 throw new HeroByNameNotFoundException(secondHeroName);

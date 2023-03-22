@@ -1,31 +1,33 @@
 package br.com.gubee.interview.core.features.usecase.hero;
 
+import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.core.features.stub.HeroRepositoryStub;
 import br.com.gubee.interview.core.features.stub.PowerStatsRepositoryStub;
-import br.com.gubee.interview.core.features.usecase.hero.CompareHeroesUseCase;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.CompareHeroes;
 import br.com.gubee.interview.model.ComparedHeroes;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.enums.Race;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CompareHeroesUseCaseTest {
 
     private final HeroRepository heroRepositoryStub = new HeroRepositoryStub();
     private final PowerStatsRepository powerStatsRepositoryStub = new PowerStatsRepositoryStub();
     private final CompareHeroes compareHeroes = new CompareHeroesUseCase(heroRepositoryStub, powerStatsRepositoryStub);
+    private Hero firstHero;
+    private Hero secondHero;
 
-
-    @Test
-    @DisplayName("Should compare two heroes attributes and return them")
-    void shouldCompareHeroesAttributesAndReturnThem() {
-        //Given
-        //First Hero
+    @BeforeEach
+    void setup() {
         var firstPowerStats = PowerStats.builder()
                 .agility(5)
                 .dexterity(8)
@@ -33,7 +35,7 @@ public class CompareHeroesUseCaseTest {
                 .intelligence(10)
                 .build();
         powerStatsRepositoryStub.create(firstPowerStats);
-        var firstHero = Hero.builder()
+        firstHero = Hero.builder()
                 .name("BATMAN")
                 .race(Race.HUMAN)
                 .powerStatsId(firstPowerStats.getId())
@@ -48,13 +50,19 @@ public class CompareHeroesUseCaseTest {
                 .intelligence(8)
                 .build();
         powerStatsRepositoryStub.create(secondPowerStats);
-        var secondHero = Hero.builder()
+        secondHero = Hero.builder()
                 .name("SUPERMAN")
                 .race(Race.ALIEN)
                 .powerStatsId(secondPowerStats.getId())
                 .build();
         heroRepositoryStub.create(secondHero);
+    }
 
+
+    @Test
+    @DisplayName("Should compare two heroes attributes and return them")
+    void shouldCompareHeroesAttributesAndReturnThem() {
+        //Given
         //Expected result
         ComparedHeroes expected = ComparedHeroes.builder()
                 .firstId(firstHero.getId())
@@ -74,7 +82,24 @@ public class CompareHeroesUseCaseTest {
         ComparedHeroes result = compareHeroes.compareHeroes("batman", "superman");
         //Then
         Assertions.assertEquals(expected, result);
+    }
 
+    @Test
+    void shouldThrowExceptionIfFirstNameNotFound() {
+        //when
+        var exception = assertThrows(HeroByNameNotFoundException.class, () -> compareHeroes.compareHeroes("batma", "superman"));
+        //then
+        assertEquals("Hero not found: batma", exception.getMessage());
+
+
+    }
+
+    @Test
+    void shouldThrowExceptionIfSecondNameNotFound() {
+        //when
+        var exception = assertThrows(HeroByNameNotFoundException.class, () -> compareHeroes.compareHeroes("batman", "superma"));
+        //then
+        assertEquals("Hero not found: superma", exception.getMessage());
     }
 
 }
