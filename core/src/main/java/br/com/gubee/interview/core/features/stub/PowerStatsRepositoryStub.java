@@ -40,6 +40,9 @@ public class PowerStatsRepositoryStub implements PowerStatsRepository {
 
     @Override
     public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) throws ResourceNotFoundException {
-        return null;
+        if (inMemory.get(id) == null) throw new ResourceNotFoundException();
+        powerStatsToUpdate.setId(id);
+        inMemory.put(powerStatsToUpdate.getId(), powerStatsToUpdate);
+        return inMemory.get(powerStatsToUpdate.getId());
     }
 }
