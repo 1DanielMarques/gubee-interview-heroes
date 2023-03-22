@@ -34,7 +34,8 @@ public class PowerStatsRepositoryStub implements PowerStatsRepository {
 
     @Override
     public void deleteById(UUID id) throws ResourceNotFoundException {
-
+        var powerStats = findById(id);
+        inMemory.remove(powerStats.getId());
     }
 
     @Override

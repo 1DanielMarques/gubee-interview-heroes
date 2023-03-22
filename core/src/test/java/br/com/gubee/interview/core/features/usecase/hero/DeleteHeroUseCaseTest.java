@@ -39,8 +39,9 @@ public class DeleteHeroUseCaseTest {
 
     @Test
     void shouldThrowExceptionIfHeroIdNotFound() {
-        //when
+        //given
         var heroId = UUID.randomUUID();
+        //when
         var exception = assertThrows(HeroByIdNotFoundException.class, () -> deleteHero.deleteById(heroId));
         //then
         assertEquals("Hero not found: " + heroId, exception.getMessage());
