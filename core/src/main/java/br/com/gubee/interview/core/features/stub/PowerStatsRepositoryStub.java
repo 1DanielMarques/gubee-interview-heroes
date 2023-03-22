@@ -11,17 +11,20 @@ import java.util.UUID;
 
 public class PowerStatsRepositoryStub implements PowerStatsRepository {
 
-    final Map<Object, PowerStats> inMemory = new HashMap<>();
+    final Map<UUID, PowerStats> inMemory = new HashMap<>();
 
     @Override
     public PowerStats create(PowerStats powerStats) {
         powerStats.setId(UUID.randomUUID());
-        return inMemory.put(powerStats.getId(), powerStats);
+        inMemory.put(powerStats.getId(), powerStats);
+        return inMemory.get(powerStats.getId());
     }
 
     @Override
     public PowerStats findById(UUID id) throws ResourceNotFoundException {
-        return inMemory.get(id);
+        var powerStats = inMemory.get(id);
+        if (powerStats == null) throw new ResourceNotFoundException();
+        return powerStats;
     }
 
     @Override

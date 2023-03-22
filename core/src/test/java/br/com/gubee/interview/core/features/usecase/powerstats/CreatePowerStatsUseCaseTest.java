@@ -1,52 +1,33 @@
 package br.com.gubee.interview.core.features.usecase.powerstats;
 
+import br.com.gubee.interview.core.exception.ResourceNotFoundException;
+import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
+import br.com.gubee.interview.core.features.stub.PowerStatsRepositoryStub;
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.CreatePowerStats;
 import br.com.gubee.interview.model.PowerStats;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.UUID;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CreatePowerStatsUseCaseTest {
 
-    @Autowired
-    private CreatePowerStats createPowerStats;
+    private final PowerStatsRepository powerStatsRepository = new PowerStatsRepositoryStub();
+    private final CreatePowerStats createPowerStats = new CreatePowerStatsUseCase(powerStatsRepository);
 
     @Test
-    @DisplayName("Should create PowerStats and return its id")
-    void shouldCreatePowerStatsAndReturnId() {
+    void shouldCreatePowerStatsAndReturnIt() throws ResourceNotFoundException {
         //given
-        var powerStats = PowerStats.builder()
-                .agility(5)
-                .dexterity(8)
-                .strength(6)
-                .intelligence(10)
+        var powerStatsToBeCreated = PowerStats.builder()
+                .agility(3)
+                .dexterity(4)
+                .strength(5)
+                .intelligence(6)
                 .build();
         //when
-        var powerStatsId =  createPowerStats.create(powerStats);
+        var powerStatsId = createPowerStats.create(powerStatsToBeCreated).getId();
         //then
-        Assertions.assertSame(UUID.class, powerStatsId);
+        var powerStats = powerStatsRepository.findById(powerStatsId);
+        Assertions.assertEquals(powerStats, powerStatsToBeCreated);
+
     }
 
-    @Test
-    @DisplayName("Should create PowerStats and return its id")
-    void shouldCreatePowerStatsAndReturnId2() {
-       // createPowerStats = new CreatePowerStatsUseCase(new HeroRepositoryStub());
-
-        //given
-        var powerStats = PowerStats.builder()
-                .agility(5)
-                .dexterity(8)
-                .strength(6)
-                .intelligence(10)
-                .build();
-        //when
-        var powerStatsId =  createPowerStats.create(powerStats);
-        //then
-        Assertions.assertSame(UUID.class, powerStatsId);
-    }
 }
