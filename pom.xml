@@ -41,6 +41,8 @@
     <modules>
         <module>core</module>
         <module>model</module>
+        <module>gubee-interview-heroes-domain</module>
+        <module>gubee-interview-heroes-infra</module>
     </modules>
 
     <dependencyManagement>
