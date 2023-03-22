@@ -29,7 +29,7 @@ public class PowerStatsRepositoryStub implements PowerStatsRepository {
 
     @Override
     public List<PowerStats> findAll() {
-        return null;
+        return inMemory.values().stream().toList();
     }
 
     @Override
