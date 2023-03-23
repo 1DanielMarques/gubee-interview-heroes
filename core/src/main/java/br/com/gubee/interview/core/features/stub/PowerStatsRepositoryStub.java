@@ -1,6 +1,7 @@
 package br.com.gubee.interview.core.features.stub;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
+import br.com.gubee.interview.core.exception.PowerStatsByIdNotFoundException;
 import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.model.PowerStats;
@@ -38,9 +39,9 @@ public class PowerStatsRepositoryStub implements PowerStatsRepository {
     }
 
     @Override
-    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
-        if (inMemory.get(id) == null) throw new HeroByIdNotFoundException(id);
-        var olderPowerStats = inMemory.get(id);
+    public PowerStats updatePowerStats(PowerStats powerStatsToUpdate) {
+        if (inMemory.get(powerStatsToUpdate.getId()) == null) throw new PowerStatsByIdNotFoundException(powerStatsToUpdate.getId());
+        var olderPowerStats = inMemory.get(powerStatsToUpdate.getId());
         powerStatsToUpdate.setId(olderPowerStats.getId());
         powerStatsToUpdate.setCreatedAt(olderPowerStats.getCreatedAt());
         powerStatsToUpdate.setUpdatedAt(Instant.now());

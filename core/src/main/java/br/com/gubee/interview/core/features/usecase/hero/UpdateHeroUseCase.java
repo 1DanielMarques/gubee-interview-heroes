@@ -18,6 +18,7 @@ public class UpdateHeroUseCase implements UpdateHero {
     @Override
     public Hero updateById(UUID id, Hero hero) {
             hero.setName(hero.getName().toUpperCase());
-            return heroRepository.updateById(id, hero);
+            hero.setId(id);
+            return heroRepository.updateHero(hero);
     }
 }

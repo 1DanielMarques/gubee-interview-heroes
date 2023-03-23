@@ -35,8 +35,8 @@ public class PowerStatsFacade {
         deletePowerStats.deleteById(id);
     }
 
-    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
-        return updatePowerStats.updateById(id, powerStatsToUpdate);
+    public PowerStats updatePowerStats(PowerStats powerStatsToUpdate) {
+        return updatePowerStats.updatePowerStats(powerStatsToUpdate);
     }
 
 

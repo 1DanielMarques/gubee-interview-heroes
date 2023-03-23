@@ -28,13 +28,7 @@ public class Hero {
 
     public Hero(HeroDTO heroDTO, UUID powerStatsId) {
         this.name = heroDTO.getName();
-        this.race = switch (heroDTO.getRace()) {
-            case "HUMAN" -> Race.HUMAN;
-            case "ALIEN" -> Race.ALIEN;
-            case "DIVINE" -> Race.DIVINE;
-            case "CYBORG" -> Race.CYBORG;
-            default -> throw new IllegalArgumentException("Invalid Race of Hero: " + heroDTO.getRace());
-        };
+        this.race = heroDTO.getRace();
         this.powerStatsId = powerStatsId;
     }
 

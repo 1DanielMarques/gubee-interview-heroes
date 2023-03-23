@@ -6,6 +6,6 @@ import java.util.UUID;
 
 public interface UpdatePowerStats {
 
-    PowerStats updateById(UUID id, PowerStats powerStatsToUpdate);
+    PowerStats updatePowerStats(PowerStats powerStatsToUpdate);
 
 }

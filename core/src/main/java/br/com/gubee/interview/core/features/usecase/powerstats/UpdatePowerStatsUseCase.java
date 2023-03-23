@@ -16,7 +16,7 @@ public class UpdatePowerStatsUseCase implements UpdatePowerStats {
 
     @Transactional
     @Override
-    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
-            return powerStatsRepository.updateById(id, powerStatsToUpdate);
+    public PowerStats updatePowerStats(PowerStats powerStatsToUpdate) {
+            return powerStatsRepository.updatePowerStats(powerStatsToUpdate);
     }
 }

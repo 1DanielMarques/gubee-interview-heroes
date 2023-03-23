@@ -5,7 +5,6 @@ import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -36,11 +35,13 @@ public class PostgresHeroRepository {
     private final String DELETE_BY_ID_QUERY = " DELETE FROM hero WHERE hero.id = :id ";
     private final String DELETE_BY_NAME_QUERY = " DELETE FROM hero WHERE hero.name = :name ";
 
+    private final String UPDATE_HERO_QUERY = " UPDATE hero SET updated_at = :updatedAt, name = :name, race = :race WHERE hero.id = :id ";
+
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
-    public HeroEntity create(HeroEntity heroEntity) throws ResourceNotFoundException{
+    public HeroEntity create(HeroEntity heroEntity) throws ResourceNotFoundException {
         final Map<String, Object> params = Map.of("name", heroEntity.getName(),
                 "race", heroEntity.getRace().name(),
                 "powerStatsId", heroEntity.getPowerStatsId());
@@ -77,40 +78,20 @@ public class PostgresHeroRepository {
 
     }
 
-
-    public HeroEntity updateById(UUID id, HeroEntity hero) throws ResourceNotFoundException {
-        final Map<String, Object> params = createSqlParams(hero);
-        params.put("id", id);
-        namedParameterJdbcTemplate.update(createUpdateQuery(hero), params);
-        return findById(id);
-        // trocar toda a logica por um SAVE
+    public HeroEntity updateHero(HeroEntity hero) throws ResourceNotFoundException {
+        final Map<String, Object> params = Map.of("updatedAt", Timestamp.from(Instant.now()),
+                "name", hero.getName(),
+                "race", hero.getRace().toString(),
+                "id", hero.getId());
+        namedParameterJdbcTemplate.update(UPDATE_HERO_QUERY, params);
+        return findById(hero.getId());
     }
 
-    private String createUpdateQuery(HeroEntity hero) {
-        var UPDATE_HERO_QUERY = " UPDATE " +
-                " hero " +
-                " SET ";
-        UPDATE_HERO_QUERY += " updated_at = :updatedAt ";
-        UPDATE_HERO_QUERY = (hero.getName() != null) ? UPDATE_HERO_QUERY + ", name = :name " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY = (hero.getRace() != null) ? UPDATE_HERO_QUERY + ", race = :race " : UPDATE_HERO_QUERY + "";
-        UPDATE_HERO_QUERY += " WHERE hero.id = :id ";
-        return UPDATE_HERO_QUERY;
-
-    }
-
-    private Map<String, Object> createSqlParams(HeroEntity hero) {
-        Map<String, Object> params = new HashMap<>();
-        if (hero.getName() != null) params.put("name", hero.getName());
-        if (hero.getRace() != null) params.put("race", hero.getRace().name());
-        params.put("updatedAt", Timestamp.from(Instant.now()));
-        return params;
-    }
-
-    public void deleteById(UUID id) throws ResourceNotFoundException{
+    public void deleteById(UUID id) throws ResourceNotFoundException {
         try {
-        var param = new MapSqlParameterSource("id", id);
-        var rowsAffected = namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
-        if (rowsAffected == 0) throw new HeroByIdNotFoundException(id);
+            var param = new MapSqlParameterSource("id", id);
+            var rowsAffected = namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
+            if (rowsAffected == 0) throw new HeroByIdNotFoundException(id);
         } catch (DataAccessException e) {
             throw new ResourceNotFoundException();
         }

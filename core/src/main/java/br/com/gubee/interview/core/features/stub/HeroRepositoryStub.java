@@ -40,9 +40,9 @@ public class HeroRepositoryStub implements HeroRepository {
     }
 
     @Override
-    public Hero updateById(UUID id, Hero heroToUpdate)  {
+    public Hero updateHero(Hero heroToUpdate)  {
        // if (inMemory.get(id) == null) ;
-        var olderHero = inMemory.get(id);
+        var olderHero = inMemory.get(heroToUpdate.getId());
         heroToUpdate.setId(olderHero.getId());
         heroToUpdate.setCreatedAt(olderHero.getCreatedAt());
         heroToUpdate.setUpdatedAt(Instant.now());

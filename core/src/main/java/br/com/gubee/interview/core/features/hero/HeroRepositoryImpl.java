@@ -52,18 +52,20 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
-    public Hero updateById(UUID id, Hero hero) {
-        //return postgresRepository.updateById(id, HeroEntity.fromHero(hero)).toHero();
-        // return postgresRepository.save(id,HeroEntity.fromHero(hero)).toHero();
-        // dar um Save
-        return null;
+    public Hero updateHero(Hero hero) {
+        try {
+            return postgresRepository.updateHero(HeroEntity.fromHero(hero)).toHero();
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByIdNotFoundException(hero.getId());
+        }
+
     }
 
     @Override
     public void deleteById(UUID id) {
-        try{
+        try {
             postgresRepository.deleteById(id);
-        }catch (ResourceNotFoundException e){
+        } catch (ResourceNotFoundException e) {
             throw new HeroByIdNotFoundException(id);
         }
 
@@ -71,9 +73,9 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     @Override
     public void deleteByName(String name) {
-        try{
+        try {
             postgresRepository.deleteByName(name);
-        }catch (ResourceNotFoundException e){
+        } catch (ResourceNotFoundException e) {
             throw new HeroByNameNotFoundException(name);
         }
     }

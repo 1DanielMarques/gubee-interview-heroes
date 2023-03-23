@@ -3,7 +3,6 @@ package br.com.gubee.interview.core.features.hero.resource.assembler;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.dto.HeroDTO;
-import br.com.gubee.interview.model.enums.Race;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +11,9 @@ import java.util.UUID;
 public class Assembler {
 
     public Hero toHeroDomain(HeroDTO heroDTO, UUID powerStatsId) {
-        // Is this method clean or not?
-        heroDTO.setRace((heroDTO.getRace() != null) ? heroDTO.getRace().toUpperCase() : null);
-        // colocar condicao no DTO
-        var race = switch (heroDTO.getRace()) {
-            case "HUMAN" -> Race.HUMAN;
-            case "ALIEN" -> Race.ALIEN;
-            case "DIVINE" -> Race.DIVINE;
-            case "CYBORG" -> Race.CYBORG;
-            case null -> null;
-            // nao retornar null
-            default -> throw new IllegalArgumentException("Invalid Race of Hero: " + heroDTO.getRace());
-        };
-
         return Hero.builder()
                 .name(heroDTO.getName())
-                .race(race)
+                .race(heroDTO.getRace())
                 .powerStatsId(powerStatsId)
                 .build();
     }
@@ -49,7 +35,7 @@ public class Assembler {
                     var heroDTO = HeroDTO.builder()
                             .id(hero.getId())
                             .name(hero.getName())
-                            .race(hero.getRace().toString())
+                            .race(hero.getRace())
                             .agility(powerStats.getAgility())
                             .dexterity(powerStats.getDexterity())
                             .strength(powerStats.getStrength())
@@ -67,7 +53,7 @@ public class Assembler {
         var heroDTO = HeroDTO.builder()
                 .id(hero.getId())
                 .name(hero.getName())
-                .race(hero.getRace().toString())
+                .race(hero.getRace())
                 .agility(powerStats.getAgility())
                 .dexterity(powerStats.getDexterity())
                 .strength(powerStats.getStrength())

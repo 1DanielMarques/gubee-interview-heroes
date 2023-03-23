@@ -1,5 +1,6 @@
 package br.com.gubee.interview.model.dto;
 
+import br.com.gubee.interview.model.enums.Race;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class HeroDTO {
     private String name;
 
     @NotNull(message = "message.race.mandatory")
-    private String race;
+    private Race race;
 
     @Min(value = 0, message = "message.powerstats.strength.min")
     @Max(value = 10, message = "message.powerstats.strength.max")
@@ -48,6 +49,5 @@ public class HeroDTO {
     @Max(value = 10, message = "message.powerstats.intelligence.max")
     @NotNull(message = "message.powerstats.intelligence.mandatory")
     private Integer intelligence;
-
 
 }

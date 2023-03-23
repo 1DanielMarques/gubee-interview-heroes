@@ -51,14 +51,9 @@ public class HeroResource {
 
 
     @PutMapping("/id/{id}")
-    public ResponseEntity<HeroDTO> updateById(@PathVariable(value = "id") UUID id, @RequestBody HeroDTO heroToUpdate) {
-        //     var updatedHero = heroFacade.updateById(id, heroToUpdate);
-        var byId = heroFacade.findById(id); //buscando desatualizado
-        /*
-            busca o desatualizado, atualiza os campos necessários e da um save, sem ter que fazer um monte de cláusula SQL
-            receber ID no DTO
-         */
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HeroDTO> updateById(@PathVariable(value = "id") UUID id,@Validated @RequestBody HeroDTO heroToUpdate) {
+        var heroDTO = heroFacade.updateById(id, heroToUpdate);
+        return ResponseEntity.ok().body(heroDTO);
     }
 
     @DeleteMapping("/id/{id}")

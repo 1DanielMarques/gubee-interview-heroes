@@ -3,7 +3,6 @@ package br.com.gubee.interview.core.features.hero;
 import br.com.gubee.interview.model.Hero;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface HeroRepository {
@@ -13,9 +12,9 @@ public interface HeroRepository {
 
     Hero findById(UUID id);
 
-   Hero findByName(String name);
+    Hero findByName(String name);
 
-    Hero updateById(UUID id, Hero hero);
+    Hero updateHero(Hero hero);
 
     void deleteById(UUID id);
 

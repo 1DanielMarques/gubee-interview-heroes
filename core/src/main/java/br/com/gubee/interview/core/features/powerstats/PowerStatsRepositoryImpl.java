@@ -53,11 +53,11 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
-    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
+    public PowerStats updatePowerStats(PowerStats powerStatsToUpdate) {
         try{
-        return postgresRepository.updateById(id, PowerStatsEntity.fromPowerStats(powerStatsToUpdate)).toPowerStats();
+        return postgresRepository.updatePowerStats(PowerStatsEntity.fromPowerStats(powerStatsToUpdate)).toPowerStats();
         } catch (ResourceNotFoundException e) {
-            throw new PowerStatsByIdNotFoundException(id);
+            throw new PowerStatsByIdNotFoundException(powerStatsToUpdate.getId());
         }
     }
 }

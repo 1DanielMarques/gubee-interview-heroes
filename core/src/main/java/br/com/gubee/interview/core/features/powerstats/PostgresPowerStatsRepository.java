@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -29,10 +28,13 @@ public class PostgresPowerStatsRepository {
 
     private final String DELETE_BY_ID_QUERY = " DELETE FROM power_stats WHERE power_stats.id = :id ";
 
+    private final String UPDATE_POWER_STATS_QUERY = " UPDATE power_stats SET updated_at = :updatedAt, " +
+            "  agility = :agility,  dexterity = :dexterity, strength = :strength, intelligence = :intelligence WHERE power_stats.id = :id ";
+
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public PowerStatsEntity create(PowerStatsEntity powerStatsEntity) throws  ResourceNotFoundException{
+    public PowerStatsEntity create(PowerStatsEntity powerStatsEntity) throws ResourceNotFoundException {
         final Map<String, Object> params = Map.of("strength", powerStatsEntity.getStrength(),
                 "agility", powerStatsEntity.getAgility(),
                 "dexterity", powerStatsEntity.getDexterity(),
@@ -64,52 +66,25 @@ public class PostgresPowerStatsRepository {
 
 
     public void deleteById(UUID id) throws ResourceNotFoundException {
-        try{
+        try {
             var param = new MapSqlParameterSource("id", id);
             namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
-        }catch (DataAccessException e){
+        } catch (DataAccessException e) {
             throw new ResourceNotFoundException();
         }
 
     }
 
 
-    public PowerStatsEntity updateById(UUID id, PowerStatsEntity powerStatsToUpdate) throws ResourceNotFoundException {
-        try {
-            Map<String, Object> params = createUpdateParams(powerStatsToUpdate);
-            params.put("id", id);
-            namedParameterJdbcTemplate.update(createUpdateQuery(powerStatsToUpdate), params);
-            return findById(id);
-        }catch (DataAccessException e){
-            throw new ResourceNotFoundException();
-        }
-
+    public PowerStatsEntity updatePowerStats(PowerStatsEntity powerStatsToUpdate) throws ResourceNotFoundException {
+        final Map<String, Object> params = Map.of("updatedAt", Timestamp.from(Instant.now()),
+                "agility", powerStatsToUpdate.getAgility(),
+                "dexterity", powerStatsToUpdate.getDexterity(),
+                "strength", powerStatsToUpdate.getStrength(),
+                "intelligence", powerStatsToUpdate.getIntelligence(),
+                "id", powerStatsToUpdate.getId());
+        namedParameterJdbcTemplate.update(UPDATE_POWER_STATS_QUERY, params);
+        return findById(powerStatsToUpdate.getId());
     }
 
-    private String createUpdateQuery(PowerStatsEntity powerStats) {
-        var UPDATE_POWER_STATS_QUERY = " UPDATE " +
-                " power_stats " +
-                " SET ";
-        UPDATE_POWER_STATS_QUERY += " updated_at = :updatedAt ";
-        if (powerStats.getAgility() != null)
-            UPDATE_POWER_STATS_QUERY = ((powerStats.getAgility() >= 0 && powerStats.getAgility() <= 10)) ? UPDATE_POWER_STATS_QUERY + ", agility = :agility " : UPDATE_POWER_STATS_QUERY + "";
-        if (powerStats.getDexterity() != null)
-            UPDATE_POWER_STATS_QUERY = ((powerStats.getDexterity() >= 0 && powerStats.getDexterity() <= 10)) ? UPDATE_POWER_STATS_QUERY + ", dexterity = :dexterity " : UPDATE_POWER_STATS_QUERY + "";
-        if (powerStats.getStrength() != null)
-            UPDATE_POWER_STATS_QUERY = ((powerStats.getStrength() >= 0 && powerStats.getStrength() <= 10)) ? UPDATE_POWER_STATS_QUERY + ", strength = :strength " : UPDATE_POWER_STATS_QUERY + "";
-        if (powerStats.getIntelligence() != null)
-            UPDATE_POWER_STATS_QUERY = ((powerStats.getIntelligence() >= 0 && powerStats.getIntelligence() <= 10)) ? UPDATE_POWER_STATS_QUERY + ", intelligence = :intelligence " : UPDATE_POWER_STATS_QUERY + "";
-        UPDATE_POWER_STATS_QUERY += " WHERE power_stats.id = :id ";
-        return UPDATE_POWER_STATS_QUERY;
-    }
-
-    private Map<String, Object> createUpdateParams(PowerStatsEntity powerStats) {
-        Map<String, Object> params = new HashMap<>();
-        if (powerStats.getAgility() != null) params.put("agility", powerStats.getAgility());
-        if (powerStats.getDexterity() != null) params.put("dexterity", powerStats.getDexterity());
-        if (powerStats.getStrength() != null) params.put("strength", powerStats.getStrength());
-        if (powerStats.getIntelligence() != null) params.put("intelligence", powerStats.getIntelligence());
-        params.put("updatedAt", Timestamp.from(Instant.now()));
-        return params;
-    }
 }
