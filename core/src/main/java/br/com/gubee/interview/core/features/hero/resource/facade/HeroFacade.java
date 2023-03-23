@@ -58,6 +58,7 @@ public class HeroFacade {
         powerStatsToUpdate.setId(findHero.findById(id).getPowerStatsId());
         var updatedPowerStats = powerStatsFacade.updateById(powerStatsToUpdate.getId(), powerStatsToUpdate);
 
+        var heroById = findHero.findById(id); //hero desatualizado
         var heroToUpdate = assembler.toHeroDomain(heroDTO, updatedPowerStats.getId());
         var updatedHero = updateHero.updateById(id, heroToUpdate);
         return assembler.toHeroDTO(updatedHero, updatedPowerStats);

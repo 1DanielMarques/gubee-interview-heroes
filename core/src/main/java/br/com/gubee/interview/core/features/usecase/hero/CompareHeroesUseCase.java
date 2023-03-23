@@ -17,7 +17,6 @@ public class CompareHeroesUseCase implements CompareHeroes {
 
     @Override
     public ComparedHeroes compareHeroes(String firstHeroName, String secondHeroName) {
-        try {
             ComparedHeroes comparedHeroes = new ComparedHeroes();
 
             var firstHero = heroRepository.findByName(firstHeroName.toUpperCase());
@@ -39,15 +38,6 @@ public class CompareHeroesUseCase implements CompareHeroes {
             comparedHeroes.setSecondDexterity((secondPowerStats.getDexterity() >= firstPowerStats.getDexterity()) ? secondPowerStats.getDexterity() : secondPowerStats.getDexterity() * -1);
             comparedHeroes.setSecondIntelligence((secondPowerStats.getIntelligence() >= firstPowerStats.getIntelligence()) ? secondPowerStats.getIntelligence() : secondPowerStats.getIntelligence() * -1);
             return comparedHeroes;
-        } catch (ResourceNotFoundException e) {
-            // Is it clean?
-            if (!heroRepository.exist(firstHeroName.toUpperCase())) {
-                throw new HeroByNameNotFoundException(firstHeroName);
-            } else {
-                throw new HeroByNameNotFoundException(secondHeroName);
-            }
-        }
     }
-
 
 }

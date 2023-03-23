@@ -1,10 +1,9 @@
 package br.com.gubee.interview.core.features.powerstats;
 
-import br.com.gubee.interview.core.exception.PowerStatsByIdNotFoundException;
 import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.model.entities.PowerStatsEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -33,7 +32,7 @@ public class PostgresPowerStatsRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public PowerStatsEntity create(PowerStatsEntity powerStatsEntity) {
+    public PowerStatsEntity create(PowerStatsEntity powerStatsEntity) throws  ResourceNotFoundException{
         final Map<String, Object> params = Map.of("strength", powerStatsEntity.getStrength(),
                 "agility", powerStatsEntity.getAgility(),
                 "dexterity", powerStatsEntity.getDexterity(),
@@ -42,11 +41,7 @@ public class PostgresPowerStatsRepository {
                 CREATE_POWER_STATS_QUERY,
                 params,
                 UUID.class);
-        try {
-            return findById(id);
-        } catch (ResourceNotFoundException e) {
-            throw new PowerStatsByIdNotFoundException(id);
-        }
+        return findById(id);
     }
 
 
@@ -61,7 +56,7 @@ public class PostgresPowerStatsRepository {
         try {
             var param = new MapSqlParameterSource("id", id);
             return namedParameterJdbcTemplate.queryForObject(FIND_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(PowerStatsEntity.class));
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataAccessException e) {
             throw new ResourceNotFoundException();
         }
 
@@ -69,16 +64,26 @@ public class PostgresPowerStatsRepository {
 
 
     public void deleteById(UUID id) throws ResourceNotFoundException {
-        var param = new MapSqlParameterSource("id", id);
-        namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
+        try{
+            var param = new MapSqlParameterSource("id", id);
+            namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
+        }catch (DataAccessException e){
+            throw new ResourceNotFoundException();
+        }
+
     }
 
 
     public PowerStatsEntity updateById(UUID id, PowerStatsEntity powerStatsToUpdate) throws ResourceNotFoundException {
-        Map<String, Object> params = createUpdateParams(powerStatsToUpdate);
-        params.put("id", id);
-        namedParameterJdbcTemplate.update(createUpdateQuery(powerStatsToUpdate), params);
-        return findById(id);
+        try {
+            Map<String, Object> params = createUpdateParams(powerStatsToUpdate);
+            params.put("id", id);
+            namedParameterJdbcTemplate.update(createUpdateQuery(powerStatsToUpdate), params);
+            return findById(id);
+        }catch (DataAccessException e){
+            throw new ResourceNotFoundException();
+        }
+
     }
 
     private String createUpdateQuery(PowerStatsEntity powerStats) {

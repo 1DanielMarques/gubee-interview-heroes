@@ -1,5 +1,6 @@
 package br.com.gubee.interview.core.features.powerstats;
 
+import br.com.gubee.interview.core.exception.PowerStatsByIdNotFoundException;
 import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.model.PowerStats;
 import br.com.gubee.interview.model.entities.PowerStatsEntity;
@@ -17,26 +18,46 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
 
     @Override
     public PowerStats create(PowerStats powerStats) {
-        return postgresRepository.create(PowerStatsEntity.fromPowerStats(powerStats)).toPowerStats();
+        try {
+            return postgresRepository.create(PowerStatsEntity.fromPowerStats(powerStats)).toPowerStats();
+        } catch (ResourceNotFoundException e) {
+            //throw new ErrorCreatingPowerStatsException();
+            throw new PowerStatsByIdNotFoundException(powerStats.getId());
+        }
+
     }
 
     @Override
-    public PowerStats findById(UUID id) throws ResourceNotFoundException {
-        return postgresRepository.findById(id).toPowerStats();
+    public PowerStats findById(UUID id) {
+        try {
+            return postgresRepository.findById(id).toPowerStats();
+        } catch (ResourceNotFoundException e) {
+            throw new PowerStatsByIdNotFoundException(id);
+        }
+
     }
 
     @Override
     public List<PowerStats> findAll() {
-        return postgresRepository.findAll().stream().map(entity -> entity.toPowerStats()).toList();
+        return postgresRepository.findAll().stream().map(PowerStatsEntity::toPowerStats).toList();
     }
 
     @Override
-    public void deleteById(UUID id) throws ResourceNotFoundException {
-        postgresRepository.deleteById(id);
+    public void deleteById(UUID id) {
+        try {
+            postgresRepository.deleteById(id);
+        } catch (ResourceNotFoundException e) {
+            throw new PowerStatsByIdNotFoundException(id);
+        }
+
     }
 
     @Override
-    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) throws ResourceNotFoundException {
+    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
+        try{
         return postgresRepository.updateById(id, PowerStatsEntity.fromPowerStats(powerStatsToUpdate)).toPowerStats();
+        } catch (ResourceNotFoundException e) {
+            throw new PowerStatsByIdNotFoundException(id);
+        }
     }
 }

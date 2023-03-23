@@ -18,22 +18,13 @@ public class DeleteHeroUseCase implements DeleteHero {
     @Transactional
     @Override
     public void deleteById(UUID id) {
-        try {
             heroRepository.deleteById(id);
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByIdNotFoundException(id);
-        }
     }
 
     @Transactional
     @Override
     public void deleteByName(String name) {
-        try {
             heroRepository.deleteByName(name.toUpperCase());
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByNameNotFoundException(name);
-        }
-
     }
 
 }

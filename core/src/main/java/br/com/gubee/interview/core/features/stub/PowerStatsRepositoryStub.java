@@ -1,14 +1,12 @@
 package br.com.gubee.interview.core.features.stub;
 
+import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.model.PowerStats;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PowerStatsRepositoryStub implements PowerStatsRepository {
 
@@ -24,10 +22,8 @@ public class PowerStatsRepositoryStub implements PowerStatsRepository {
     }
 
     @Override
-    public PowerStats findById(UUID id) throws ResourceNotFoundException {
-        var powerStats = inMemory.get(id);
-        if (powerStats == null) throw new ResourceNotFoundException();
-        return powerStats;
+    public PowerStats findById(UUID id) {
+        return inMemory.get(id);
     }
 
     @Override
@@ -36,14 +32,14 @@ public class PowerStatsRepositoryStub implements PowerStatsRepository {
     }
 
     @Override
-    public void deleteById(UUID id) throws ResourceNotFoundException {
+    public void deleteById(UUID id){
         var powerStats = findById(id);
         inMemory.remove(powerStats.getId());
     }
 
     @Override
-    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) throws ResourceNotFoundException {
-        if (inMemory.get(id) == null) throw new ResourceNotFoundException();
+    public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
+        if (inMemory.get(id) == null) throw new HeroByIdNotFoundException(id);
         var olderPowerStats = inMemory.get(id);
         powerStatsToUpdate.setId(olderPowerStats.getId());
         powerStatsToUpdate.setCreatedAt(olderPowerStats.getCreatedAt());

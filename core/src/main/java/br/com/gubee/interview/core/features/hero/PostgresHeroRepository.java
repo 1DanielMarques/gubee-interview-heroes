@@ -4,6 +4,7 @@ import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.model.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -39,7 +40,7 @@ public class PostgresHeroRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
-    public HeroEntity create(HeroEntity heroEntity) {
+    public HeroEntity create(HeroEntity heroEntity) throws ResourceNotFoundException{
         final Map<String, Object> params = Map.of("name", heroEntity.getName(),
                 "race", heroEntity.getRace().name(),
                 "powerStatsId", heroEntity.getPowerStatsId());
@@ -47,11 +48,7 @@ public class PostgresHeroRepository {
                 CREATE_HERO_QUERY,
                 params,
                 UUID.class);
-        try {
-            return findById(heroId);
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByIdNotFoundException(heroId);
-        }
+        return findById(heroId);
     }
 
 
@@ -65,18 +62,16 @@ public class PostgresHeroRepository {
         try {
             var param = new MapSqlParameterSource("id", id);
             return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_ID_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataAccessException e) {
             throw new ResourceNotFoundException();
         }
-
     }
 
     public HeroEntity findByName(String name) throws ResourceNotFoundException {
         try {
             var param = new MapSqlParameterSource("name", name);
-            HeroEntity hero = namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
-            return hero;
-        } catch (EmptyResultDataAccessException e) {
+            return namedParameterJdbcTemplate.queryForObject(FIND_HERO_BY_NAME_QUERY, param, BeanPropertyRowMapper.newInstance(HeroEntity.class));
+        } catch (DataAccessException e) {
             throw new ResourceNotFoundException();
         }
 
@@ -88,6 +83,7 @@ public class PostgresHeroRepository {
         params.put("id", id);
         namedParameterJdbcTemplate.update(createUpdateQuery(hero), params);
         return findById(id);
+        // trocar toda a logica por um SAVE
     }
 
     private String createUpdateQuery(HeroEntity hero) {
@@ -110,16 +106,21 @@ public class PostgresHeroRepository {
         return params;
     }
 
-    public void deleteById(UUID id) throws ResourceNotFoundException {
+    public void deleteById(UUID id) throws ResourceNotFoundException{
+        try {
         var param = new MapSqlParameterSource("id", id);
-        namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
+        var rowsAffected = namedParameterJdbcTemplate.update(DELETE_BY_ID_QUERY, param);
+        if (rowsAffected == 0) throw new HeroByIdNotFoundException(id);
+        } catch (DataAccessException e) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     public void deleteByName(String name) throws ResourceNotFoundException {
         try {
             var param = new MapSqlParameterSource("name", name);
             namedParameterJdbcTemplate.update(DELETE_BY_NAME_QUERY, param);
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataAccessException e) {
             throw new ResourceNotFoundException();
         }
 

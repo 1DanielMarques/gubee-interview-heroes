@@ -14,12 +14,14 @@ public class Assembler {
     public Hero toHeroDomain(HeroDTO heroDTO, UUID powerStatsId) {
         // Is this method clean or not?
         heroDTO.setRace((heroDTO.getRace() != null) ? heroDTO.getRace().toUpperCase() : null);
+        // colocar condicao no DTO
         var race = switch (heroDTO.getRace()) {
             case "HUMAN" -> Race.HUMAN;
             case "ALIEN" -> Race.ALIEN;
             case "DIVINE" -> Race.DIVINE;
             case "CYBORG" -> Race.CYBORG;
             case null -> null;
+            // nao retornar null
             default -> throw new IllegalArgumentException("Invalid Race of Hero: " + heroDTO.getRace());
         };
 

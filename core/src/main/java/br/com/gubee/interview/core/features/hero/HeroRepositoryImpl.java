@@ -1,5 +1,7 @@
 package br.com.gubee.interview.core.features.hero;
 
+import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
+import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
 import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.model.Hero;
 import br.com.gubee.interview.model.entities.HeroEntity;
@@ -16,37 +18,64 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     @Override
     public Hero create(Hero hero) {
-        return postgresRepository.create(HeroEntity.fromHero(hero)).toHero();
+        try {
+            return postgresRepository.create(HeroEntity.fromHero(hero)).toHero();
+        } catch (ResourceNotFoundException e) {
+            //throw new ErrorCreatingHeroException();
+            throw new RuntimeException();
+        }
+
     }
 
     @Override
     public List<Hero> findAll() {
-        return postgresRepository.findAll().stream().map(entity -> entity.toHero()).toList();
+        return postgresRepository.findAll().stream().map(HeroEntity::toHero).toList();
     }
 
     @Override
-    public Hero findById(UUID id) throws ResourceNotFoundException {
-        return postgresRepository.findById(id).toHero();
+    public Hero findById(UUID id) {
+        try {
+            return postgresRepository.findById(id).toHero();
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByIdNotFoundException(id);
+        }
+
     }
 
     @Override
-    public Hero findByName(String name) throws ResourceNotFoundException {
-        return postgresRepository.findByName(name).toHero();
+    public Hero findByName(String name) {
+        try {
+            return postgresRepository.findByName(name).toHero();
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByNameNotFoundException(name);
+        }
     }
 
     @Override
-    public Hero updateById(UUID id, Hero hero) throws ResourceNotFoundException {
-        return postgresRepository.updateById(id, HeroEntity.fromHero(hero)).toHero();
+    public Hero updateById(UUID id, Hero hero) {
+        //return postgresRepository.updateById(id, HeroEntity.fromHero(hero)).toHero();
+        // return postgresRepository.save(id,HeroEntity.fromHero(hero)).toHero();
+        // dar um Save
+        return null;
     }
 
     @Override
-    public void deleteById(UUID id) throws ResourceNotFoundException {
-        postgresRepository.deleteById(id);
+    public void deleteById(UUID id) {
+        try{
+            postgresRepository.deleteById(id);
+        }catch (ResourceNotFoundException e){
+            throw new HeroByIdNotFoundException(id);
+        }
+
     }
 
     @Override
-    public void deleteByName(String name) throws ResourceNotFoundException {
-        postgresRepository.deleteByName(name);
+    public void deleteByName(String name) {
+        try{
+            postgresRepository.deleteByName(name);
+        }catch (ResourceNotFoundException e){
+            throw new HeroByNameNotFoundException(name);
+        }
     }
 
     @Override

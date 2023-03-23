@@ -2,7 +2,6 @@ package br.com.gubee.interview.core.features.usecase.hero;
 
 import br.com.gubee.interview.core.exception.HeroByIdNotFoundException;
 import br.com.gubee.interview.core.exception.HeroByNameNotFoundException;
-import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.core.features.usecase.hero.interfaces.FindHero;
 import br.com.gubee.interview.model.Hero;
@@ -23,21 +22,12 @@ public class FindHeroUseCase implements FindHero {
 
     @Override
     public Hero findById(UUID id) {
-        try {
-            return heroRepository.findById(id);
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByIdNotFoundException(id);
-        }
+        return heroRepository.findById(id);
     }
 
     @Override
     public Hero findByName(String name) {
-        try {
-            return heroRepository.findByName(name.toUpperCase());
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByNameNotFoundException(name.toUpperCase());
-        }
-
+        return heroRepository.findByName(name.toUpperCase());
     }
 
 }

@@ -4,16 +4,17 @@ import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.model.PowerStats;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface PowerStatsRepository {
     PowerStats create(PowerStats powerStats);
 
-    PowerStats findById(UUID id) throws ResourceNotFoundException;
+    PowerStats findById(UUID id);
 
     List<PowerStats> findAll();
 
-    void deleteById(UUID id) throws ResourceNotFoundException;
+    void deleteById(UUID id);
 
-    PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) throws ResourceNotFoundException;
+    PowerStats updateById(UUID id, PowerStats powerStatsToUpdate);
 }

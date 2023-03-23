@@ -6,10 +6,7 @@ import br.com.gubee.interview.core.features.hero.HeroRepository;
 import br.com.gubee.interview.model.Hero;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class HeroRepositoryStub implements HeroRepository {
 
@@ -30,23 +27,21 @@ public class HeroRepositoryStub implements HeroRepository {
     }
 
     @Override
-    public Hero findById(UUID id) throws ResourceNotFoundException {
-        var hero = inMemory.get(id);
-        if (hero == null) throw new ResourceNotFoundException();
-        return hero;
+    public Hero findById(UUID id) {
+        return inMemory.get(id);
     }
 
     @Override
-    public Hero findByName(String name) throws ResourceNotFoundException {
+    public Hero findByName(String name)  {
         List<Hero> heroFound = inMemory.values().stream().filter(hero -> hero.getName().equals(name))
                 .toList();
-        if (heroFound.size() == 0) throw new ResourceNotFoundException();
+       // if (heroFound.size() == 0) throw new ResourceNotFoundException();
         return heroFound.get(0);
     }
 
     @Override
-    public Hero updateById(UUID id, Hero heroToUpdate) throws ResourceNotFoundException {
-        if (inMemory.get(id) == null) throw new ResourceNotFoundException();
+    public Hero updateById(UUID id, Hero heroToUpdate)  {
+       // if (inMemory.get(id) == null) ;
         var olderHero = inMemory.get(id);
         heroToUpdate.setId(olderHero.getId());
         heroToUpdate.setCreatedAt(olderHero.getCreatedAt());
@@ -57,15 +52,15 @@ public class HeroRepositoryStub implements HeroRepository {
 
 
     @Override
-    public void deleteById(UUID id) throws ResourceNotFoundException {
+    public void deleteById(UUID id)  {
         var hero = findById(id);
         inMemory.remove(hero.getId());
 
     }
 
     @Override
-    public void deleteByName(String name) throws ResourceNotFoundException {
-        inMemory.remove(findByName(name).getId());
+    public void deleteByName(String name) {
+        //inMemory.remove(findByName(name).getId());
     }
 
     @Override

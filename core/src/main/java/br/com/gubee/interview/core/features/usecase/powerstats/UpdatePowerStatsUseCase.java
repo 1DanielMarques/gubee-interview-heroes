@@ -17,10 +17,6 @@ public class UpdatePowerStatsUseCase implements UpdatePowerStats {
     @Transactional
     @Override
     public PowerStats updateById(UUID id, PowerStats powerStatsToUpdate) {
-        try {
             return powerStatsRepository.updateById(id, powerStatsToUpdate);
-        } catch (ResourceNotFoundException e) {
-            throw new PowerStatsByIdNotFoundException(id);
-        }
     }
 }

@@ -1,7 +1,6 @@
 package br.com.gubee.interview.core.features.usecase.powerstats;
 
 import br.com.gubee.interview.core.exception.PowerStatsByIdNotFoundException;
-import br.com.gubee.interview.core.exception.ResourceNotFoundException;
 import br.com.gubee.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.core.features.usecase.powerstats.interfaces.FindPowerStats;
 import br.com.gubee.interview.model.PowerStats;
@@ -22,11 +21,7 @@ public class FindPowerStatsUseCase implements FindPowerStats {
 
     @Override
     public PowerStats findById(UUID id) {
-        try {
-            return powerStatsRepository.findById(id);
-        } catch (ResourceNotFoundException e) {
-            throw new PowerStatsByIdNotFoundException(id);
-        }
+        return powerStatsRepository.findById(id);
     }
 
 

@@ -34,7 +34,6 @@ public class FindHeroUseCaseTest {
     void shouldReturnHeroById() {
         //when
         var heroId = findHero.findById(createdHero.getId()).getId();
-
         //then
         assertEquals(createdHero.getId(), heroId);
     }
