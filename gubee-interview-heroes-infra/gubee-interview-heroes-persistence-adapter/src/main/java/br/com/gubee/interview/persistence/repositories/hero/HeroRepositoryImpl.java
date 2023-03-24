@@ -34,30 +34,50 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
-    public Hero findById(UUID id) throws ResourceNotFoundException{
+    public Hero findById(UUID id) {
+        try {
             return postgresRepository.findById(id).toHero();
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByIdNotFoundException(id);
+        }
     }
 
     @Override
-    public Hero findByName(String name) throws ResourceNotFoundException{
+    public Hero findByName(String name) {
+        try {
             return postgresRepository.findByName(name).toHero();
-
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByNameNotFoundException(name);
+        }
     }
 
     @Override
-    public Hero updateHero(Hero hero) throws ResourceNotFoundException{
+    public Hero updateHero(Hero hero) {
+        try {
             return postgresRepository.updateHero(HeroEntity.fromHero(hero)).toHero();
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByIdNotFoundException(hero.getId());
+        }
+
     }
 
     @Override
-    public void deleteById(UUID id) throws ResourceNotFoundException{
+    public void deleteById(UUID id) {
+        try {
             postgresRepository.deleteById(id);
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByIdNotFoundException(id);
+        }
 
     }
 
     @Override
-    public void deleteByName(String name) throws ResourceNotFoundException{
+    public void deleteByName(String name) {
+        try {
             postgresRepository.deleteByName(name);
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByNameNotFoundException(name);
+        }
     }
 
     @Override

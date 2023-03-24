@@ -22,11 +22,7 @@ public class FindPowerStatsUseCase implements FindPowerStats {
 
     @Override
     public PowerStats findById(UUID id) {
-        try {
             return powerStatsRepository.findById(id);
-        }catch (ResourceNotFoundException e){
-            throw new PowerStatsByIdNotFoundException(id);
-        }
     }
 
 

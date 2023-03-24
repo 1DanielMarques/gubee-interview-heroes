@@ -1,7 +1,6 @@
 package br.com.gubee.interview.domain.repository;
 
 
-import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.domain.model.hero.Hero;
 
 import java.util.List;
@@ -12,15 +11,15 @@ public interface HeroRepository {
 
     List<Hero> findAll();
 
-    Hero findById(UUID id) throws ResourceNotFoundException;
+    Hero findById(UUID id);
 
-    Hero findByName(String name) throws ResourceNotFoundException;
+    Hero findByName(String name);
 
-    Hero updateHero(Hero hero) throws ResourceNotFoundException;
+    Hero updateHero(Hero hero);
 
-    void deleteById(UUID id) throws ResourceNotFoundException;
+    void deleteById(UUID id);
 
-    void deleteByName(String name) throws ResourceNotFoundException;
+    void deleteByName(String name);
 
     boolean exist(String name);
 

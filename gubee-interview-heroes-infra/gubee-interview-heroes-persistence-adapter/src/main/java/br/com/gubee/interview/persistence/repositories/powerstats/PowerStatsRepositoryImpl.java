@@ -29,8 +29,12 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
-    public PowerStats findById(UUID id) throws ResourceNotFoundException{
+    public PowerStats findById(UUID id) {
+        try {
             return postgresRepository.findById(id).toPowerStats();
+        } catch (ResourceNotFoundException e) {
+            throw new PowerStatsByIdNotFoundException(id);
+        }
 
     }
 
@@ -40,12 +44,22 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
-    public void deleteById(UUID id) throws ResourceNotFoundException{
+    public void deleteById(UUID id) {
+        try {
             postgresRepository.deleteById(id);
+        } catch (ResourceNotFoundException e) {
+            throw new PowerStatsByIdNotFoundException(id);
+        }
+
     }
 
     @Override
-    public PowerStats updatePowerStats(PowerStats powerStats) throws ResourceNotFoundException{
-        return postgresRepository.updatePowerStats(PowerStatsEntity.fromPowerStats(powerStats)).toPowerStats();
+    public PowerStats updatePowerStats(PowerStats powerStats) {
+
+        try{
+            return postgresRepository.updatePowerStats(PowerStatsEntity.fromPowerStats(powerStats)).toPowerStats();
+        } catch (ResourceNotFoundException e) {
+            throw new PowerStatsByIdNotFoundException(powerStats.getId());
+        }
     }
 }

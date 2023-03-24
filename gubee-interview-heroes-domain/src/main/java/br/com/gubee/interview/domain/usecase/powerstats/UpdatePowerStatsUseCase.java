@@ -13,10 +13,6 @@ public class UpdatePowerStatsUseCase implements UpdatePowerStats {
 
     @Override
     public PowerStats updatePowerStats(PowerStats powerStatsToUpdate) {
-        try {
             return powerStatsRepository.updatePowerStats(powerStatsToUpdate);
-        }catch (ResourceNotFoundException e){
-            throw new PowerStatsByIdNotFoundException(powerStatsToUpdate.getId());
-        }
     }
 }

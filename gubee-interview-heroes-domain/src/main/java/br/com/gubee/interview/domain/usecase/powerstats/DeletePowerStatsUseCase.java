@@ -15,11 +15,6 @@ public class DeletePowerStatsUseCase implements DeletePowerStats {
 
     @Override
     public void deleteById(UUID id) {
-        try {
             powerStatsRepository.deleteById(id);
-        }catch (ResourceNotFoundException e){
-            throw new PowerStatsByIdNotFoundException(id);
-        }
-
     }
 }

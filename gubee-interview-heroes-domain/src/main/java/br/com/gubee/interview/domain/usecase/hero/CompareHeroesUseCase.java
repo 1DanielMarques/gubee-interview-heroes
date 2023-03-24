@@ -1,7 +1,5 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
-import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
-import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.domain.model.hero.ComparedHeroes;
 import br.com.gubee.interview.domain.repository.HeroRepository;
 import br.com.gubee.interview.domain.repository.PowerStatsRepository;
@@ -17,7 +15,6 @@ public class CompareHeroesUseCase implements CompareHeroes {
 
     @Override
     public ComparedHeroes compareHeroes(String firstHeroName, String secondHeroName) {
-        try {
             ComparedHeroes comparedHeroes = new ComparedHeroes();
 
             var firstHero = heroRepository.findByName(firstHeroName.toUpperCase());
@@ -39,12 +36,5 @@ public class CompareHeroesUseCase implements CompareHeroes {
             comparedHeroes.setSecondDexterity((secondPowerStats.getDexterity() >= firstPowerStats.getDexterity()) ? secondPowerStats.getDexterity() : secondPowerStats.getDexterity() * -1);
             comparedHeroes.setSecondIntelligence((secondPowerStats.getIntelligence() >= firstPowerStats.getIntelligence()) ? secondPowerStats.getIntelligence() : secondPowerStats.getIntelligence() * -1);
             return comparedHeroes;
-        }catch (ResourceNotFoundException e){
-            if (!heroRepository.exist(firstHeroName.toUpperCase())) {
-                throw new HeroByNameNotFoundException(firstHeroName);
-            } else {
-                throw new HeroByNameNotFoundException(secondHeroName);
-            }
-        }
     }
 }

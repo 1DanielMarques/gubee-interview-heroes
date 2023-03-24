@@ -73,9 +73,8 @@ public class HeroFacade {
 
 
     public void deleteByName(String name) {
-        var nameUpperCase = name;
-        var powerStatsId = findHero.findByName(nameUpperCase).getPowerStatsId();
-        deleteHero.deleteByName(nameUpperCase);
+        var powerStatsId = findHero.findByName(name).getPowerStatsId();
+        deleteHero.deleteByName(name);
         powerStatsFacade.deleteById(powerStatsId);
     }
 

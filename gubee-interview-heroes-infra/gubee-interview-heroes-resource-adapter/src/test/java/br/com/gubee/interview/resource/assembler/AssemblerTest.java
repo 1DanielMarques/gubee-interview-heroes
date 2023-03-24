@@ -35,7 +35,7 @@ public class AssemblerTest {
 
     private HeroDTO createHeroDTO() {
         return HeroDTO.builder()
-                .name("batman")
+                .name("BATMAN")
                 .race(Race.HUMAN)
                 .agility(2)
                 .dexterity(4)
