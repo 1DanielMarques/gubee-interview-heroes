@@ -3,7 +3,7 @@ package br.com.gubee.interview.domain.usecase.hero;
 import br.com.gubee.interview.domain.enums.Race;
 import br.com.gubee.interview.domain.exceptions.HeroAlreadyExistException;
 import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
-import br.com.gubee.interview.domain.hero.Hero;
+import br.com.gubee.interview.domain.model.hero.Hero;
 import br.com.gubee.interview.domain.repository.HeroRepository;
 import br.com.gubee.interview.domain.repository.HeroRepositoryStub;
 import br.com.gubee.interview.domain.usecase.hero.interfaces.CreateHero;

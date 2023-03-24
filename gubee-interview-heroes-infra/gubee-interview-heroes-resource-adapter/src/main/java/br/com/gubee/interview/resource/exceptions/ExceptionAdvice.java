@@ -1,9 +1,6 @@
 package br.com.gubee.interview.resource.exceptions;
 
-import br.com.gubee.interview.domain.exceptions.HeroByIdNotFoundException;
-import br.com.gubee.interview.domain.exceptions.HeroAlreadyExistException;
-import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
-import br.com.gubee.interview.domain.exceptions.PowerStatsByIdNotFoundException;
+import br.com.gubee.interview.domain.exceptions.*;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -117,6 +114,16 @@ public class ExceptionAdvice {
     @ExceptionHandler(PowerStatsByIdNotFoundException.class)
     ResponseEntity<Object> powerStatsByIdNotFound(PowerStatsByIdNotFoundException e) {
         return status(NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(FailedCreateHeroException.class)
+    ResponseEntity<Object> failedCreateHero(FailedCreateHeroException e) {
+        return status(409).body(e.getMessage());
+    }
+
+    @ExceptionHandler(FailedCreatePowerStatsException.class)
+    ResponseEntity<Object> failedCreatePowerStats(FailedCreatePowerStatsException e) {
+        return status(409).body(e.getMessage());
     }
 
 

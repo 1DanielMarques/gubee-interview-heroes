@@ -1,6 +1,6 @@
 package br.com.gubee.interview.domain.usecase.powerstats;
 
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import br.com.gubee.interview.domain.repository.PowerStatsRepository;
 import br.com.gubee.interview.domain.usecase.powerstats.interfaces.CreatePowerStats;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package br.com.gubee.interview.resource.assembler;
 
 
-import br.com.gubee.interview.domain.hero.Hero;
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.hero.Hero;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import br.com.gubee.interview.resource.dto.HeroDTO;
 
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package br.com.gubee.interview.domain.usecase.powerstats;
 
+import br.com.gubee.interview.domain.exceptions.PowerStatsByIdNotFoundException;
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.domain.repository.PowerStatsRepository;
 import br.com.gubee.interview.domain.usecase.powerstats.interfaces.DeletePowerStats;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,11 @@ public class DeletePowerStatsUseCase implements DeletePowerStats {
 
     @Override
     public void deleteById(UUID id) {
+        try {
             powerStatsRepository.deleteById(id);
+        }catch (ResourceNotFoundException e){
+            throw new PowerStatsByIdNotFoundException(id);
+        }
 
     }
 }

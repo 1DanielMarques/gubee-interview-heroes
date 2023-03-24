@@ -1,4 +1,4 @@
-package br.com.gubee.interview.domain.hero;
+package br.com.gubee.interview.domain.model.hero;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,7 +2,7 @@ package br.com.gubee.interview.persistence.entities;
 
 
 import br.com.gubee.interview.domain.enums.Race;
-import br.com.gubee.interview.domain.hero.Hero;
+import br.com.gubee.interview.domain.model.hero.Hero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,8 +1,9 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
 import br.com.gubee.interview.domain.exceptions.HeroByIdNotFoundException;
+import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
 import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
-import br.com.gubee.interview.domain.hero.Hero;
+import br.com.gubee.interview.domain.model.hero.Hero;
 import br.com.gubee.interview.domain.repository.HeroRepository;
 import br.com.gubee.interview.domain.usecase.hero.interfaces.FindHero;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,20 @@ public class FindHeroUseCase implements FindHero {
 
     @Override
     public Hero findById(UUID id) {
+        try {
             return heroRepository.findById(id);
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByIdNotFoundException(id);
+        }
     }
 
     @Override
     public Hero findByName(String name) {
-        return heroRepository.findByName(name.toUpperCase());
+        try {
+            return heroRepository.findByName(name.toUpperCase());
+        } catch (ResourceNotFoundException e) {
+            throw new HeroByNameNotFoundException(name);
+        }
     }
 
 }

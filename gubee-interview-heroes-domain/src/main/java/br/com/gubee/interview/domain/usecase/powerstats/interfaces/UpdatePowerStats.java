@@ -1,7 +1,7 @@
 package br.com.gubee.interview.domain.usecase.powerstats.interfaces;
 
 
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 
 public interface UpdatePowerStats {
 

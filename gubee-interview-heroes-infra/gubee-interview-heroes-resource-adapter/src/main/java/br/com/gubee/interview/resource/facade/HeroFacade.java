@@ -1,8 +1,8 @@
 package br.com.gubee.interview.resource.facade;
 
-import br.com.gubee.interview.domain.hero.ComparedHeroes;
-import br.com.gubee.interview.domain.hero.Hero;
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.hero.ComparedHeroes;
+import br.com.gubee.interview.domain.model.hero.Hero;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import br.com.gubee.interview.domain.usecase.hero.interfaces.*;
 import br.com.gubee.interview.resource.assembler.Assembler;
 import br.com.gubee.interview.resource.dto.HeroDTO;
@@ -60,7 +60,8 @@ public class HeroFacade {
 
 
         var heroToUpdate = assembler.toHeroDomain(heroDTO, updatedPowerStats.getId());
-        var updatedHero = updateHero.updateById(id, heroToUpdate);
+        heroToUpdate.setId(id);
+        var updatedHero = updateHero.updateHero(heroToUpdate);
         return assembler.toHeroDTO(updatedHero, updatedPowerStats);
     }
 

@@ -3,8 +3,7 @@ package br.com.gubee.interview.domain.repository;
 
 
 import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
-import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
-import br.com.gubee.interview.domain.hero.Hero;
+import br.com.gubee.interview.domain.model.hero.Hero;
 
 import java.time.Instant;
 import java.util.*;
