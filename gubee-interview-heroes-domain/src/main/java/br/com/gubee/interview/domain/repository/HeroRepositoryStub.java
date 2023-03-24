@@ -2,6 +2,8 @@ package br.com.gubee.interview.domain.repository;
 
 
 
+import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.domain.hero.Hero;
 
 import java.time.Instant;
@@ -34,7 +36,7 @@ public class HeroRepositoryStub implements HeroRepository {
     public Hero findByName(String name)  {
         List<Hero> heroFound = inMemory.values().stream().filter(hero -> hero.getName().equals(name))
                 .toList();
-       // if (heroFound.size() == 0) throw new ResourceNotFoundException();
+        if (heroFound.size() == 0) throw new HeroByNameNotFoundException(name);
         return heroFound.get(0);
     }
 
