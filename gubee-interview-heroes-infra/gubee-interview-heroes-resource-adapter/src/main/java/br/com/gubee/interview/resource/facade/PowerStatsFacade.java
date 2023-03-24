@@ -1,6 +1,6 @@
 package br.com.gubee.interview.resource.facade;
 
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import br.com.gubee.interview.domain.usecase.powerstats.interfaces.CreatePowerStats;
 import br.com.gubee.interview.domain.usecase.powerstats.interfaces.DeletePowerStats;
 import br.com.gubee.interview.domain.usecase.powerstats.interfaces.FindPowerStats;

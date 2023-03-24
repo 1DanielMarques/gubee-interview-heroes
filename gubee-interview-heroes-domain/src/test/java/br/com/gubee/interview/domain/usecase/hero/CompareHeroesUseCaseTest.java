@@ -1,10 +1,9 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
 import br.com.gubee.interview.domain.enums.Race;
-import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
-import br.com.gubee.interview.domain.hero.ComparedHeroes;
-import br.com.gubee.interview.domain.hero.Hero;
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.hero.ComparedHeroes;
+import br.com.gubee.interview.domain.model.hero.Hero;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import br.com.gubee.interview.domain.repository.HeroRepository;
 import br.com.gubee.interview.domain.repository.HeroRepositoryStub;
 import br.com.gubee.interview.domain.repository.PowerStatsRepository;

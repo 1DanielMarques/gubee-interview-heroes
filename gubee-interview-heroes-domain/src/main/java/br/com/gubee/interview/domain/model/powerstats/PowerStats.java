@@ -1,6 +1,5 @@
-package br.com.gubee.interview.domain.hero;
+package br.com.gubee.interview.domain.model.powerstats;
 
-import br.com.gubee.interview.domain.enums.Race;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,21 +11,17 @@ import java.util.UUID;
 import static lombok.AccessLevel.PRIVATE;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE)
-public class Hero {
+@AllArgsConstructor
+@Builder
+public class PowerStats {
 
     private UUID id;
-    private String name;
-    private Race race;
-    private UUID powerStatsId;
+    private Integer strength;
+    private Integer agility;
+    private Integer dexterity;
+    private Integer intelligence;
     private Instant createdAt;
     private Instant updatedAt;
-    private boolean enabled;
 
-
-    public boolean getEnabled() {
-        return this.enabled;
-    }
 }

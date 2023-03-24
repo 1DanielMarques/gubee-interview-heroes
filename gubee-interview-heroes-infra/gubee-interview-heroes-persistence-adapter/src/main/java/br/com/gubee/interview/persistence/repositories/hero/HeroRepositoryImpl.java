@@ -1,6 +1,7 @@
 package br.com.gubee.interview.persistence.repositories.hero;
 
-import br.com.gubee.interview.domain.hero.Hero;
+import br.com.gubee.interview.domain.exceptions.FailedCreateHeroException;
+import br.com.gubee.interview.domain.model.hero.Hero;
 import br.com.gubee.interview.domain.repository.HeroRepository;
 import br.com.gubee.interview.persistence.entities.HeroEntity;
 import br.com.gubee.interview.domain.exceptions.HeroByIdNotFoundException;
@@ -22,8 +23,7 @@ public class HeroRepositoryImpl implements HeroRepository {
         try {
             return postgresRepository.create(HeroEntity.fromHero(hero)).toHero();
         } catch (ResourceNotFoundException e) {
-            //throw new ErrorCreatingHeroException();
-            throw new RuntimeException();
+            throw new FailedCreateHeroException();
         }
 
     }
@@ -34,50 +34,30 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
-    public Hero findById(UUID id) {
-        try {
+    public Hero findById(UUID id) throws ResourceNotFoundException{
             return postgresRepository.findById(id).toHero();
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByIdNotFoundException(id);
-        }
     }
 
     @Override
-    public Hero findByName(String name) {
-        try {
+    public Hero findByName(String name) throws ResourceNotFoundException{
             return postgresRepository.findByName(name).toHero();
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByNameNotFoundException(name);
-        }
+
     }
 
     @Override
-    public Hero updateHero(Hero hero) {
-        try {
+    public Hero updateHero(Hero hero) throws ResourceNotFoundException{
             return postgresRepository.updateHero(HeroEntity.fromHero(hero)).toHero();
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByIdNotFoundException(hero.getId());
-        }
-
     }
 
     @Override
-    public void deleteById(UUID id) {
-        try {
+    public void deleteById(UUID id) throws ResourceNotFoundException{
             postgresRepository.deleteById(id);
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByIdNotFoundException(id);
-        }
 
     }
 
     @Override
-    public void deleteByName(String name) {
-        try {
+    public void deleteByName(String name) throws ResourceNotFoundException{
             postgresRepository.deleteByName(name);
-        } catch (ResourceNotFoundException e) {
-            throw new HeroByNameNotFoundException(name);
-        }
     }
 
     @Override

@@ -1,6 +1,6 @@
 package br.com.gubee.interview.persistence.entities;
 
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

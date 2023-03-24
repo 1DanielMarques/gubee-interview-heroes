@@ -1,6 +1,8 @@
 package br.com.gubee.interview.domain.usecase.powerstats;
 
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.exceptions.PowerStatsByIdNotFoundException;
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import br.com.gubee.interview.domain.repository.PowerStatsRepository;
 import br.com.gubee.interview.domain.usecase.powerstats.interfaces.FindPowerStats;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,11 @@ public class FindPowerStatsUseCase implements FindPowerStats {
 
     @Override
     public PowerStats findById(UUID id) {
-        return powerStatsRepository.findById(id);
+        try {
+            return powerStatsRepository.findById(id);
+        }catch (ResourceNotFoundException e){
+            throw new PowerStatsByIdNotFoundException(id);
+        }
     }
 
 

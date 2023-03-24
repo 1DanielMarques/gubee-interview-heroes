@@ -1,6 +1,7 @@
 package br.com.gubee.interview.persistence.repositories.powerstats;
 
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.exceptions.FailedCreatePowerStatsException;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import br.com.gubee.interview.domain.repository.PowerStatsRepository;
 import br.com.gubee.interview.persistence.entities.PowerStatsEntity;
 import br.com.gubee.interview.domain.exceptions.PowerStatsByIdNotFoundException;
@@ -22,19 +23,14 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
         try {
             return postgresRepository.create(PowerStatsEntity.fromPowerStats(powerStats)).toPowerStats();
         } catch (ResourceNotFoundException e) {
-            //throw new ErrorCreatingPowerStatsException();
-            throw new PowerStatsByIdNotFoundException(powerStats.getId());
+            throw new FailedCreatePowerStatsException();
         }
 
     }
 
     @Override
-    public PowerStats findById(UUID id) {
-        try {
+    public PowerStats findById(UUID id) throws ResourceNotFoundException{
             return postgresRepository.findById(id).toPowerStats();
-        } catch (ResourceNotFoundException e) {
-            throw new PowerStatsByIdNotFoundException(id);
-        }
 
     }
 
@@ -44,22 +40,12 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     }
 
     @Override
-    public void deleteById(UUID id) {
-        try {
+    public void deleteById(UUID id) throws ResourceNotFoundException{
             postgresRepository.deleteById(id);
-        } catch (ResourceNotFoundException e) {
-            throw new PowerStatsByIdNotFoundException(id);
-        }
-
     }
 
     @Override
-    public PowerStats updatePowerStats(PowerStats powerStats) {
-
-        try{
+    public PowerStats updatePowerStats(PowerStats powerStats) throws ResourceNotFoundException{
         return postgresRepository.updatePowerStats(PowerStatsEntity.fromPowerStats(powerStats)).toPowerStats();
-        } catch (ResourceNotFoundException e) {
-            throw new PowerStatsByIdNotFoundException(powerStats.getId());
-        }
     }
 }

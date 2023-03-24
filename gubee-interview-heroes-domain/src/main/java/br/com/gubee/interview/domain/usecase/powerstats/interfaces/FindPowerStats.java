@@ -1,5 +1,5 @@
 package br.com.gubee.interview.domain.usecase.powerstats.interfaces;
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,7 +1,7 @@
 package br.com.gubee.interview.domain.repository;
 
 
-import br.com.gubee.interview.domain.powerstats.PowerStats;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 
 import java.time.Instant;
 import java.util.*;

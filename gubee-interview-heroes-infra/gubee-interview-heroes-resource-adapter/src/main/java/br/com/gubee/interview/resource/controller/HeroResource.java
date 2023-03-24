@@ -1,6 +1,6 @@
 package br.com.gubee.interview.resource.controller;
 
-import br.com.gubee.interview.domain.hero.ComparedHeroes;
+import br.com.gubee.interview.domain.model.hero.ComparedHeroes;
 import br.com.gubee.interview.resource.dto.HeroDTO;
 import br.com.gubee.interview.resource.facade.HeroFacade;
 import lombok.RequiredArgsConstructor;
