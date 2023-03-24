@@ -1,6 +1,7 @@
 package br.com.gubee.interview.domain.repository;
 
 
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.domain.hero.Hero;
 
 import java.util.List;

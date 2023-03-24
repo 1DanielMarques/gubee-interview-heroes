@@ -3,8 +3,8 @@ package br.com.gubee.interview.persistence.repositories.powerstats;
 import br.com.gubee.interview.domain.powerstats.PowerStats;
 import br.com.gubee.interview.domain.repository.PowerStatsRepository;
 import br.com.gubee.interview.persistence.entities.PowerStatsEntity;
-import br.com.gubee.interview.persistence.exceptions.PowerStatsByIdNotFoundException;
-import br.com.gubee.interview.persistence.exceptions.ResourceNotFoundException;
+import br.com.gubee.interview.domain.exceptions.PowerStatsByIdNotFoundException;
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

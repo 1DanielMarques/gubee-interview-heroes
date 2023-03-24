@@ -1,5 +1,7 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
+import br.com.gubee.interview.domain.exceptions.HeroByIdNotFoundException;
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.domain.hero.Hero;
 import br.com.gubee.interview.domain.repository.HeroRepository;
 import br.com.gubee.interview.domain.usecase.hero.interfaces.FindHero;
@@ -20,7 +22,7 @@ public class FindHeroUseCase implements FindHero {
 
     @Override
     public Hero findById(UUID id) {
-        return heroRepository.findById(id);
+            return heroRepository.findById(id);
     }
 
     @Override

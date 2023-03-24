@@ -2,8 +2,8 @@ package br.com.gubee.interview.persistence.repositories.hero;
 
 
 import br.com.gubee.interview.persistence.entities.HeroEntity;
-import br.com.gubee.interview.persistence.exceptions.HeroByIdNotFoundException;
-import br.com.gubee.interview.persistence.exceptions.ResourceNotFoundException;
+import br.com.gubee.interview.domain.exceptions.HeroByIdNotFoundException;
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

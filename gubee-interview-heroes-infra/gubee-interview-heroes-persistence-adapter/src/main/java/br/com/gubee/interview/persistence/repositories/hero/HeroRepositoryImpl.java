@@ -3,9 +3,9 @@ package br.com.gubee.interview.persistence.repositories.hero;
 import br.com.gubee.interview.domain.hero.Hero;
 import br.com.gubee.interview.domain.repository.HeroRepository;
 import br.com.gubee.interview.persistence.entities.HeroEntity;
-import br.com.gubee.interview.persistence.exceptions.HeroByIdNotFoundException;
-import br.com.gubee.interview.persistence.exceptions.HeroByNameNotFoundException;
-import br.com.gubee.interview.persistence.exceptions.ResourceNotFoundException;
+import br.com.gubee.interview.domain.exceptions.HeroByIdNotFoundException;
+import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -40,7 +40,6 @@ public class HeroRepositoryImpl implements HeroRepository {
         } catch (ResourceNotFoundException e) {
             throw new HeroByIdNotFoundException(id);
         }
-
     }
 
     @Override

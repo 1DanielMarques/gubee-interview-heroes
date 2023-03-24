@@ -22,6 +22,11 @@ public class PersistenceContextConfiguration {
     }
 
     @Bean
+    public PostgresPowerStatsRepository postgresPowerStatsRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate){
+        return new PostgresPowerStatsRepository(namedParameterJdbcTemplate);
+    }
+
+    @Bean
     public HeroRepository heroRepository(PostgresHeroRepository postgresHeroRepository) {
         return new HeroRepositoryImpl(postgresHeroRepository);
     }

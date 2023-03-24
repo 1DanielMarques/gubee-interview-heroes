@@ -1,7 +1,7 @@
 package br.com.gubee.interview.persistence.repositories.powerstats;
 
 import br.com.gubee.interview.persistence.entities.PowerStatsEntity;
-import br.com.gubee.interview.persistence.exceptions.ResourceNotFoundException;
+import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

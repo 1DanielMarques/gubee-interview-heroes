@@ -1,4 +1,4 @@
-package br.com.gubee.interview.persistence.exceptions;
+package br.com.gubee.interview.domain.exceptions;
 
 import java.util.UUID;
 
