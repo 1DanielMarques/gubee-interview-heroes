@@ -50,7 +50,6 @@ public class SpringContextConfiguration {
         return new CompareHeroesUseCase(heroRepository, powerStatsRepository);
     }
 
-
     @Bean
     public PowerStatsFacade powerStatsFacade(PowerStatsRepository powerStatsRepository) {
         return new PowerStatsFacade(createPowerStats(powerStatsRepository),

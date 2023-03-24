@@ -4,6 +4,7 @@ package br.com.gubee.interview.persistence.entities;
 import br.com.gubee.interview.domain.enums.Race;
 import br.com.gubee.interview.domain.model.hero.Hero;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Data
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = PRIVATE)
 public class HeroEntity {
 

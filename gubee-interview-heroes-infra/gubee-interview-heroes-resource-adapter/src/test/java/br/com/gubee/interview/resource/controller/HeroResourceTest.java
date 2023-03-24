@@ -1,14 +1,21 @@
 package br.com.gubee.interview.resource.controller;
 
 import br.com.gubee.interview.domain.enums.Race;
+import br.com.gubee.interview.domain.model.hero.Hero;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
+import br.com.gubee.interview.domain.repository.HeroRepository;
 import br.com.gubee.interview.domain.repository.HeroRepositoryStub;
+import br.com.gubee.interview.domain.repository.PowerStatsRepository;
+import br.com.gubee.interview.domain.repository.PowerStatsRepositoryStub;
 import br.com.gubee.interview.resource.dto.HeroDTO;
 import br.com.gubee.interview.resource.facade.HeroFacade;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -135,7 +142,6 @@ class HeroResourceTest {
     void shouldUpdateHeroById() throws Exception {
         //given
         final String body = objectMapper.writeValueAsString(this.heroDTO);
-
         //when
         var url = String.format("/api/v1/heroes/id/%s", this.heroDTO.getId().toString());
         final ResultActions resultActions = mockMvc.perform(put(url)
