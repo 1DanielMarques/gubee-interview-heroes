@@ -25,7 +25,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -41,49 +42,44 @@ public class HeroResourceIT {
 
     @Autowired
     ObjectMapper mapper;
-
-    private PowerStats powerStats;
     private Hero hero;
 
     @BeforeEach
     void up() {
-        powerStats = PowerStats.builder()
+        hero = createAndSaveHero("BATMAN-TEST");
+    }
+
+    @AfterEach
+    void down() {
+        heroRepository.deleteById(hero.getId());
+        powerStatsRepository.deleteById(hero.getPowerStatsId());
+    }
+
+    private Hero createAndSaveHero(String name) {
+        var createdPowerStats = PowerStats.builder()
                 .agility(3)
                 .dexterity(4)
                 .strength(5)
                 .intelligence(6)
                 .build();
-        powerStats = powerStatsRepository.create(powerStats);
-        hero = Hero.builder()
-                .name("BATMAN")
+        createdPowerStats = powerStatsRepository.create(createdPowerStats);
+        var createdHero = Hero.builder()
+                .name(name)
                 .race(Race.HUMAN)
-                .powerStatsId(powerStats.getId())
+                .powerStatsId(createdPowerStats.getId())
                 .build();
-        hero = heroRepository.create(hero);
+        createdHero = heroRepository.create(createdHero);
+        return createdHero;
     }
-
-    @AfterEach
-    void down() {
-        try {
-            heroRepository.deleteById(hero.getId());
-            powerStatsRepository.deleteById(powerStats.getId());
-        } catch (Exception e) {
-            System.out.println("Doesn't exist");
-        }
-
-
-    }
-
 
     @Test
-    void returnListOfHeroes() throws Exception {
-
+    void shouldReturnListOfHeroes() throws Exception {
         //when
         var result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/heroes"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
         //then
-        result.andExpect(jsonPath("$[0].name").value("BATMAN"));
+        result.andExpect(jsonPath("$[0].name").value("BATMAN-TEST"));
     }
 
     @Test
@@ -97,9 +93,16 @@ public class HeroResourceIT {
                 .content(body));
 
         //then
-        var heroCreated = heroRepository.findByName("SUPERMAN");
-        var json = String.format("{ \"id\": \"%s\", \"name\": \"SUPERMAN\", \"race\": \"ALIEN\", \"strength\": 6, \"agility\": 5, \"dexterity\": 8, \"intelligence\": 10 } ", heroCreated.getId().toString());
-        resultActions.andExpect(status().isCreated()).andExpect(content().json(json));
+        var heroCreated = heroRepository.findByName("SUPERMAN-TEST");
+        resultActions.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(heroCreated.getId().toString()))
+                .andExpect(jsonPath("$.name").value("SUPERMAN-TEST"))
+                .andExpect(jsonPath("$.race").value("ALIEN"))
+                .andExpect(jsonPath("$.agility").value(5))
+                .andExpect(jsonPath("$.dexterity").value(8))
+                .andExpect(jsonPath("$.strength").value(6))
+                .andExpect(jsonPath("$.intelligence").value(10));
+
 
         heroRepository.deleteById(heroCreated.getId());
         powerStatsRepository.deleteById(heroCreated.getPowerStatsId());
@@ -107,7 +110,7 @@ public class HeroResourceIT {
 
     private HeroDTO createHeroRequest() {
         return HeroDTO.builder()
-                .name("Superman")
+                .name("SUPERMAN-TEST")
                 .agility(5)
                 .dexterity(8)
                 .strength(6)
@@ -129,25 +132,30 @@ public class HeroResourceIT {
         //when
         var result = mockMvc.perform(get("/api/v1/heroes/name/{name}", hero.getName())).andExpect(status().isOk());
         //then
-        result.andExpect(jsonPath("$.name").value("BATMAN"));
+        result.andExpect(jsonPath("$.name").value("BATMAN-TEST"));
     }
 
     @Test
     void shouldDeleteHeroById() throws Exception {
+        //given
+        var heroToDelete = createAndSaveHero("SUPERMAN-TEST");
         //when
-        var result = mockMvc.perform(delete("/api/v1/heroes/id/{id}", hero.getId())).andExpect(status().isNoContent());
+        var result = mockMvc.perform(delete("/api/v1/heroes/id/{id}", heroToDelete.getId())).andExpect(status().isNoContent());
         //then
-        var exception = assertThrows(HeroByIdNotFoundException.class, () -> heroRepository.findById(hero.getId()));
-        assertEquals("Hero not found: " + hero.getId(), exception.getMessage());
+        var exception = assertThrows(HeroByIdNotFoundException.class, () -> heroRepository.findById(heroToDelete.getId()));
+        assertEquals("Hero not found: " + heroToDelete.getId(), exception.getMessage());
+
     }
 
     @Test
     void shouldDeleteHeroByName() throws Exception {
+        //given
+        var heroToDelete = createAndSaveHero("SUPERMAN-TEST");
         //when
-        var result = mockMvc.perform(delete("/api/v1/heroes/name/{name}", hero.getName())).andExpect(status().isNoContent());
+        var result = mockMvc.perform(delete("/api/v1/heroes/name/{name}", heroToDelete.getName())).andExpect(status().isNoContent());
         //then
-        var exception = assertThrows(HeroByNameNotFoundException.class, () -> heroRepository.findByName(hero.getName()));
-        assertEquals("Hero not found: BATMAN", exception.getMessage());
+        var exception = assertThrows(HeroByNameNotFoundException.class, () -> heroRepository.findByName(heroToDelete.getName()));
+        assertEquals("Hero not found: SUPERMAN-TEST", exception.getMessage());
     }
 
     @Test
@@ -161,31 +169,28 @@ public class HeroResourceIT {
                 .build();
         secondPowerStats = powerStatsRepository.create(secondPowerStats);
         var secondHero = Hero.builder()
-                .name("SUPERMAN")
+                .name("SUPERMAN-TEST")
                 .race(Race.ALIEN)
                 .powerStatsId(secondPowerStats.getId())
                 .build();
         secondHero = heroRepository.create(secondHero);
 
-        var json = String.format("{\"first_id\": \"%s\",\n" +
-                "    \"first_strength\": -5,\n" +
-                "    \"first_agility\": -3,\n" +
-                "    \"first_dexterity\": 4,\n" +
-                "    \"first_intelligence\": 6,\n" +
-                "    \"second_id\": \"%s\",\n" +
-                "    \"second_strength\": 8,\n" +
-                "    \"second_agility\": 7,\n" +
-                "    \"second_dexterity\": -3,\n" +
-                "    \"second_intelligence\": -5 }", hero.getId().toString(), secondHero.getId().toString());
 
         //when
         var result = mockMvc.perform(get("/api/v1/heroes/compare/{firstHero}/with/{secondHero}", hero.getName(), secondHero.getName()));
         //then
-        result.andExpect(content().json(json));
+        result.andExpect(jsonPath("$.first_id").value(hero.getId().toString()))
+                .andExpect(jsonPath("$.first_agility").value(-3))
+                .andExpect(jsonPath("$.first_dexterity").value(4))
+                .andExpect(jsonPath("$.first_strength").value(-5))
+                .andExpect(jsonPath("$.first_intelligence").value(6))
+                .andExpect(jsonPath("$.second_id").value(secondHero.getId().toString()))
+                .andExpect(jsonPath("$.second_agility").value(7))
+                .andExpect(jsonPath("$.second_dexterity").value(-3))
+                .andExpect(jsonPath("$.second_strength").value(8))
+                .andExpect(jsonPath("$.second_intelligence").value(-5));
         heroRepository.deleteById(secondHero.getId());
         powerStatsRepository.deleteById(secondPowerStats.getId());
-
     }
-
 
 }
