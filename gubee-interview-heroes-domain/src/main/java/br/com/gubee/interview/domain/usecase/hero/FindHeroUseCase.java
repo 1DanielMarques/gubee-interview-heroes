@@ -25,7 +25,7 @@ public class FindHeroUseCase implements FindHero {
 
     @Override
     public Hero findByName(String name) {
-        return heroRepository.findByName(name.toUpperCase());
+        return heroRepository.findByName(name);
     }
 
 }

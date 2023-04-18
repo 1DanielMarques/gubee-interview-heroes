@@ -25,9 +25,10 @@ public class HeroFacade {
     private final PowerStatsFacade powerStatsFacade;
 
 
-    public HeroDTO create(HeroDTO heroDto) {
-        var powerStats = powerStatsFacade.create(assembler.toPowerStatsDomain(heroDto));
-        var hero = createHero.create(assembler.toHeroDomain(heroDto, powerStats.getId()));
+    public HeroDTO create(HeroDTO heroDTO) {
+        heroDTO.setName(heroDTO.getName().toUpperCase());
+        var powerStats = powerStatsFacade.create(assembler.toPowerStatsDomain(heroDTO));
+        var hero = createHero.create(assembler.toHeroDomain(heroDTO, powerStats.getId()));
         return assembler.toHeroDTO(hero, powerStats);
     }
 
@@ -47,7 +48,7 @@ public class HeroFacade {
 
 
     public HeroDTO findByName(String name) {
-        var hero = findHero.findByName(name);
+        var hero = findHero.findByName(name.toUpperCase());
         var powerStats = powerStatsFacade.findById(hero.getPowerStatsId());
         return assembler.toHeroDTO(hero, powerStats);
     }
@@ -73,6 +74,7 @@ public class HeroFacade {
 
 
     public void deleteByName(String name) {
+        name = name.toUpperCase();
         var powerStatsId = findHero.findByName(name).getPowerStatsId();
         deleteHero.deleteByName(name);
         powerStatsFacade.deleteById(powerStatsId);
@@ -80,7 +82,7 @@ public class HeroFacade {
 
 
     public ComparedHeroes compareHeroes(String firstHero, String secondHero) {
-        return compareHeroes.compareHeroes(firstHero, secondHero);
+        return compareHeroes.compareHeroes(firstHero.toUpperCase(), secondHero.toUpperCase());
     }
 
 

@@ -11,7 +11,6 @@ public class UpdateHeroUseCase implements UpdateHero {
 
     @Override
     public Hero updateHero(Hero hero) {
-        hero.setName(hero.getName().toUpperCase());
         return heroRepository.updateHero(hero);
     }
 }
