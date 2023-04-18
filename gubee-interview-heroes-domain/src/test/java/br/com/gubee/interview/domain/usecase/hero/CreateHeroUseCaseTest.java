@@ -1,18 +1,19 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
+import br.com.gubee.interview.domain.api.hero.CreateHero;
 import br.com.gubee.interview.domain.enums.Race;
 import br.com.gubee.interview.domain.exceptions.HeroAlreadyExistException;
 import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
 import br.com.gubee.interview.domain.model.hero.Hero;
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.repository.HeroRepositoryStub;
-import br.com.gubee.interview.domain.usecase.hero.interfaces.CreateHero;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.spi.hero.HeroRepositoryStub;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 public class CreateHeroUseCaseTest {
 

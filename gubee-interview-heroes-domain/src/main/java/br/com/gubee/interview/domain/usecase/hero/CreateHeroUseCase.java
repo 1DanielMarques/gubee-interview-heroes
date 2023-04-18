@@ -2,8 +2,8 @@ package br.com.gubee.interview.domain.usecase.hero;
 
 import br.com.gubee.interview.domain.exceptions.HeroAlreadyExistException;
 import br.com.gubee.interview.domain.model.hero.Hero;
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.usecase.hero.interfaces.CreateHero;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.api.hero.CreateHero;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

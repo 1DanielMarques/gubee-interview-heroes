@@ -1,8 +1,8 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
 import br.com.gubee.interview.domain.model.hero.Hero;
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.usecase.hero.interfaces.UpdateHero;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.api.hero.UpdateHero;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

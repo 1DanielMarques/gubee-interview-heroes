@@ -1,11 +1,11 @@
 package br.com.gubee.interview.persistence.repositories.powerstats;
 
 import br.com.gubee.interview.domain.exceptions.FailedCreatePowerStatsException;
-import br.com.gubee.interview.domain.model.powerstats.PowerStats;
-import br.com.gubee.interview.domain.repository.PowerStatsRepository;
-import br.com.gubee.interview.persistence.entities.PowerStatsEntity;
 import br.com.gubee.interview.domain.exceptions.PowerStatsByIdNotFoundException;
 import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
+import br.com.gubee.interview.domain.model.powerstats.PowerStats;
+import br.com.gubee.interview.domain.spi.powerstats.PowerStatsRepository;
+import br.com.gubee.interview.persistence.entities.PowerStatsEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     @Override
     public PowerStats updatePowerStats(PowerStats powerStats) {
 
-        try{
+        try {
             return postgresRepository.updatePowerStats(PowerStatsEntity.fromPowerStats(powerStats)).toPowerStats();
         } catch (ResourceNotFoundException e) {
             throw new PowerStatsByIdNotFoundException(powerStats.getId());

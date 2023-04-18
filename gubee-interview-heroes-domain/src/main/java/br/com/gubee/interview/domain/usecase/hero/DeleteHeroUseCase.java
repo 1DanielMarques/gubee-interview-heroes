@@ -1,7 +1,7 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.usecase.hero.interfaces.DeleteHero;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.api.hero.DeleteHero;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;

@@ -1,16 +1,17 @@
 package br.com.gubee.interview.persistence.repositories.hero;
 
 import br.com.gubee.interview.domain.exceptions.FailedCreateHeroException;
-import br.com.gubee.interview.domain.model.hero.Hero;
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.persistence.entities.HeroEntity;
 import br.com.gubee.interview.domain.exceptions.HeroByIdNotFoundException;
 import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
 import br.com.gubee.interview.domain.exceptions.ResourceNotFoundException;
+import br.com.gubee.interview.domain.model.hero.Hero;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.persistence.entities.HeroEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
+
 
 @RequiredArgsConstructor
 public class HeroRepositoryImpl implements HeroRepository {

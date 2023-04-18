@@ -1,4 +1,4 @@
-package br.com.gubee.interview.domain.usecase.powerstats.interfaces;
+package br.com.gubee.interview.domain.api.powerstats;
 import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 
 import java.util.List;

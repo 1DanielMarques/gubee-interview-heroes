@@ -18,7 +18,6 @@
     </properties>
 
     <dependencies>
-
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -26,7 +25,6 @@
             <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
 </project>

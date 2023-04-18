@@ -1,4 +1,4 @@
-package br.com.gubee.interview.domain.repository;
+package br.com.gubee.interview.domain.spi.hero;
 
 
 import br.com.gubee.interview.domain.model.hero.Hero;

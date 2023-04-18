@@ -1,17 +1,17 @@
 package br.com.gubee.interview.resource.configuration;
 
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.repository.PowerStatsRepository;
+import br.com.gubee.interview.domain.api.hero.*;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.spi.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.domain.usecase.hero.*;
-import br.com.gubee.interview.domain.usecase.hero.interfaces.*;
 import br.com.gubee.interview.domain.usecase.powerstats.CreatePowerStatsUseCase;
 import br.com.gubee.interview.domain.usecase.powerstats.DeletePowerStatsUseCase;
 import br.com.gubee.interview.domain.usecase.powerstats.FindPowerStatsUseCase;
 import br.com.gubee.interview.domain.usecase.powerstats.UpdatePowerStatsUseCase;
-import br.com.gubee.interview.domain.usecase.powerstats.interfaces.CreatePowerStats;
-import br.com.gubee.interview.domain.usecase.powerstats.interfaces.DeletePowerStats;
-import br.com.gubee.interview.domain.usecase.powerstats.interfaces.FindPowerStats;
-import br.com.gubee.interview.domain.usecase.powerstats.interfaces.UpdatePowerStats;
+import br.com.gubee.interview.domain.api.powerstats.CreatePowerStats;
+import br.com.gubee.interview.domain.api.powerstats.DeletePowerStats;
+import br.com.gubee.interview.domain.api.powerstats.FindPowerStats;
+import br.com.gubee.interview.domain.api.powerstats.UpdatePowerStats;
 import br.com.gubee.interview.persistence.configuration.PersistenceContextConfiguration;
 import br.com.gubee.interview.resource.facade.PowerStatsFacade;
 import lombok.RequiredArgsConstructor;

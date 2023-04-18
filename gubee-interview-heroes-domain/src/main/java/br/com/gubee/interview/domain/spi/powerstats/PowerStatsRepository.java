@@ -1,4 +1,4 @@
-package br.com.gubee.interview.domain.repository;
+package br.com.gubee.interview.domain.spi.powerstats;
 
 import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 

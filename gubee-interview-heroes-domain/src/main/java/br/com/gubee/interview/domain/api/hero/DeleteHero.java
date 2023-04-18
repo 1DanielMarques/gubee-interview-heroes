@@ -1,4 +1,4 @@
-package br.com.gubee.interview.domain.usecase.hero.interfaces;
+package br.com.gubee.interview.domain.api.hero;
 
 import java.util.UUID;
 

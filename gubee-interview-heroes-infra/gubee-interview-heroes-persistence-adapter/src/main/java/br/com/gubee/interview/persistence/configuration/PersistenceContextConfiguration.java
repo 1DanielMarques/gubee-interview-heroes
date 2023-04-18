@@ -1,8 +1,8 @@
 package br.com.gubee.interview.persistence.configuration;
 
 
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.repository.PowerStatsRepository;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.spi.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.persistence.repositories.hero.HeroRepositoryImpl;
 import br.com.gubee.interview.persistence.repositories.hero.PostgresHeroRepository;
 import br.com.gubee.interview.persistence.repositories.powerstats.PostgresPowerStatsRepository;

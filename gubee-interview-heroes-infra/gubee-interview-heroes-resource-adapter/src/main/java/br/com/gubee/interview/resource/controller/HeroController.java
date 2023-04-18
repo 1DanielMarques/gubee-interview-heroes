@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import static java.lang.String.format;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/heroes", produces = MediaType.APPLICATION_JSON_VALUE)
-public class HeroResource {
+public class HeroController {
 
     private final HeroFacade heroFacade;
 

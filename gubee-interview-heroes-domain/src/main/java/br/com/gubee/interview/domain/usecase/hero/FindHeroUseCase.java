@@ -1,8 +1,8 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
 import br.com.gubee.interview.domain.model.hero.Hero;
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.usecase.hero.interfaces.FindHero;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.api.hero.FindHero;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

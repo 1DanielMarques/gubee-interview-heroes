@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Repository
 @RequiredArgsConstructor
 public class PostgresPowerStatsRepository {
     private final String CREATE_POWER_STATS_QUERY = "INSERT INTO " +

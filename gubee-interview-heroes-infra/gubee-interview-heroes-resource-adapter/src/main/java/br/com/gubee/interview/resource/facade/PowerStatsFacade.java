@@ -1,10 +1,10 @@
 package br.com.gubee.interview.resource.facade;
 
 import br.com.gubee.interview.domain.model.powerstats.PowerStats;
-import br.com.gubee.interview.domain.usecase.powerstats.interfaces.CreatePowerStats;
-import br.com.gubee.interview.domain.usecase.powerstats.interfaces.DeletePowerStats;
-import br.com.gubee.interview.domain.usecase.powerstats.interfaces.FindPowerStats;
-import br.com.gubee.interview.domain.usecase.powerstats.interfaces.UpdatePowerStats;
+import br.com.gubee.interview.domain.api.powerstats.CreatePowerStats;
+import br.com.gubee.interview.domain.api.powerstats.DeletePowerStats;
+import br.com.gubee.interview.domain.api.powerstats.FindPowerStats;
+import br.com.gubee.interview.domain.api.powerstats.UpdatePowerStats;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

@@ -1,9 +1,9 @@
 package br.com.gubee.interview.domain.usecase.hero;
 
 import br.com.gubee.interview.domain.model.hero.ComparedHeroes;
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.repository.PowerStatsRepository;
-import br.com.gubee.interview.domain.usecase.hero.interfaces.CompareHeroes;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.spi.powerstats.PowerStatsRepository;
+import br.com.gubee.interview.domain.api.hero.CompareHeroes;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

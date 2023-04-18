@@ -1,9 +1,10 @@
-package br.com.gubee.interview.domain.repository;
+package br.com.gubee.interview.domain.spi.hero;
 
 
 
 import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
 import br.com.gubee.interview.domain.model.hero.Hero;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
 
 import java.time.Instant;
 import java.util.*;

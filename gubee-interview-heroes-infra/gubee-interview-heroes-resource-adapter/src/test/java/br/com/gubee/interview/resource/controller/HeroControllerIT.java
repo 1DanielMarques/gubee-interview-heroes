@@ -5,8 +5,8 @@ import br.com.gubee.interview.domain.exceptions.HeroByIdNotFoundException;
 import br.com.gubee.interview.domain.exceptions.HeroByNameNotFoundException;
 import br.com.gubee.interview.domain.model.hero.Hero;
 import br.com.gubee.interview.domain.model.powerstats.PowerStats;
-import br.com.gubee.interview.domain.repository.HeroRepository;
-import br.com.gubee.interview.domain.repository.PowerStatsRepository;
+import br.com.gubee.interview.domain.spi.hero.HeroRepository;
+import br.com.gubee.interview.domain.spi.powerstats.PowerStatsRepository;
 import br.com.gubee.interview.resource.dto.HeroDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -28,9 +28,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-public class HeroResourceIT {
+public class HeroControllerIT {
 
     @Autowired
     MockMvc mockMvc;
