@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>gubee-interview-heroes-persistence-adapter</module>
-        <module>gubee-interview-heroes-resource-adapter</module>
+        <module>gubee-interview-heroes-web-adapter</module>
     </modules>
 
     <properties>
