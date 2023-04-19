@@ -1,8 +1,10 @@
 package br.com.gubee.interview.web.assembler;
 
 
+import br.com.gubee.interview.domain.model.hero.ComparedHeroes;
 import br.com.gubee.interview.domain.model.hero.Hero;
 import br.com.gubee.interview.domain.model.powerstats.PowerStats;
+import br.com.gubee.interview.web.dto.ComparedHeroesDTO;
 import br.com.gubee.interview.web.dto.HeroDTO;
 
 import java.util.ArrayList;
@@ -62,6 +64,22 @@ public class Assembler {
                 .build();
 
         return heroDTO;
+    }
+
+    public ComparedHeroesDTO toComparedHeroesDTO(ComparedHeroes comparedHeroes) {
+        return ComparedHeroesDTO.builder()
+                .firstId(comparedHeroes.getFirstId())
+                .firstStrength(comparedHeroes.getFirstStrength())
+                .firstAgility(comparedHeroes.getFirstAgility())
+                .firstDexterity(comparedHeroes.getFirstDexterity())
+                .firstIntelligence(comparedHeroes.getFirstIntelligence())
+                .secondId(comparedHeroes.getSecondId())
+                .secondStrength(comparedHeroes.getSecondStrength())
+                .secondAgility(comparedHeroes.getSecondAgility())
+                .secondDexterity(comparedHeroes.getSecondDexterity())
+                .secondIntelligence(comparedHeroes.getSecondIntelligence())
+                .build();
+
     }
 
 }

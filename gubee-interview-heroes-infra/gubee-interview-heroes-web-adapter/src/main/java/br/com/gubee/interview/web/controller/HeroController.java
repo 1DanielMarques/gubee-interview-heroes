@@ -1,6 +1,7 @@
 package br.com.gubee.interview.web.controller;
 
 import br.com.gubee.interview.domain.model.hero.ComparedHeroes;
+import br.com.gubee.interview.web.dto.ComparedHeroesDTO;
 import br.com.gubee.interview.web.dto.HeroDTO;
 import br.com.gubee.interview.web.facade.HeroFacade;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +71,7 @@ public class HeroController {
 
 
     @GetMapping("/compare/{firstHero}/with/{secondHero}")
-    public ResponseEntity<ComparedHeroes> compareHeroes(@PathVariable(value = "firstHero") String firstHero, @PathVariable(value = "secondHero") String secondHero) {
+    public ResponseEntity<ComparedHeroesDTO> compareHeroes(@PathVariable(value = "firstHero") String firstHero, @PathVariable(value = "secondHero") String secondHero) {
         return ResponseEntity.ok().body(heroFacade.compareHeroes(firstHero, secondHero));
     }
 

@@ -5,6 +5,7 @@ import br.com.gubee.interview.domain.model.hero.ComparedHeroes;
 import br.com.gubee.interview.domain.model.hero.Hero;
 import br.com.gubee.interview.domain.model.powerstats.PowerStats;
 import br.com.gubee.interview.web.assembler.Assembler;
+import br.com.gubee.interview.web.dto.ComparedHeroesDTO;
 import br.com.gubee.interview.web.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -81,8 +82,9 @@ public class HeroFacade {
     }
 
 
-    public ComparedHeroes compareHeroes(String firstHero, String secondHero) {
-        return compareHeroes.compareHeroes(firstHero.toUpperCase(), secondHero.toUpperCase());
+    public ComparedHeroesDTO compareHeroes(String firstHero, String secondHero) {
+        var comparedHeroes = compareHeroes.compareHeroes(firstHero.toUpperCase(), secondHero.toUpperCase());
+        return assembler.toComparedHeroesDTO(comparedHeroes);
     }
 
 
